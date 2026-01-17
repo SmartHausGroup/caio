@@ -1,0 +1,8 @@
+Execute Phase 21 — Licensing Security & Distribution Control
+
+Read and execute the detailed plan at docs/prompts/codex-phase-21-licensing-security-distribution.md
+and the full plan at plans/phase-21-licensing-security-distribution/phase-21-licensing-security-distribution.md.
+
+Plan Reference: plan:EXECUTION_PLAN:21
+
+You are approved to implement. Execute per the plan. Follow all instructions in the detailed prompt and the plan.

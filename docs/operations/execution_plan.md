@@ -67,6 +67,7 @@ make ma-validate-quiet || true
 | 18    | License Management System      | System for generating, distributing, tracking licenses | License management system functional, licenses trackable |
 | 19    | Universal Service Gateway & Adapters | Service gateway executor + 25+ service adapters (Tier 1-3) | Gateway executes requests, all tiers integrated, guarantee enforcement working |
 | 20    | SDK Separation               | Split SDK into isolated package (`packages/sdk`)           | SDK isolated from core, clear boundaries and dependency separation |
+| 21    | Licensing Security & Distribution Control | Asymmetric license signing, distribution control | License v2 (RSA/Ed25519); customers cannot forge keys; download via private registry |
 
 ---
 
@@ -95,16 +96,23 @@ make ma-validate-quiet || true
 | 16    | ✅ Done       | Open integration layer — complete 2026-01-12               |
 | 17    | ✅ Done       | On-premises licensing model complete                       |
 | 18    | ✅ Done       | License management system — complete 2026-01-14            |
-| 19    | ⚠️ In Progress | Universal Service Gateway & Adapters — 19.1 underway      |
+| 19    | ⚠️ In Progress | Universal Service Gateway & Adapters — 19.1-19.9 complete; 19.10 pending |
+| 19.1  | ✅ Done       | Build Service Gateway Core (executor, base, transformer) |
+| 19.2  | ✅ Done       | Tier 1 Adapters — MIGRATED TO VFE per ADR-0001 |
+| 19.3  | ⚠️ Partial    | Tier 2 Adapters — Created but SHOULD BE IN VFE (inference adapters) |
+| 19.4  | ⚠️ Partial    | Tier 3 Adapters — Non-inference complete; inference adapters SHOULD BE IN VFE |
+| 19.5  | ✅ Done       | Contract Templates & Documentation |
 | 19.6  | ✅ Done       | Update Mechanism Implementation (API endpoints, service module) |
 | 19.7  | ✅ Done       | PyPI Preparation (Package Name Update to `smarthaus-caio`) |
 | 19.8  | ⚠️ In Progress | PyPI Publication (Publish `smarthaus-caio` to PyPI) |
 | 19.8.1| ✅ Done       | Enterprise Distribution Strategy (Private Docker + Signed Wheel) |
 | 19.9  | ✅ Done       | Enterprise Artifact Validation (Re-run passed; Docker/Wheel validated) |
-| 19.10 | ⚠️ In Progress | Live Gateway Verification (Non-Inference Adapters Only) |
+| 19.10 | ❌ Not Started | Live Gateway Verification (Non-Inference Adapters Only) |
+| 19.11 | ✅ Done       | Testing & Validation (Unit, integration, E2E, performance, error handling) |
 | 20    | ✅ Done       | SDK Separation — complete 2026-01-16                     |
 | 20.1  | ✅ Done       | SDK Verification & Test Fixes — complete 2026-01-16        |
 | 20.2  | ✅ Done       | SDK Packaging Fix — complete 2026-01-17                    |
+| 21    | ⚠️ In Progress | Licensing Security & Distribution — docs/scripts done; code pending in this repo |
 
 ---
 
@@ -134,7 +142,6 @@ Only future work is listed; math/MA phases are already complete.
 | Task ID                   | Status     | Notes |
 |---------------------------|-----------|-------|
 | pypi-publication          | in-progress   | Publish CAIO to PyPI (plan:pypi-publication:19.8)       |
-| live-gateway-verification | in-progress   | Live verification tests + docs added; live API runs pending keys (plan:EXECUTION_PLAN:19.10) |
 | sdk-separation            | completed | Split SDK into isolated package (plan:phase-20-sdk-separation:20.0) |
 | update-package-name       | completed | Updated PyPI package name to smarthaus-caio (plan:update-package-name:19.7) |
 | update-api-endpoints      | completed | Implemented update/restart/version endpoints (plan:update-api-endpoints:19.6) |
@@ -170,7 +177,8 @@ Only future work is listed; math/MA phases are already complete.
 
 ## Recent Work
 
-- **2026-01-17:** Phase 19.10 live gateway verification tests + docs added; live API execution pending keys — `plan:EXECUTION_PLAN:19.10`
+- **2026-01-17:** Phase 21 execution updates — added keypair and registry scripts, customer deploy compose, licensing/deployment docs updates, key-rotation runbook — `plan:EXECUTION_PLAN:21`
+- **2026-01-17:** Phase 21 formal plan and Codex prompts created — `plan:EXECUTION_PLAN:21` (plans/phase-21-licensing-security-distribution/, docs/prompts/codex-phase-21-licensing-security-distribution*.md)
 - **2026-01-17:** Phase 20.2 SDK Packaging Fix complete; created `packages/sdk/pyproject.toml` and verified build artifacts — `plan:phase-20-2-sdk-packaging:20.2`
 - **2026-01-17:** Phase 19.9 Enterprise Artifact Validation Re-run complete; verified wheel builds successfully — `plan:phase-19-9-enterprise-validation:19.9.3`
 - **2026-01-16:** Phase 20 SDK Separation complete — `plan:phase-20-sdk-separation:20.0`
@@ -1080,37 +1088,54 @@ Endpoints (names illustrative; must match final OpenAPI):
 
 **19.2: Tier 1 Adapters (5 services) — MVP**
 
-- [x] OpenAI adapter (GPT-4, GPT-4o, GPT-3.5-turbo)
-- [x] Anthropic adapter (Claude 3.5 Sonnet, Claude 3 Opus)
-- [x] Groq adapter (fast inference)
-- [x] Mistral AI adapter (Mistral Medium, Mistral Large)
-- [x] Cohere adapter (Command R+, Command R)
+**NOTE:** Per ADR-0001, Tier 1 inference adapters (OpenAI, Anthropic, Groq, Mistral, Cohere) were **migrated to VFE** as external API backends. CAIO now routes inference requests to VFE, not directly to external APIs.
+
+- [x] OpenAI adapter (GPT-4, GPT-4o, GPT-3.5-turbo) — **MIGRATED TO VFE**
+- [x] Anthropic adapter (Claude 3.5 Sonnet, Claude 3 Opus) — **MIGRATED TO VFE**
+- [x] Groq adapter (fast inference) — **MIGRATED TO VFE**
+- [x] Mistral AI adapter (Mistral Medium, Mistral Large) — **MIGRATED TO VFE**
+- [x] Cohere adapter (Command R+, Command R) — **MIGRATED TO VFE**
 - [x] Create contract templates for all Tier 1 services
-- [ ] Test each adapter with real API calls (where API keys available)
+- [x] Test each adapter with real API calls — **N/A (migrated to VFE)**
 
 **19.3: Tier 2 Adapters (10 services) — Phase 1**
 
-- [x] Ollama adapter (local models)
-- [x] LM Studio adapter (local models)
-- [x] Google Gemini adapter (Gemini Pro, Gemini Ultra)
-- [x] xAI Grok adapter (Grok-4)
-- [x] Perplexity adapter (search-augmented)
-- [x] Hugging Face Inference API adapter
-- [x] Together AI adapter (open models)
-- [x] Replicate adapter (model hosting)
-- [x] Azure OpenAI adapter (enterprise)
-- [x] AWS Bedrock adapter (enterprise)
+**NOTE:** Per ADR-0001, inference adapters should be in VFE, not CAIO. The following inference adapters should be **moved to VFE or removed from CAIO**:
+- Ollama, LM Studio, Gemini, Grok, Perplexity, Hugging Face, Together, Replicate, Azure OpenAI, AWS Bedrock
+
+**Current Status:** These adapters exist in CAIO but violate the architecture. They should be migrated to VFE or removed.
+
+- [x] Ollama adapter (local models) — **SHOULD BE IN VFE**
+- [x] LM Studio adapter (local models) — **SHOULD BE IN VFE**
+- [x] Google Gemini adapter (Gemini Pro, Gemini Ultra) — **SHOULD BE IN VFE**
+- [x] xAI Grok adapter (Grok-4) — **SHOULD BE IN VFE**
+- [x] Perplexity adapter (search-augmented) — **SHOULD BE IN VFE**
+- [x] Hugging Face Inference API adapter — **SHOULD BE IN VFE**
+- [x] Together AI adapter (open models) — **SHOULD BE IN VFE**
+- [x] Replicate adapter (model hosting) — **SHOULD BE IN VFE**
+- [x] Azure OpenAI adapter (enterprise) — **SHOULD BE IN VFE**
+- [x] AWS Bedrock adapter (enterprise) — **SHOULD BE IN VFE**
 - [x] Create contract templates for all Tier 2 services
 - [x] Test each adapter with real API calls (where API keys available) - Integration tests created with skipif markers
 
 **19.4: Tier 3 Adapters (10+ services) — Extended Ecosystem**
 
-- [x] Embedding services: OpenAI Embeddings, Cohere Embed, Voyage AI
-- [x] Code services: GitHub Copilot API, Cursor API
-- [x] Search services: Tavily, Serper
-- [x] Voice services: ElevenLabs, Deepgram
-- [x] Image services: Midjourney API, Stability AI, DALL-E
-- [x] Additional: Meta AI, Google PaLM, Aleph Alpha
+**NOTE:** Per ADR-0001, CAIO adapters should only handle **non-inference marketplace services**. The following are correctly placed in CAIO:
+- **Embeddings:** OpenAI Embeddings, Cohere Embed, Voyage AI ✅
+- **Code:** GitHub Copilot API, Cursor API ✅
+- **Search:** Tavily, Serper ✅
+- **Voice:** ElevenLabs, Deepgram ✅
+- **Image:** Midjourney API, Stability AI, DALL-E ✅
+
+**The following inference adapters should be moved to VFE or removed:**
+- Meta AI, Google PaLM, Aleph Alpha — **SHOULD BE IN VFE**
+
+- [x] Embedding services: OpenAI Embeddings, Cohere Embed, Voyage AI ✅
+- [x] Code services: GitHub Copilot API, Cursor API ✅
+- [x] Search services: Tavily, Serper ✅
+- [x] Voice services: ElevenLabs, Deepgram ✅
+- [x] Image services: Midjourney API, Stability AI, DALL-E ✅
+- [x] Additional: Meta AI, Google PaLM, Aleph Alpha — **SHOULD BE IN VFE**
 - [x] Create contract templates for all Tier 3 services
 - [x] Test each adapter with real API calls (where API keys available) - Integration tests created with skipif markers
 
@@ -1146,7 +1171,37 @@ Endpoints (names illustrative; must match final OpenAPI):
 - [ ] Verify installation from PyPI
 - [ ] Set up automated publishing workflow (optional)
 
-**19.9: Testing & Validation**
+**19.9: Enterprise Artifact Validation**
+
+- [x] Docker image validation script (`scripts/release/validate_docker.sh`)
+- [x] Wheel package validation script (`scripts/release/validate_wheel.sh`)
+- [x] Smoke tests for enterprise distribution artifacts
+- [x] Re-run validation after SDK separation (2026-01-16)
+
+**19.10: Live Gateway Verification (Non-Inference Adapters Only)**
+
+**Scope:** Verify CAIO's non-inference marketplace adapters with live API calls. Per ADR-0001, inference adapters are in VFE, so this phase only verifies:
+- Embeddings: OpenAI Embeddings, Cohere Embed, Voyage AI
+- Code: GitHub Copilot API, Cursor API
+- Search: Tavily, Serper
+- Voice: ElevenLabs, Deepgram
+- Image: Midjourney API, Stability AI, DALL-E
+
+**NOTE:** Inference adapters (gemini, grok, ollama, etc.) should NOT be verified here — they belong in VFE.
+
+- [x] Create live verification test suite (`tests/integration/test_live_gateway_verification.py`)
+- [x] Add safety gates (`LIVE_TESTS_ENABLED=1`) and per-adapter API key skips
+- [ ] Verify embeddings adapters with real API calls (Blocked: Missing API keys in environment)
+- [ ] Verify code adapters with real API calls (Blocked: Missing API keys in environment)
+- [ ] Verify search adapters with real API calls (Blocked: Missing API keys in environment)
+- [ ] Verify voice adapters with real API calls (Blocked: Missing API keys in environment)
+- [ ] Verify image adapters with real API calls (Blocked: Missing API keys in environment)
+- [x] Document which adapters were verified and which require API keys (`docs/gateway/ADAPTER_VERIFICATION.md`)
+- [x] Update integration test documentation (`tests/integration/README.md`)
+
+**Plan Reference:** `plan:EXECUTION_PLAN:19.10`
+
+**19.11: Testing & Validation**
 
 - [x] Unit tests for gateway executor
 - [x] Unit tests for each adapter (25+ test files)
@@ -1155,14 +1210,6 @@ Endpoints (names illustrative; must match final OpenAPI):
 - [x] Guarantee enforcement validation tests
 - [x] Performance tests (latency, throughput)
 - [x] Error handling tests (rate limits, timeouts, failures)
-
-**19.10: Live Gateway Verification (Non-Inference Adapters Only)**
-
-- [x] Create live verification test suite (`tests/integration/test_live_gateway_verification.py`)
-- [x] Add safety gates (`LIVE_TESTS_ENABLED=1`) and per-adapter API key skips
-- [x] Document verification status in `docs/gateway/ADAPTER_VERIFICATION.md`
-- [x] Document live test usage in `tests/integration/README.md`
-- [ ] Run live verification with API keys for at least 8 adapters
 
 **Plan Reference:** `plan:EXECUTION_PLAN:19`  
 **Detailed Plan:** `plans/phase-19-universal-gateway/phase-19-universal-gateway.md`  
@@ -1177,7 +1224,6 @@ Endpoints (names illustrative; must match final OpenAPI):
 - `docs/prompts/codex-phase-19.8-pypi-publication.md` (PyPI Publication)
 - `docs/prompts/codex-phase-19.8.1-github-distribution.md` (GitHub Distribution)
 - `docs/prompts/codex-phase-19.9-testing-validation.md` (Testing & Validation)
-- `docs/prompts/codex-phase-19-10-live-gateway-verification.md` (Live Gateway Verification)
 
 **CRITICAL:** 
 - Use web search during implementation to get current API documentation for each service
@@ -1231,6 +1277,41 @@ Endpoints (names illustrative; must match final OpenAPI):
 
 ---
 
+## Phase 21 — Licensing Security & Distribution Control
+
+**Scope:** Asymmetric license signing (RSA/Ed25519), refactor generator/validator, config (drop `CAIO_LICENSE_SECRET`; add `CAIO_LICENSE_PUBLIC_KEY`), distribution control (private registry, deploy/customer), docs and runbooks. **Success:** Customers cannot forge keys; download only via controlled registry; `v2` keys in use.
+
+### Tasks
+
+**21.1: Asymmetric Crypto and Keypair**
+- [ ] Add `cryptography`; `scripts/licensing/generate_keypair.sh`; document key custody.
+
+**21.2: Generator and Validator**
+- [ ] `generator.py`: private key, `v2` format. `validator.py`: public key, verify.
+
+**21.3: Config and Embedding**
+- [ ] Drop `CAIO_LICENSE_SECRET`; add `CAIO_LICENSE_KEY`, `CAIO_LICENSE_PUBLIC_KEY`; wire validator.
+
+**21.4: Generation Service and CLI**
+- [ ] `generation_service.py` and CLI use private key; emit `v2`.
+
+**21.5: Distribution Control**
+- [x] `deploy/customer/` and `scripts/release/push_to_registry.sh`; docs.
+
+**21.6: Docs and Runbooks**
+- [x] LICENSE_MANAGEMENT, ON_PREMISES, LICENSE_ACTIVATION; key-rotation runbook.
+
+**Notes:**
+- Licensing implementation files (`caio/licensing/*`, config, CLI) are not present in this repo; code updates pending once the codebase is available.
+
+**Plan Reference:** `plan:EXECUTION_PLAN:21`  
+**Detailed Plan:** `plans/phase-21-licensing-security-distribution/phase-21-licensing-security-distribution.md`  
+**Detailed Prompt:** `docs/prompts/codex-phase-21-licensing-security-distribution.md`
+
+**Status:** ⚠️ In Progress — docs/scripts updated; code/config pending in current workspace.
+
+---
+
 ## Plan ↔ North Star Sync (hard rule)
 
 - If an item appears in `docs/NORTH_STAR.md` (KPIs, invariants, notebooks, APIs, telemetry, runbooks), it MUST appear here with an explicit task/checkbox and cross‑reference.
@@ -1251,3 +1332,4 @@ Endpoints (names illustrative; must match final OpenAPI):
 - **SDK Spec**: `docs/SDK_SPECIFICATION.md`
 - **MA Process**: `docs/MA_PROCESS_STATUS.md`
 - **MA Process Rule**: `docs/operations/MA_PROCESS_MANDATORY_RULE.md`
+- **Phase 21 Plan**: `plans/phase-21-licensing-security-distribution/phase-21-licensing-security-distribution.md`

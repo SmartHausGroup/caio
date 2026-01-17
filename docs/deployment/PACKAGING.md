@@ -6,16 +6,22 @@ CAIO is distributed to enterprise customers via **Private Docker Images** (prima
 
 ### 1. Docker Distribution (Primary)
 
-Customers pull the image from our private registry:
+Customers pull the image from our private registry using a read-only token:
 
 ```bash
 docker login registry.smarthaus.group
-docker pull smarthaus/caio:v0.1.0
+docker pull registry.smarthaus.group/caio:v0.1.0
 ```
 
 **Build Process:**
 ```bash
 ./scripts/release/build_docker.sh
+```
+
+**Push Process (internal):**
+```bash
+REGISTRY_HOST=registry.smarthaus.group IMAGE_TAG=v0.1.0 \
+./scripts/release/push_to_registry.sh
 ```
 
 ### 2. Wheel Distribution (Fallback)

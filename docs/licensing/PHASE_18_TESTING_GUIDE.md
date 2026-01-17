@@ -214,7 +214,7 @@ python scripts/licensing/manage_licenses.py add-customer \
   CUST001 "Acme Corp" --email ops@acme.test
 
 # Generate license
-CAIO_LICENSE_SECRET=test-secret \
+CAIO_LICENSE_PRIVATE_KEY=/path/to/private.pem \
 python scripts/licensing/manage_licenses.py generate-license \
   CUST001 standard --expires-days 365 \
   --features analytics audit \
@@ -242,11 +242,11 @@ python scripts/licensing/manage_licenses.py list-licenses
 # Activate license via API
 curl -X POST http://localhost:8080/api/v1/licensing/activate \
   -H "Content-Type: application/json" \
-  -d '{"license_key": "CAIO-v1-CUST-001-..."}'
+  -d '{"license_key": "CAIO-v2-CUST-001-..."}'
 
 # Verify activation was tracked
 python scripts/licensing/manage_licenses.py list-activations \
-  --license-key CAIO-v1-CUST-001-...
+  --license-key CAIO-v2-CUST-001-...
 ```
 
 **Expected Result:** Activation recorded in database.
@@ -285,11 +285,9 @@ python scripts/licensing/manage_licenses.py renewal-reminders --days 30
 
 ```bash
 # Export to CSV
-CAIO_LICENSE_SECRET=test-secret \
 python scripts/licensing/manage_licenses.py export-licenses --format csv
 
 # Export to JSON
-CAIO_LICENSE_SECRET=test-secret \
 python scripts/licensing/manage_licenses.py export-licenses --format json
 ```
 
@@ -327,7 +325,7 @@ python scripts/licensing/manage_licenses.py export-licenses --format json
 
 ### Security
 
-- [ ] **Secret Management:** License secret is not hardcoded
+- [ ] **Key Management:** Private key is not hardcoded
 - [ ] **Database Security:** Database file permissions are correct
 - [ ] **Input Validation:** All inputs are validated
 - [ ] **SQL Injection:** Database queries use parameterized statements
@@ -467,7 +465,7 @@ Before deploying Phase 18 to production:
 - [ ] Database migration plan (if upgrading from Phase 17)
 - [ ] Backup strategy for license database
 - [ ] Monitoring/alerting for license system
-- [ ] Secret management (CAIO_LICENSE_SECRET) configured
+- [ ] Key management configured (`CAIO_LICENSE_PRIVATE_KEY` for ops, `CAIO_LICENSE_PUBLIC_KEY` for runtime)
 - [ ] SMTP configuration (if using email distribution)
 
 ---

@@ -2,7 +2,7 @@
 
 **Status:** Active  
 **Owner:** CAIO Core (@smarthaus)  
-**Last Updated:** 2026-01-17 18:07 UTC
+**Last Updated:** 2026-01-17 20:20 UTC
 **Source of Truth:** This document tracks current project status, progress, blockers, and risks
 
 ---
@@ -25,9 +25,9 @@ This document provides at-a-glance project status, tracking:
 
 ## Project Status Overview
 
-**Current Phase:** Phase 19 - Universal Service Gateway & Adapters (Gateway core complete, adapters pending)  
-**Overall Progress:** 95.0% (19 of 20 phases complete, Phase 19 in progress, Phase 20 complete)  
-**Last Status Update:** 2026-01-17 18:07 UTC
+**Current Phase:** Phase 21 - Licensing Security & Distribution Control (docs/scripts in progress; code pending)  
+**Overall Progress:** 95.0% (19 of 21 phases complete, Phase 19 and Phase 21 in progress, Phase 20 complete)  
+**Last Status Update:** 2026-01-17 20:20 UTC
 
 ### High-Level Status
 
@@ -56,6 +56,7 @@ This document provides at-a-glance project status, tracking:
 | Phase 19.8.1: Enterprise Distribution Strategy | ✅ Complete | 100% | Docker/Wheel build scripts created, docs updated for Enterprise distribution |
 | Phase 19.9: Enterprise Artifact Validation | ✅ Complete | 100% | Validation scripts created and executed successfully |
 | Phase 20: SDK Separation | ✅ Complete | 100% | SDK isolated into packages/sdk; compatibility shims added |
+| Phase 21: Licensing Security & Distribution Control | ⚠️ In Progress | 65% | Docs/scripts updated; code refactor pending in this repo |
 
 ### Current Blockers
 
@@ -71,6 +72,33 @@ This document provides at-a-glance project status, tracking:
 ---
 
 ## Recent Work
+
+**2026-01-17: Phase 21 — Licensing Security & Distribution Control (Execution Updates)**
+
+**Status:** ⚠️ **IN PROGRESS**
+
+**Work Completed:**
+- Added licensing keypair generator script and private registry push script
+- Added customer docker-compose for private registry distribution
+- Updated licensing and deployment docs for `CAIO_LICENSE_PUBLIC_KEY` and `CAIO-v2` keys
+- Added key-rotation runbook
+
+**Blockers:**
+- Licensing implementation files (`caio/licensing/*`, config, CLI) not present in this repo to refactor generator/validator
+- Dependency updates for `cryptography` pending codebase packaging files
+
+**Plan Reference:** `plan:EXECUTION_PLAN:21`
+
+**2026-01-17: Phase 21 — Licensing Security & Distribution Control (Plan + Prompts)**
+
+**Status:** ✅ **PLANNED**
+
+**Work Completed:**
+- Created formal plan `plans/phase-21-licensing-security-distribution/` (md, yaml, json)
+- Created Codex prompt and kick-off: `docs/prompts/codex-phase-21-licensing-security-distribution.md`, `codex-phase-21-licensing-security-distribution-prompt.txt`
+- Added Phase 21 to execution plan (overview, completion status, task section, Recent Work, References)
+
+**Plan Reference:** `plan:EXECUTION_PLAN:21`
 
 **2026-01-17: Phase 19.10 Live Gateway Verification Execution**
 

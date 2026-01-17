@@ -8,16 +8,18 @@
 
 ## Obtaining a License Key
 
-Contact SmartHaus Group to obtain your CAIO license key and license secret. Keep both values secure and do **not** commit them to source control.
+Contact SmartHaus Group to obtain your CAIO license key and registry access. The public key used for
+validation is embedded in the build or provided as a PEM file. Keep the license key secure and do
+**not** commit it to source control.
 
 ---
 
 ## Activating a License
 
-1. **Ensure the license secret is configured**
+1. **Ensure the license public key is configured (if not embedded)**
 
    ```bash
-   export CAIO_LICENSE_SECRET="your-license-secret"
+   export CAIO_LICENSE_PUBLIC_KEY="/path/to/public.pem"
    ```
 
 2. **Activate via API**
@@ -60,14 +62,14 @@ If your license expires, obtain a new license key from SmartHaus Group and activ
 
 ### Invalid license key
 - Verify the key was copied correctly.
-- Ensure you are using the matching license secret.
+- Ensure the runtime is using the matching public key.
 
 ### License expired
 - Request a renewed license from SmartHaus Group.
 - Activate the new license key.
 
 ### License validation not configured
-- Ensure `CAIO_LICENSE_SECRET` is set.
+- Ensure `CAIO_LICENSE_PUBLIC_KEY` is set (or embedded in the build).
 - Verify the CAIO service restarted after setting environment variables.
 
 ---

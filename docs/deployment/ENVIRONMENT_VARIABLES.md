@@ -24,6 +24,15 @@ This document lists environment variables used by CAIO. Defaults apply when unse
 | `CAIO_AUTH_SECRET_KEY` | JWT/signing secret key | `""` |
 | `CAIO_AUTH_ALGORITHM` | JWT/signing algorithm | `HS256` |
 
+## Licensing
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `CAIO_LICENSE_KEY` | License key string (`CAIO-v2-...`) | empty |
+| `CAIO_LICENSE_PUBLIC_KEY` | Public key PEM or file path for validation | empty |
+| `CAIO_LICENSE_REQUIRED` | Enforce license checks | `false` |
+| `CAIO_LICENSE_PRIVATE_KEY` | Private key PEM or file path (operator-only CLI) | empty |
+
 ## Logging
 
 | Variable | Description | Default |

@@ -1,0 +1,28 @@
+plan_id: phase-21-licensing-security-distribution
+status: in_progress
+date: "2026-01-17"
+owner: "@smarthaus"
+execution_plan_reference: "plan:EXECUTION_PLAN:21"
+north_star_alignment:
+  - "docs/NORTH_STAR.md §3.2.1 Embedded Governance (Local Licensing)"
+  - "docs/NORTH_STAR.md §2.3 Security as Mathematical Invariants, INV-CAIO-SEC-0006"
+
+objective: |
+  Upgrade CAIO licensing to asymmetric cryptography and add distribution control
+  so only licensed customers can download and run CAIO.
+
+scope:
+  - "21.1 Asymmetric License Cryptography"
+  - "21.2 Generator and Validator Refactor"
+  - "21.3 Config and Key Embedding"
+  - "21.4 Generation Service and CLI"
+  - "21.5 Distribution Control"
+  - "21.6 Documentation and Runbooks"
+
+success_criteria:
+  - "Generator signs with private key; validator verifies with public key only"
+  - "No HMAC secret or private key in customer-facing artifacts"
+  - "APIs and CLI work with v2 keys; v1 handling documented"
+  - "Key generation and rotation runbook"
+  - "Customer Docker path uses private registry; documented"
+  - "make ma-validate-quiet and tests pass"

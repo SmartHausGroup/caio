@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   caio:
-    image: registry.smarthaus.group/caio:${CAIO_IMAGE_TAG:-latest}
-    container_name: caio-orchestrator
+    image: registry.smarthaus.group/caio:${CAIO_IMAGE_TAG:-v0.1.0}
+    container_name: caio-on-prem
     ports:
       - "8080:8080"
     environment:
@@ -14,9 +14,9 @@ services:
       - CAIO_LICENSE_PUBLIC_KEY=/app/config/license_public.pem
 
       # Security
-      - CAIO_AUTH_SECRET_KEY=${CAIO_AUTH_SECRET_KEY} # For internal JWTs
+      - CAIO_AUTH_SECRET_KEY=${CAIO_AUTH_SECRET_KEY}
       - CAIO_CORS_ORIGINS="*"
-      
+
       # Persistence
       - CAIO_DB_URL=sqlite:///app/data/caio.db
     volumes:

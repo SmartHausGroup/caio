@@ -12,6 +12,24 @@ This guide documents the Phase 18 license management system for CAIO. The system
 The license management system stores records in SQLite by default and integrates with Phase 17's
 license validation and activation endpoints.
 
+Phase 21 upgrades license signing to an asymmetric model:
+- **Private key**: used only for license generation (operator side).
+- **Public key**: used for validation in customer builds.
+- **License key**: `CAIO-v2-...` signed payload distributed to customers.
+
+## Key Generation and Custody
+
+Generate an RSA keypair for licensing:
+
+```bash
+./scripts/licensing/generate_keypair.sh ./keys
+```
+
+Key custody rules:
+- Keep `private.pem` only on operator/admin systems or in an HSM/Vault.
+- Never commit or ship the private key.
+- Public key (`public.pem`) can be embedded in builds or provided via `CAIO_LICENSE_PUBLIC_KEY`.
+
 ## Database Location
 
 The default license database path is:
@@ -29,7 +47,7 @@ CAIO_LICENSE_DB_PATH=/path/to/caio_licenses.db
 ## Generating Licenses
 
 Use the CLI to generate and export license keys. The generator requires
-`CAIO_LICENSE_SECRET` (or `--secret`) to sign keys.
+`CAIO_LICENSE_PRIVATE_KEY` (or `--private-key`) to sign keys.
 
 Create a customer record first:
 
@@ -38,7 +56,7 @@ python scripts/licensing/manage_licenses.py add-customer CUST-001 "Acme Corp" --
 ```
 
 ```bash
-CAIO_LICENSE_SECRET=your-secret \
+CAIO_LICENSE_PRIVATE_KEY=/path/to/private.pem \
 python scripts/licensing/manage_licenses.py generate-license \
   CUST-001 standard \
   --expires-days 365 \
@@ -59,7 +77,7 @@ export CAIO_SMTP_USER="licensing@example.com"
 export CAIO_SMTP_PASSWORD="..."
 export CAIO_SMTP_SENDER="licensing@example.com"
 
-CAIO_LICENSE_SECRET=your-secret \
+CAIO_LICENSE_PRIVATE_KEY=/path/to/private.pem \
 python scripts/licensing/manage_licenses.py distribute-license \
   CUST-001 customer@example.com standard \
   --expires-days 365 \
@@ -74,7 +92,7 @@ Record activation events via the CAIO API or the CLI:
 
 ```bash
 python scripts/licensing/manage_licenses.py track-activation \
-  CAIO-v1-CUST-001-... \
+  CAIO-v2-CUST-001-... \
   --instance-id instance-001 \
   --ip-address 203.0.113.10
 ```
@@ -82,7 +100,7 @@ python scripts/licensing/manage_licenses.py track-activation \
 View activation records:
 
 ```bash
-python scripts/licensing/manage_licenses.py list-activations --license-key CAIO-v1-CUST-001-...
+python scripts/licensing/manage_licenses.py list-activations --license-key CAIO-v2-CUST-001-...
 ```
 
 ## License Statistics
@@ -106,7 +124,6 @@ python scripts/licensing/manage_licenses.py renewal-reminders --days 30
 Export licenses for reporting:
 
 ```bash
-CAIO_LICENSE_SECRET=your-secret \
 python scripts/licensing/manage_licenses.py export-licenses --format csv
 ```
 
@@ -116,10 +133,19 @@ The Phase 17 licensing endpoints remain unchanged. Activation tracking is now re
 `/api/v1/licensing/activate` is called successfully. For richer tracking, send an instance identifier
 via the `X-CAIO-Instance-ID` header.
 
+## Migration Notes (v1 -> v2)
+
+`CAIO-v1` HMAC-signed keys and `CAIO_LICENSE_SECRET` are deprecated. During a transition window,
+validation can continue to accept `v1` if explicitly enabled, but all new generation should use `v2`.
+
+## Key Rotation
+
+Follow the runbook at `docs/operations/runbooks/license_key_rotation.md` for scheduled or emergency rotations.
+
 ## Troubleshooting
 
 | Issue | Resolution |
 | --- | --- |
-| License generation fails | Ensure `CAIO_LICENSE_SECRET` is set |
+| License generation fails | Ensure `CAIO_LICENSE_PRIVATE_KEY` is set and points to a valid PEM |
 | Email delivery skipped | Configure SMTP variables (see distribution section) |
 | Database not found | Set `CAIO_LICENSE_DB_PATH` or run `init-db` |

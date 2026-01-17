@@ -8,7 +8,7 @@
 
 ## Overview
 
-This guide explains how to deploy CAIO on-premises using the dedicated licensing model. On-premises deployments require a valid license key and license secret.
+This guide explains how to deploy CAIO on-premises using the dedicated licensing model. On-premises deployments require a valid license key and access to the CAIO public key used for validation.
 
 ---
 
@@ -16,24 +16,26 @@ This guide explains how to deploy CAIO on-premises using the dedicated licensing
 
 - Docker 20+ installed (`docker --version`)
 - A valid CAIO license key
-- The CAIO license secret provided by SmartHaus Group
+- The CAIO public key (embedded in the build or provided as `public.pem`)
+- A registry access token for the private CAIO image
 - Access to this repository or the released CAIO on-premises package
 
 ---
 
 ## Installation (Docker)
 
-1. **Build the on-premises image**
+1. **Authenticate and pull the private image**
 
    ```bash
-   docker build -f Dockerfile.on-premises -t caio-on-prem:latest .
+   docker login registry.smarthaus.group
+   docker pull registry.smarthaus.group/caio:v0.1.0
    ```
 
 2. **Set license environment variables**
 
    ```bash
    export CAIO_LICENSE_KEY="your-license-key"
-   export CAIO_LICENSE_SECRET="your-license-secret"
+   export CAIO_LICENSE_PUBLIC_KEY="/path/to/public.pem"
    export CAIO_LICENSE_REQUIRED="true"
    ```
 
@@ -44,11 +46,14 @@ This guide explains how to deploy CAIO on-premises using the dedicated licensing
      --name caio-on-prem \
      -p 8080:8080 \
      -e CAIO_LICENSE_KEY="$CAIO_LICENSE_KEY" \
-     -e CAIO_LICENSE_SECRET="$CAIO_LICENSE_SECRET" \
+     -e CAIO_LICENSE_PUBLIC_KEY="$CAIO_LICENSE_PUBLIC_KEY" \
      -e CAIO_LICENSE_REQUIRED="$CAIO_LICENSE_REQUIRED" \
      -e CAIO_ENV=production \
-     caio-on-prem:latest
+     -v "$CAIO_LICENSE_PUBLIC_KEY:/app/config/license_public.pem:ro" \
+     registry.smarthaus.group/caio:v0.1.0
    ```
+
+   For a ready-made compose file, see `deploy/customer/docker-compose.yml`.
 
 ---
 
@@ -74,7 +79,7 @@ For more details, see `docs/deployment/LICENSE_ACTIVATION.md`.
 | Variable | Description |
 | --- | --- |
 | `CAIO_LICENSE_KEY` | The on-premises license key |
-| `CAIO_LICENSE_SECRET` | Secret used to validate license signatures |
+| `CAIO_LICENSE_PUBLIC_KEY` | Public key used to validate license signatures |
 | `CAIO_LICENSE_REQUIRED` | Set to `true` to enforce license checks |
 
 ### Optional Environment Variables
@@ -106,7 +111,7 @@ For more details, see `docs/deployment/LICENSE_ACTIVATION.md`.
 
 ### License validation failed
 
-- Verify `CAIO_LICENSE_KEY` and `CAIO_LICENSE_SECRET` are correct.
+- Verify `CAIO_LICENSE_KEY` and `CAIO_LICENSE_PUBLIC_KEY` are correct.
 - Ensure the license has not expired.
 - Confirm `CAIO_LICENSE_ENFORCEMENT` is set appropriately.
 
