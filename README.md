@@ -2,8 +2,6 @@
 
 **Universal AI Orchestration Platform**
 
-[![MA Validate (development)](https://github.com/SmartHausGroup/CAIO/actions/workflows/ma-validate-development.yml/badge.svg)](https://github.com/SmartHausGroup/CAIO/actions/workflows/ma-validate-development.yml)
-
 ---
 
 ## Quick Start
