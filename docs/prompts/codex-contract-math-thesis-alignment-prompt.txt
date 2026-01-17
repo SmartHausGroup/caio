@@ -1,0 +1,7 @@
+Execute Contract Math Thesis Alignment Verification
+
+Read and execute the detailed plan at docs/prompts/codex-contract-math-thesis-alignment.md.
+
+Plan Reference: plan:contract-math-thesis-alignment:contract-verification
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.

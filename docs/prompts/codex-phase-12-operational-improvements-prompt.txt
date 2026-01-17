@@ -1,0 +1,7 @@
+Execute Phase 12: Operational Improvements
+
+Read and execute the detailed plan at docs/prompts/codex-phase-12-operational-improvements.md.
+
+Plan Reference: plan:phase-12-operational-improvements:12.1-12.4
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.

@@ -1,0 +1,7 @@
+Execute Phase 18: License Management System
+
+Read and execute the detailed plan at docs/prompts/codex-phase-18-license-management.md.
+
+Plan Reference: plan:EXECUTION_PLAN:18
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.

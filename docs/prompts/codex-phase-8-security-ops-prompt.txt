@@ -1,0 +1,8 @@
+Execute Phase 8 - Security & Traceability Operations
+
+Read and execute the detailed plan at docs/prompts/codex-phase-8-security-ops.md.
+
+Plan Reference: plan:EXECUTION_PLAN:8.1-8.4
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.
+

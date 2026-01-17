@@ -1,0 +1,18 @@
+Execute Update Package Name for PyPI
+
+Repository: CAIO (SmartHausGroup/CAIO)
+Location: /Users/smarthaus/Projects/GitHub/CAIO
+
+Read and execute the detailed plan at:
+docs/prompts/codex-update-package-name.md
+
+Plan Reference: plan:update-package-name:19.8
+
+Key File to Modify:
+- pyproject.toml (change name from "caio" to "smarthaus-caio")
+
+Files to Verify/Update:
+- README.md (update installation instructions if needed)
+- docs/operations/UPDATE_MECHANISM_ARCHITECTURE.md (update package name references if needed)
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.

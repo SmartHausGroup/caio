@@ -1,0 +1,7 @@
+Execute Phase 19.6: Testing & Validation
+
+Read and execute the detailed plan at docs/prompts/codex-phase-19.6-testing-validation.md.
+
+Plan Reference: plan:EXECUTION_PLAN:19.6
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.

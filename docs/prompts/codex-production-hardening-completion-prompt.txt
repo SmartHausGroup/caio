@@ -1,0 +1,7 @@
+Execute Production Hardening Completion
+
+Read and execute the detailed plan at docs/prompts/codex-production-hardening-completion.md.
+
+Plan Reference: plan:production-hardening-completion
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.

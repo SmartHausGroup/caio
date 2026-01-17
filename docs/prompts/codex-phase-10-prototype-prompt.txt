@@ -1,0 +1,13 @@
+Execute Phase 10: Prototype (CAIO Repository)
+
+⚠️ IMPORTANT: You previously executed Phase 10 in the WRONG repository (VerbumFieldEngine). You MUST clean up that work first, then proceed with CAIO.
+
+Read and execute the detailed plan at docs/prompts/codex-phase-10-prototype.md.
+
+The plan includes cleanup instructions for VerbumFieldEngine work. Complete cleanup first, then implement CAIO Phase 10.
+
+Plan Reference: plan:EXECUTION_PLAN:10
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.
+
+CRITICAL: You are working in the CAIO repository (/Users/smarthaus/Projects/GitHub/CAIO), NOT VerbumFieldEngine.

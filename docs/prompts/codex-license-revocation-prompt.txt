@@ -1,0 +1,7 @@
+Execute License Revocation Logic
+
+Read and execute the detailed plan at docs/prompts/codex-license-revocation.md.
+
+Plan Reference: plan:license-revocation
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.

@@ -1,0 +1,8 @@
+Execute Docker Validation for CAIO Production Readiness
+
+Read and execute the detailed plan at docs/prompts/codex-docker-validation.md.
+
+Plan Reference: plan:EXECUTION_PLAN:production-readiness
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.
+

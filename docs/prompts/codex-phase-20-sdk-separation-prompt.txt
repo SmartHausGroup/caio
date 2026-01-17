@@ -1,0 +1,7 @@
+Execute Phase 20 — SDK Separation
+
+Read and execute the detailed plan at docs/prompts/codex-phase-20-sdk-separation.md.
+
+Plan Reference: plan:phase-20-sdk-separation:20.0
+
+You are approved to implement. Execute immediately and follow all instructions in the detailed prompt document.

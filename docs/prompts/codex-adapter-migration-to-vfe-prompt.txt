@@ -1,0 +1,7 @@
+Execute Adapter Migration to VFE - Tier 1 Inference Adapters
+
+Read and execute the detailed plan at docs/prompts/codex-adapter-migration-to-vfe.md.
+
+Plan Reference: plan:adapter-migration-to-vfe:unified-inference-architecture
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.

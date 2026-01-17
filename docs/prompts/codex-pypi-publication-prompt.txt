@@ -1,0 +1,27 @@
+Execute PyPI Publication
+
+Repository: CAIO (SmartHausGroup/CAIO)
+Location: /Users/smarthaus/Projects/GitHub/CAIO
+
+Read and execute the detailed plan at:
+docs/prompts/codex-pypi-publication.md
+
+Plan Reference: plan:pypi-publication:19.9
+
+Prerequisites:
+- Task 2 complete (package name updated to smarthaus-caio)
+- Package builds successfully (python -m build works)
+- PyPI account credentials available
+
+Key Steps:
+1. Set up PyPI account (if needed)
+2. Build package: python -m build
+3. Test on TestPyPI: twine upload --repository testpypi dist/*
+4. Publish to PyPI: twine upload dist/*
+5. Update documentation
+
+Files to Update:
+- README.md (add PyPI installation instructions)
+- docs/operations/UPDATE_MECHANISM_ARCHITECTURE.md (update package references)
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.

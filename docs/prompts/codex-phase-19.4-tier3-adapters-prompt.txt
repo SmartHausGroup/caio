@@ -1,0 +1,7 @@
+Execute Phase 19.4: Tier 3 Adapters (10+ Services) - Extended Ecosystem
+
+Read and execute the detailed plan at docs/prompts/codex-phase-19.4-tier3-adapters.md.
+
+Plan Reference: plan:EXECUTION_PLAN:19.4
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.

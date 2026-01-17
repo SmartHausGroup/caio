@@ -1,0 +1,12 @@
+Execute Phase 19.8.1 - GitHub Distribution Strategy
+
+Read and execute the detailed plan at docs/prompts/codex-phase-19.8.1-github-distribution.md.
+
+Plan Reference: plan:phase-19-8-1-github-distribution:19.8.1.1
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.
+
+Focus:
+1. Update README to prioritize GitHub installation.
+2. Create scripts/release/tag_version.sh for local release tagging.
+3. Verify installation locally.

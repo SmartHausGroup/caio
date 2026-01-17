@@ -1,0 +1,7 @@
+Execute Universal Gateway Fix
+
+Read and execute the detailed plan at docs/prompts/codex-universal-gateway-fix.md.
+
+Plan Reference: plan:universal-gateway-fix
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.

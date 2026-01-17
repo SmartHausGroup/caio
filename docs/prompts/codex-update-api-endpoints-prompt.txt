@@ -1,0 +1,18 @@
+Execute Update API Endpoints Implementation
+
+Repository: CAIO (SmartHausGroup/CAIO)
+Location: /Users/smarthaus/Projects/GitHub/CAIO
+
+Read and execute the detailed plan at:
+docs/prompts/codex-update-api-endpoints.md
+
+Plan Reference: plan:update-api-endpoints:19.7
+Architecture Reference: docs/operations/UPDATE_MECHANISM_ARCHITECTURE.md
+
+Key Files to Create/Modify:
+- caio/update/update_service.py (new file)
+- caio/api/routes/update.py (new file)
+- caio/api/app.py (modify to register update routes)
+- tests/api/test_update_routes.py (new file)
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.

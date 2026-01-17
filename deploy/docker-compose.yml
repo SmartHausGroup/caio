@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  caio:
+    image: registry.smarthaus.group/caio:latest
+    ports:
+      - "8000:8000"
+    environment:
+      - CAIO_LICENSE_KEY=${CAIO_LICENSE_KEY}
+      - CAIO_ENV=production
+    volumes:
+      - ./config:/app/config
+      - ./data:/app/data
+    restart: always

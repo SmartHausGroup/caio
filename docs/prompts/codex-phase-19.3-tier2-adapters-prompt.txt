@@ -1,0 +1,7 @@
+Execute Phase 19.3: Tier 2 Adapters (10 Services) - Phase 1
+
+Read and execute the detailed plan at docs/prompts/codex-phase-19.3-tier2-adapters.md.
+
+Plan Reference: plan:EXECUTION_PLAN:19.3
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.

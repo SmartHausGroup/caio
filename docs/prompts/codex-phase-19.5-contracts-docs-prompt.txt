@@ -1,0 +1,7 @@
+Execute Phase 19.5: Contract Templates & Documentation
+
+Read and execute the detailed plan at docs/prompts/codex-phase-19.5-contracts-docs.md.
+
+Plan Reference: plan:EXECUTION_PLAN:19.5
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.

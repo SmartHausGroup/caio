@@ -1,0 +1,7 @@
+Execute Phase 13: Comprehensive E2E Testing
+
+Read and execute the detailed plan at docs/prompts/codex-phase-13-comprehensive-e2e-testing.md.
+
+Plan Reference: plan:phase-13-comprehensive-e2e-testing:13.1-13.4
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.

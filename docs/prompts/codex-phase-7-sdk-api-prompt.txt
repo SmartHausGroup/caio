@@ -1,0 +1,10 @@
+Execute Phase 7 Completion - SDK & API Surface
+
+Read and execute the detailed plan at docs/prompts/codex-phase-7-sdk-api.md.
+
+Plan Reference: plan:EXECUTION_PLAN:7.1-7.4
+
+Note: This is implementation work following notebook-first development. SDK and API code should be written in notebooks first, then extracted. MA process is NOT required for API/SDK code, but you must follow the mandatory workflow (North Star alignment, Execution Plan verification, change approval). All tests must use real implementations (no mocks for core behavior).
+
+You are approved to implement. Execute immediately - do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.
+

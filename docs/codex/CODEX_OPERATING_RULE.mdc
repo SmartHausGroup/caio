@@ -1,0 +1,109 @@
+---
+alwaysApply: true
+---
+# CAIO Codex Operating Rule
+
+This document defines the mandatory operating behavior for Codex agents working on the CAIO repository.
+
+---
+
+## 1) Mandatory Pre-work Steps
+
+**MANDATORY:** Before ANY work, you MUST:
+
+1. **Identify repository:** Confirm you are operating in `/workspace/CAIO` (or the active clone).
+
+2. **Read core documents (source of truth):**
+   - `docs/NORTH_STAR.md` - Vision, goals, metrics (EVERYTHING must align)
+   - `docs/operations/execution_plan.md` - Planned work (verify work is in plan, if exists)
+   - `CODEX_ACTION_LOG` - Recent action history
+
+3. **Read unified workflow:**
+   - `.cursor/rules/workflow/agent-workflow-mandatory.mdc` - Complete workflow (MANDATORY)
+
+4. **Read Codex governance files:**
+   - `docs/codex/CODEX_PROFILE.md`
+   - `docs/codex/CODEX_PLAYBOOK.md`
+   - `docs/codex/CODEX_OPERATING_RULE.mdc` (this file)
+
+5. **Follow unified workflow:** Do not start work until workflow steps 1-2 are completed.
+
+## 2) Priority Order (strict)
+
+1. Explicit user instruction
+2. `docs/NORTH_STAR.md` - Source of truth (everything must align)
+3. `docs/operations/execution_plan.md` - Planned work (work must be in plan, if exists)
+4. `.cursor/rules/workflow/agent-workflow-mandatory.mdc` - Unified workflow (MANDATORY)
+5. `docs/codex/CODEX_PROFILE.md`
+6. `docs/codex/CODEX_PLAYBOOK.md`
+7. `docs/codex/CODEX_OPERATING_RULE.mdc` (this file)
+8. General best practices
+
+## 3) Global Behavior Rules
+
+### Context Awareness
+- Open and inspect relevant files before suggesting or making changes.
+- Never assume or hallucinate file contents. If a file is missing, say so and ask how to proceed.
+
+### Minimal Scope / Least Diff
+- Make the smallest possible change that satisfies the requirement.
+- Avoid large refactors unless explicitly instructed.
+- Preserve existing architecture, naming, and import structure.
+
+### Patch-First
+- Present changes as unified diffs first. Provide full files only when requested or when the diff would be unclear.
+
+### Verification-First
+- Always give exact verification steps using commands defined in `docs/codex/CODEX_PROFILE.md`.
+- Never invent commands or rely on unspecified tooling.
+
+### Mathematical/Algorithmic (MA) Work
+- For math, algorithm, or performance changes, follow MA rules in `docs/codex/CODEX_PROFILE.md`.
+- Use notebook-first approaches for new math/algorithm behavior.
+- **CRITICAL:** Code lives in notebooks first. Python files are extracted from notebooks. NOT the other way around.
+
+### Forbidden Actions
+- Do **not** modify CI workflows, dependency files, schemas, or infra configs unless explicitly instructed.
+- Do **not** perform multi-file refactors without direct approval.
+- Do **not** delete files/directories unless explicitly instructed.
+- Do **not** hand-edit generated artifacts (`configs/generated/`).
+
+### Security
+- Never output or invent real secrets; mask any secret-like values.
+- Do not log secrets. Use real encryption/verification paths—no insecure shortcuts.
+
+### Logging / Telemetry Integrity
+- Preserve existing logging structure and telemetry/tracing APIs.
+- Do not add raw `print` statements.
+
+### North Star / Execution Plan Alignment
+- Treat `docs/NORTH_STAR.md` as mandatory alignment document.
+- Keep North Star and Execution Plan alignment per `.cursor/rules/workflow/north-star-alignment.mdc`.
+
+### Change Approval Protocol
+- Before any write-effect actions, provide: root cause, impact, scope, planned edits (files/steps), risks, validation plan, and rollback.
+- Await approval unless explicit user instruction overrides waiting.
+- After approval, implement edits exactly as agreed, validate, and report results.
+
+### Mandatory Agent Workflow (MANDATORY)
+- **ALL work must follow unified workflow:** See `.cursor/rules/workflow/agent-workflow-mandatory.mdc` for complete workflow.
+- **Pre-work checklist (MANDATORY):**
+  1. Check North Star alignment (Step 1)
+  2. Verify execution plan association (Step 2) - Check `docs/operations/execution_plan.md` FIRST (if exists), then `/plans/`
+  3. Get approval if write operations (Step 3)
+- **Post-work checklist (MANDATORY):**
+  4. Update `CODEX_ACTION_LOG` with North Star check, plan reference, and work details (Step 5)
+  5. Update `docs/operations/execution_plan.md` if task completed (Step 7, if file exists)
+- **Forbidden:** Never skip workflow steps. Never execute work without plan reference. Never skip logging.
+
+### Documentation & Testing
+- Follow Playbook workflows for docs and initial context.
+- When writing tests, target real implementations; avoid mocks for core behavior and do not skip required tests.
+
+---
+
+## 4) Output and Reporting
+
+- Update `CODEX_ACTION_LOG` for ALL actions (execution plan related or not).
+- Keep `docs/operations/execution_plan.md` synchronized with material progress (if file exists).
+- Use clear, concise summaries and cite file paths/lines when reporting changes.

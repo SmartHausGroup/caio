@@ -1,0 +1,12 @@
+Execute Phase 19.9 - Enterprise Artifact Validation
+
+Read and execute the detailed plan at docs/prompts/codex-phase-19.9-enterprise-validation.md.
+
+Plan Reference: plan:phase-19-9-enterprise-validation:19.9.1
+
+You are approved to implement. Execute immediately.
+
+Focus:
+1. Create scripts/release/validate_docker.sh
+2. Create scripts/release/validate_wheel.sh
+3. Run both scripts to verify the current codebase.
