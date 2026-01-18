@@ -1286,16 +1286,16 @@ Endpoints (names illustrative; must match final OpenAPI):
 ### Tasks
 
 **21.1: Asymmetric Crypto and Keypair**
-- [ ] Add `cryptography`; `scripts/licensing/generate_keypair.sh`; document key custody.
+- [x] Add `cryptography`; `scripts/licensing/generate_keypair.sh`; document key custody. (Code complete in `caio-core`)
 
 **21.2: Generator and Validator**
-- [ ] `generator.py`: private key, `v2` format. `validator.py`: public key, verify.
+- [x] `generator.py`: private key, `v2` format. `validator.py`: public key, verify. (Complete in `caio-core`)
 
 **21.3: Config and Embedding**
-- [ ] Drop `CAIO_LICENSE_SECRET`; add `CAIO_LICENSE_KEY`, `CAIO_LICENSE_PUBLIC_KEY`; wire validator.
+- [x] Drop `CAIO_LICENSE_SECRET`; add `CAIO_LICENSE_KEY`, `CAIO_LICENSE_PUBLIC_KEY`; wire validator. (Complete in `caio-core`)
 
 **21.4: Generation Service and CLI**
-- [ ] `generation_service.py` and CLI use private key; emit `v2`.
+- [x] `generation_service.py` and CLI use private key; emit `v2`. (Complete in `caio-core`)
 
 **21.5: Distribution Control**
 - [x] `deploy/customer/` and `scripts/release/push_to_registry.sh`; docs.
@@ -1304,13 +1304,15 @@ Endpoints (names illustrative; must match final OpenAPI):
 - [x] LICENSE_MANAGEMENT, ON_PREMISES, LICENSE_ACTIVATION; key-rotation runbook.
 
 **Notes:**
-- Licensing implementation files (`caio/licensing/*`, config, CLI) are not present in this repo; code updates pending once the codebase is available.
+- Code implementation (Tasks 21.1-21.4) completed in `caio-core` repository (commit `69613ce`).
+- Scripts (`generate_keypair.sh`, `push_to_registry.sh`) moved to `caio-core` as internal tools.
+- `CAIO` repository handles public documentation, deployment configs, and distribution guidelines.
 
 **Plan Reference:** `plan:EXECUTION_PLAN:21`  
 **Detailed Plan:** `plans/phase-21-licensing-security-distribution/phase-21-licensing-security-distribution.md`  
 **Detailed Prompt:** `docs/prompts/codex-phase-21-licensing-security-distribution.md`
 
-**Status:** ⚠️ In Progress — docs/scripts updated; code/config pending in current workspace.
+**Status:** ✅ Complete — Code in `caio-core`, docs/config in `CAIO`.
 
 ---
 
