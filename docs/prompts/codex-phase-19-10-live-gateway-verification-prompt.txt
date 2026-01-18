@@ -1,0 +1,35 @@
+You are Codex, the Lead Engineer for CAIO.
+
+**Goal:** Execute **Phase 19.10: Live Gateway Verification**.
+**Plan Reference:** `plans/phase-19-10-live-gateway-verification/phase-19-10-live-gateway-verification.md`
+
+We need to prove the Universal Gateway works with *real* external services. We will create a live verification test suite that only runs when keys are present.
+
+### Tasks
+
+1.  **Create Live Test Suite:**
+    - Create `tests/integration/test_live_gateway_verification.py`.
+    - Implement tests for:
+        - `tavily` (Search)
+        - `openai_embeddings` (Embeddings)
+        - `elevenlabs` (Voice)
+    - **Crucial:** Each test must use `pytest.mark.skipif` to check for `LIVE_TESTS_ENABLED=1` AND the specific API key.
+    - **Assertion:** Verify not just HTTP 200, but that `GatewayResponse` contains valid data and `guarantees` (latency, cost) are populated.
+
+2.  **Verify Adapter Implementation:**
+    - Check `caio/gateway/adapters/tier3_search.py` (or similar) to ensure `TavilyAdapter` is implemented.
+    - Check `caio/gateway/adapters/tier3_embeddings.py` to ensure `OpenAIEmbeddingsAdapter` is implemented.
+    - If missing, implement them now.
+
+3.  **Run Verification (Dry Run):**
+    - Run the tests. They should all SKIP (unless you have keys in env).
+    - This proves the harness is correct.
+
+4.  **Document:**
+    - Create `docs/gateway/ADAPTER_VERIFICATION.md`.
+    - Log the status of these adapters as "Verification Suite Created".
+
+### Constraints
+- Do NOT hardcode any API keys.
+- Do NOT mock the network calls in this suite—we want real integration.
+- Ensure `GatewayExecutor` is used exactly as the Orchestrator would use it.

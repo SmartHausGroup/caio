@@ -107,7 +107,7 @@ make ma-validate-quiet || true
 | 19.8  | ⚠️ In Progress | PyPI Publication (Publish `smarthaus-caio` to PyPI) |
 | 19.8.1| ✅ Done       | Enterprise Distribution Strategy (Private Docker + Signed Wheel) |
 | 19.9  | ✅ Done       | Enterprise Artifact Validation (Re-run passed; Docker/Wheel validated) |
-| 19.10 | ❌ Not Started | Live Gateway Verification (Non-Inference Adapters Only) |
+| 19.10 | ⚠️ In Progress | Live Gateway Verification (Non-Inference Adapters Only) - Plan Created |
 | 19.11 | ✅ Done       | Testing & Validation (Unit, integration, E2E, performance, error handling) |
 | 20    | ✅ Done       | SDK Separation — complete 2026-01-16                     |
 | 20.1  | ✅ Done       | SDK Verification & Test Fixes — complete 2026-01-16        |
@@ -1199,7 +1199,9 @@ Endpoints (names illustrative; must match final OpenAPI):
 - [x] Document which adapters were verified and which require API keys (`docs/gateway/ADAPTER_VERIFICATION.md`)
 - [x] Update integration test documentation (`tests/integration/README.md`)
 
-**Plan Reference:** `plan:EXECUTION_PLAN:19.10`
+**Plan Reference:** `plan:phase-19-10-live-gateway-verification:19.10`
+**Detailed Plan:** `plans/phase-19-10-live-gateway-verification/phase-19-10-live-gateway-verification.md`
+**Detailed Prompt:** `docs/prompts/codex-phase-19-10-live-gateway-verification.md`
 
 **19.11: Testing & Validation**
 
