@@ -1,140 +1,119 @@
 # CAIO Branch Structure
 
 **Status:** Active  
-**Last Updated:** 2025-01-XX
+**Last Updated:** 2026-01-18
+
+---
+
+## Overview
+
+**CAIO Repository Purpose:** This is a **public documentation repository** containing:
+- Documentation (user guides, API references, deployment guides)
+- Plans and execution roadmaps
+- Deployment configurations (Docker Compose, customer examples)
+- **NO source code** (source code is in private `caio-core` repository)
+
+**Enterprise Distribution:** Enterprises do **NOT** download packages from this repository. They receive:
+- **Docker images** from private registry: `registry.smarthaus.group/caio:v0.1.0`
+- **Python wheels** from secure download: `https://download.smarthaus.group/caio-0.1.0-py3-none-any.whl?token=LICENSE_KEY`
 
 ---
 
 ## Branch Flow
 
 ```
-feature/* → development → staging → main
+feature/* → main
 ```
 
-### Branch Protection Rules
-
-- **development**: Requires `MA Validate (development) / validate`
-- **staging**: Requires `MA Validate (staging) / validate` (must be green)
-- **main**: Requires `MA Validate (main) / validate` (must be green)
+**Note:** CAIO repository uses a simplified workflow since it contains only documentation and deployment configs, not source code. All work goes directly to `main` branch.
 
 ---
 
 ## Branches
 
-### `development`
-- **Purpose:** Integration branch for feature work
-- **Protection:** Requires MA validation check
-- **Workflow:** `.github/workflows/ma-validate-development.yml`
-- **Scorecard:** Can be yellow (advisory failures allowed)
-
-### `staging`
-- **Purpose:** Pre-production testing and validation
-- **Protection:** Requires MA validation check (must be green)
-- **Workflow:** `.github/workflows/ma-validate-staging.yml`
-- **Scorecard:** Must be green (blocks on yellow/red)
-
 ### `main`
-- **Purpose:** Production-ready code
-- **Protection:** Requires MA validation check (must be green)
-- **Workflow:** `.github/workflows/ma-validate-main.yml`
-- **Scorecard:** Must be green (blocks on yellow/red)
+- **Purpose:** Production-ready documentation and deployment configs
+- **Protection:** Standard branch protection (no direct pushes, require PR)
+- **Workflow:** Documentation updates, plan updates, deployment config changes
+- **Direct commits:** Allowed via PRs from `feature/*` branches
 
 ---
 
 ## Branch Promotion Process
 
-1. **Feature → Development:**
-   - Create PR from `feature/*` to `development`
-   - CI runs `MA Validate (development) / validate`
-   - Merge when validation passes
+1. **Feature → Main:**
+   - Create PR from `feature/*` to `main`
+   - Review documentation changes
+   - Merge when approved
 
-2. **Development → Staging:**
-   - Create PR from `development` to `staging`
-   - CI runs `MA Validate (staging) / validate`
-   - Scorecard gate enforces green decision
-   - Merge when validation passes and scorecard is green
-
-3. **Staging → Main:**
-   - Create PR from `staging` to `main`
-   - CI runs `MA Validate (main) / validate`
-   - Scorecard gate enforces green decision
-   - Merge when validation passes and scorecard is green
+**No staging/development branches:** Since this is documentation-only, we work directly on `main` via feature branches.
 
 ---
 
 ## Required CI Checks
 
-### Development Branch
-- `MA Validate (development) / validate` - Required
-
-### Staging Branch
-- `MA Validate (staging) / validate` - Required (must pass)
-- Scorecard gate - Must be green
-
 ### Main Branch
-- `MA Validate (main) / validate` - Required (must pass)
-- Scorecard gate - Must be green
+- Standard PR checks (if configured)
+- Documentation linting (if configured)
+- No MA validation required (this is documentation-only)
 
 ---
 
 ## GitHub Branch Protection Setup
 
-### Development
-```yaml
-Required checks:
-  - MA Validate (development) / validate
-Allow force pushes: false
-Require branches to be up to date: true
-```
-
-### Staging
-```yaml
-Required checks:
-  - MA Validate (staging) / validate
-Allow force pushes: false
-Require branches to be up to date: true
-Require scorecard green: true
-```
-
 ### Main
 ```yaml
 Required checks:
-  - MA Validate (main) / validate
+  - Standard PR review (if configured)
 Allow force pushes: false
 Require branches to be up to date: true
-Require scorecard green: true
 ```
+
+**Note:** Since this is a documentation repository, CI checks are minimal. The `caio-core` repository (private, source code) uses the full MA validation workflow.
 
 ---
 
 ## Current Status
 
-- ✅ `development` branch created and pushed
-- ✅ `staging` branch created and pushed
-- ✅ `main` branch created and pushed
-- ✅ CI workflows configured for all branches
-- ⏳ Branch protection rules need to be configured in GitHub UI
+- ✅ `main` branch is the primary branch
+- ✅ `development` branch removed (2026-01-18)
+- ✅ All documentation work goes directly to `main` via feature branches
+- ⏳ Branch protection rules should be configured in GitHub UI for `main`
 
 ---
 
 ## Next Steps
 
-1. Configure branch protection rules in GitHub:
+1. Configure branch protection for `main`:
    - Go to Settings → Branches
-   - Add rules for `development`, `staging`, `main`
-   - Enable required checks as specified above
+   - Add rule for `main`
+   - Require PR for merges
+   - Disallow force pushes
 
-2. Test branch promotion:
-   - Create test PR: `feature/test` → `development`
-   - Verify CI runs and passes
-   - Promote to `staging` and verify scorecard gate
-   - Promote to `main` and verify scorecard gate
+2. Workflow:
+   - Create `feature/*` branch for documentation updates
+   - Create PR to `main`
+   - Review and merge
 
 ---
 
+## Repository Structure
+
+**CAIO Repository (This Repo):**
+- **Purpose:** Public documentation and deployment configs
+- **Content:** Docs, plans, Docker Compose files, README
+- **Workflow:** `feature/*` → `main` (simplified)
+- **Source Code:** NO (source code is in `caio-core`)
+
+**caio-core Repository (Private):**
+- **Purpose:** Internal source code
+- **Content:** Python package, tests, notebooks, build infrastructure
+- **Workflow:** `feature/*` → `development` → `staging` → `main` (full MA process)
+- **Distribution:** Built into Docker images and Python wheels for enterprise customers
+
 ## References
 
-- **CI Workflows:** `.github/workflows/ma-validate-*.yml`
-- **Scorecard Gate:** `scripts/ci/scorecard_gate.py`
-- **MA Process:** `docs/MA_PROCESS_STATUS.md`
+- **Packaging & Distribution:** `docs/deployment/PACKAGING.md`
+- **On-Premises Deployment:** `docs/deployment/ON_PREMISES_DEPLOYMENT.md`
+- **TAI Integration:** `docs/integration/TAI_INTEGRATION.md`
 
