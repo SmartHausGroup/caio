@@ -107,7 +107,7 @@ make ma-validate-quiet || true
 | 19.8  | ⚠️ In Progress | PyPI Publication (Publish `smarthaus-caio` to PyPI) |
 | 19.8.1| ✅ Done       | Enterprise Distribution Strategy (Private Docker + Signed Wheel) |
 | 19.9  | ✅ Done       | Enterprise Artifact Validation (Re-run passed; Docker/Wheel validated) |
-| 19.10 | ⚠️ In Progress | Live Gateway Verification (Non-Inference Adapters Only) - Plan Created |
+| 19.10 | ⚠️ In Progress | Live Gateway Verification (Non-Inference Adapters Only) - Plan in `caio-core/plans/` |
 | 19.11 | ✅ Done       | Testing & Validation (Unit, integration, E2E, performance, error handling) |
 | 20    | ✅ Done       | SDK Separation — complete 2026-01-16                     |
 | 20.1  | ✅ Done       | SDK Verification & Test Fixes — complete 2026-01-16        |
@@ -1199,9 +1199,9 @@ Endpoints (names illustrative; must match final OpenAPI):
 - [x] Document which adapters were verified and which require API keys (`docs/gateway/ADAPTER_VERIFICATION.md`)
 - [x] Update integration test documentation (`tests/integration/README.md`)
 
-**Plan Reference:** `plan:phase-19-10-live-gateway-verification:19.10`
-**Detailed Plan:** `plans/phase-19-10-live-gateway-verification/phase-19-10-live-gateway-verification.md`
-**Detailed Prompt:** `docs/prompts/codex-phase-19-10-live-gateway-verification.md`
+**Plan Reference:** `plan:phase-19-10-live-gateway-verification:19.10` (caio-core repo)
+**Detailed Plan:** `caio-core/plans/phase-19-10-live-gateway-verification/phase-19-10-live-gateway-verification.md`
+**Detailed Prompt:** `caio-core/docs/prompts/codex-phase-19-10-live-gateway-verification.md` (if exists)
 
 **19.11: Testing & Validation**
 
@@ -1303,14 +1303,24 @@ Endpoints (names illustrative; must match final OpenAPI):
 **21.6: Docs and Runbooks**
 - [x] LICENSE_MANAGEMENT, ON_PREMISES, LICENSE_ACTIVATION; key-rotation runbook.
 
+**21.7: GitHub Container Registry (GHCR) Setup**
+- [ ] Update build/push scripts to use `ghcr.io/smarthausgroup/caio`
+- [ ] Update Docker Compose files to reference GHCR images
+- [ ] Update documentation with GHCR authentication steps
+- [ ] Create GitHub Actions workflow for automated builds (optional)
+
 **Notes:**
 - Code implementation (Tasks 21.1-21.4) completed in `caio-core` repository (commit `69613ce`).
 - Scripts (`generate_keypair.sh`, `push_to_registry.sh`) moved to `caio-core` as internal tools.
 - `CAIO` repository handles public documentation, deployment configs, and distribution guidelines.
+- Phase 21.7 (GHCR setup) is code/infrastructure work in `caio-core`; coordination tracked in this plan.
 
 **Plan Reference:** `plan:EXECUTION_PLAN:21`  
 **Detailed Plan:** `plans/phase-21-licensing-security-distribution/phase-21-licensing-security-distribution.md`  
 **Detailed Prompt:** `docs/prompts/codex-phase-21-licensing-security-distribution.md`
+
+**Phase 21.7 Plan Reference:** `plan:phase-21-7-ghcr-setup:21.7` (caio-core repo)  
+**Phase 21.7 Detailed Plan:** `caio-core/plans/phase-21-7-ghcr-setup/phase-21-7-ghcr-setup.md`
 
 **Status:** ✅ Complete — Code in `caio-core`, docs/config in `CAIO`.
 

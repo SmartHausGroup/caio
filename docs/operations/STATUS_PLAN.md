@@ -2,7 +2,7 @@
 
 **Status:** Active  
 **Owner:** CAIO Core (@smarthaus)  
-**Last Updated:** 2026-01-17 20:20 UTC
+**Last Updated:** 2026-01-18 12:27:56 EST
 **Source of Truth:** This document tracks current project status, progress, blockers, and risks
 
 ---
@@ -72,6 +72,18 @@ This document provides at-a-glance project status, tracking:
 ---
 
 ## Recent Work
+
+**2026-01-18: Phase 19.10 & Phase 21.7 Plan Organization**
+
+**Status:** ⚠️ **IN PROGRESS**
+
+**Work Completed:**
+- Moved Phase 19.10 plan from `CAIO/plans/` to `caio-core/plans/` (all tasks are code in caio-core)
+- Created Phase 21.7 GHCR setup plan in `caio-core/plans/phase-21-7-ghcr-setup/`
+- Updated CAIO execution plan to add Phase 21.7 entry and update Phase 19.10 references
+- Aligned plan locations with repository split (code in caio-core, coordination in CAIO)
+
+**Plan References:** `plan:EXECUTION_PLAN:19.10,21.7`
 
 **2026-01-18: Phase 21 — Licensing Security & Distribution Control Complete**
 

@@ -47,8 +47,7 @@ For enterprise or standalone usage (requires license):
 
 **Option A: Docker (Recommended)**
 ```bash
-docker login registry.smarthaus.group
-docker pull registry.smarthaus.group/caio:v0.1.0
+docker pull smarthaus/caio:v0.1.0
 ```
 
 **Option B: Python Wheel (Fallback)**
