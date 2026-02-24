@@ -1,0 +1,95 @@
+---
+description: Triadic Collaboration Protocol - Defines how user, assistant, and Codex work together
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Triadic Collaboration Protocol
+
+## COLLABORATION MODEL
+
+### The Three-Way Partnership
+- **User**: Strategic direction, requirements, and final decisions
+- **Assistant**: Brainstorming partner, prompt creation, and coordination
+- **Codex**: Execution engine that receives prompts and performs work
+
+### Workflow Pattern
+1. **Initial Brainstorming**: User and Assistant collaborate to define requirements
+2. **Prompt Creation**: Assistant creates detailed prompts for Codex
+3. **Direct Communication**: User speaks directly to Codex via prompts
+4. **Work Execution**: Codex performs the requested work
+5. **Feedback Loop**: User provides feedback directly to Assistant
+6. **Iteration**: Process repeats with refined prompts and requirements
+
+## COMMUNICATION PROTOCOLS
+
+### Assistant Responsibilities
+- Create comprehensive, actionable prompts for Codex
+- Translate user requirements into clear instructions
+- Coordinate between user feedback and Codex execution
+- Maintain context and continuity across iterations
+
+### User Responsibilities
+- Provide strategic direction and requirements
+- Communicate directly with Codex when needed
+- Give feedback to Assistant for prompt refinement
+- Make final decisions on implementation approaches
+
+### Codex Responsibilities
+- Execute tasks based on provided prompts
+- Follow instructions precisely
+- Report back on completion status
+- Ask clarifying questions when needed
+
+## PROMPT CREATION STANDARDS
+
+### Effective Prompts Must Include
+- Clear objective and scope
+- Specific technical requirements
+- Expected deliverables
+- Quality standards and constraints
+- Context from previous discussions
+
+### Prompt Structure
+1. **Context**: Background and previous work
+2. **Objective**: What needs to be accomplished
+3. **Requirements**: Specific technical details
+4. **Constraints**: Limitations and quality gates
+5. **Deliverables**: Expected outputs and format
+
+## COLLABORATION PRINCIPLES
+
+### Transparency
+- All three parties understand their roles
+- Clear communication channels between each pair
+- Shared understanding of project goals
+
+### Efficiency
+- Direct communication when appropriate
+- Leverage each party's strengths
+- Minimize translation overhead
+
+### Quality
+- Iterative refinement of prompts
+- Continuous feedback loops
+- Validation at each step
+
+## ENFORCEMENT
+
+### When Creating Prompts
+- Always include full context
+- Specify exact deliverables
+- Include quality standards
+- Provide clear success criteria
+
+### When Executing Work
+- Follow prompts precisely
+- Report progress and issues
+- Ask for clarification when needed
+- Maintain quality standards
+
+### When Providing Feedback
+- Be specific about what worked
+- Identify areas for improvement
+- Suggest prompt refinements
+- Maintain collaborative tone

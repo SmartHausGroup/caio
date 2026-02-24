@@ -1,0 +1,133 @@
+---
+description: Testing Requirements - Test Real Implementations (Template)
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Testing Requirements: Test Real Implementations
+
+**Status:** MANDATORY
+**Owner:** All AI Assistants (Composer, Codex, GPT-5)
+
+**NOTE:** This is a **TEMPLATE** document. Replace placeholders with project-specific values when adapting this guide.
+
+---
+
+## Core Principle: Test the Real Thing, Not Workarounds
+
+**MANDATORY:** When testing services and agents, always test the real implementation. Never use mocks or simplified versions that mask missing requirements.
+
+---
+
+## Rule 1: Test Real Service Implementations
+
+**FORBIDDEN:**
+
+- Using mock services when testing integration behavior
+- Skipping validation in MA tests
+- Testing simplified versions when the real service is needed
+
+**REQUIRED:**
+
+- Test real component implementations
+- Test actual service operations with real calls
+- Test with real dependencies where possible
+- Test the actual code path that will run in production
+
+**Example - WRONG:**
+
+```python
+def test_service():
+    # Using mock instead of real service
+    mock_service = Mock()
+    mock_service.operation.return_value = "result"  # WRONG: Mocking core behavior
+```
+
+**Example - CORRECT:**
+
+```python
+def test_service():
+    # Test with real service
+    from services.core import Service
+    service = Service()
+    result = service.operation(input_data)
+    assert result is not None
+    assert service.validate(result) == True
+```
+
+---
+
+## Rule 2: Test What You're Testing
+
+**REQUIRED:**
+
+- If testing service operations, test with real implementations
+- If testing calculations, test with real math
+- If testing integrations, test with real connections (where possible)
+- Test the actual code path that will run in production
+
+---
+
+## Rule 3: Fail Fast, Don't Skip
+
+**FORBIDDEN:**
+
+- `pytest.skip()` when a required component is missing
+- Conditional logic that silently skips tests
+- Tests that pass when requirements aren't met
+
+**REQUIRED:**
+
+- If a test requires a service, it should **FAIL** if service unavailable
+- Make requirements explicit
+- Use pytest markers for optional dependencies
+
+---
+
+## Rule 4: Proper Test Organization
+
+**REQUIRED:**
+
+- **tests/unit/** - Unit tests for core components
+- **tests/integration/** - Integration tests for services
+- **tests/e2e/** - End-to-end tests
+
+---
+
+## Rule 5: Test Categories
+
+| Category | Location | Purpose |
+|----------|----------|---------|
+| Unit | tests/unit/ | Individual component tests |
+| Integration | tests/integration/ | Service integration tests |
+| E2E | tests/e2e/ | End-to-end tests |
+
+---
+
+## Test Commands
+
+```bash
+# Run all tests
+make test
+
+# Run specific test categories
+pytest tests/unit/ -v
+pytest tests/integration/ -v
+pytest tests/e2e/ -v
+
+# Run with coverage
+make test-coverage
+```
+
+---
+
+## Enforcement
+
+**MANDATORY:** These rules apply to ALL tests written or modified.
+
+**Code Review Checklist:**
+
+- [ ] Does the test use real implementations (not mocks for core behavior)?
+- [ ] Does the test use the actual code path being tested?
+- [ ] Does the test fail when requirements aren't met?
+- [ ] Is the test in the correct location?

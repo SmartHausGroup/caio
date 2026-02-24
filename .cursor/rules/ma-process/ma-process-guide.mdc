@@ -1,0 +1,747 @@
+---
+description: Mathematical Autopsy (MA) Process - Complete Guide for AI Agents
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Mathematical Autopsy (MA) Process - Complete Guide
+
+**Status:** ✅ **MANDATORY**  
+**Date:** 2025-11-26  
+**Owner:** All AI Assistants (Composer, Codex, GPT-5)
+
+**NOTE:** This is a **TEMPLATE** document. Replace placeholders like `<PROJECT>`, `<project>`, `INV-XXXX` with your project-specific values when adapting this guide.
+
+---
+
+## Overview
+
+The Mathematical Autopsy (MA) process is **MANDATORY** for any code involving mathematical operations, algorithms, or performance guarantees. This guide provides detailed instructions on file types, locations, and structure for each phase.
+
+**CRITICAL:** The MA process requires **SEPARATE FILES** for each phase. Do NOT combine everything into one document.
+
+---
+
+## When MA Process is Required
+
+**MANDATORY for:**
+
+- New mathematical operations or algorithms
+- New performance guarantees
+- Changes to existing math that affect correctness
+- Work in `feature/*` branches or `development` branch with new math
+
+**NOT required for:**
+
+- Trivial bug fixes that don't change math behavior
+- Documentation-only changes
+- Configuration changes that don't affect math
+- Performance optimizations that don't change algorithms
+
+---
+
+## Phase 1: Intent & Description
+
+### Purpose
+
+Document the problem statement, context, and success criteria in plain English.
+
+### File Location & Type
+
+- **Location**: `docs/math/<feature_name>_INTENT.md` OR include in Phase 2 document
+- **Type**: Markdown (`.md`)
+
+### Required Content
+
+```markdown
+# <Feature Name> - Intent & Description
+
+## Problem Statement
+What problem are we solving? Why does it matter?
+
+## Context
+- Current state
+- What needs to change
+- Stakeholders affected
+
+## Success Criteria
+- What must be true for this to be considered successful?
+- Measurable outcomes
+- Acceptance criteria
+```
+
+### Example
+
+See `framework/docs/math/operators-calculus-intent.md` as an example, or include the intent section in your Phase 2 document.
+
+---
+
+## Phase 2: Mathematical Foundation
+
+### Purpose
+
+Formalize the mathematics: definitions, notation, equations, operators.
+
+### File Location & Type
+
+- **Location**: `docs/math/<feature_name>_MATHEMATICS.md`
+- **Type**: Markdown (`.md`)
+- **Naming**: Use `_MATHEMATICS.md` suffix (NOT `_MA.md`)
+
+### Required Content
+
+```markdown
+# <Feature Name> Mathematics
+
+## Notation
+- Define all symbols, variables, operators
+- Use consistent mathematical notation
+
+## Definitions
+- Formal definitions of key concepts
+- Domain and range specifications
+
+## Equations
+- Master equations (if applicable)
+- Sub-equations
+- Constraints and bounds
+
+## Assumptions
+- What assumptions are we making?
+- When do these assumptions hold?
+
+## Performance Variables (if applicable)
+- Latency, throughput, utilization metrics
+- How they're measured
+```
+
+### Example Structure
+
+```markdown
+# Metal GGUF Loader Mathematics
+
+## Notation
+- `t` - tensor
+- `offset(t)` - byte offset of tensor t in GGUF file
+- `size(t)` - size in bytes of tensor t
+- `file_size` - total size of GGUF file in bytes
+- `P` - prompt
+- `ε` - equivalence tolerance
+- `L` - latency (seconds)
+- `T` - throughput (tokens/second)
+
+## Tensor Layout Bounds
+For each tensor `t`:
+- `offset(t) + size(t) ≤ file_size`
+- No overflow: `offset(t) + size(t)` must not wrap 64-bit
+
+## Architecture Consistency
+Tensor shapes must match declared model architecture:
+- `vocab_size` matches vocabulary
+- `hidden_size` matches hidden dimension
+- `num_layers` matches layer count
+- `num_heads` matches attention heads
+
+## Output Equivalence Metric
+Given prompt `P`, outputs from Metal and reference backend:
+- Prefix match on first `N` tokens, OR
+- Normalized edit distance ≤ ε
+
+## Performance Variables
+- Latency `L`: time to generate first token (or full response)
+- Throughput `T`: tokens per second during generation
+- GPU metrics: bandwidth utilization, GPU utilization, kernel efficiency
+```
+
+### Common Mistakes
+
+- ❌ Combining with Phase 1, 3, 4, 5 in one document
+- ❌ Using `_MA.md` suffix (should be `_MATHEMATICS.md`)
+- ❌ Including invariants or lemmas (those go in Phase 3)
+- ❌ Including notebook code (that goes in Phase 4)
+
+---
+
+## Phase 3: Lemma Development
+
+### Purpose
+
+Create formal guarantees (invariants) and proofs (lemmas) that link to the mathematics.
+
+### Files to Create
+
+#### 3a. YAML Invariant Files
+
+**Location**: `invariants/INV-XXXX.yaml`  
+**Type**: YAML (`.yaml`)  
+**Naming**: Use next available INV number (check `invariants/INDEX.yaml`)
+
+**Template** (see `invariants/INV_TEMPLATE.yaml`):
+```yaml
+id: INV-XXXX
+name: <Descriptive name>
+owner: <project>-math | <project>-platform | <project>-gpu (replace `<project>` with project name)
+status: proposed  # Will change to "accepted" in Phase 5
+description: >
+  Clear description of what this invariant guarantees.
+equations:
+  - "<equation 1>"
+  - "<equation 2>"
+thresholds:
+  <threshold_name>: <value>
+acceptance_checks:
+  - <artifact>.json.<path> == <value>
+  - <artifact>.json.<path> >= <threshold>
+producer: notebooks/math/<notebook_name>.ipynb
+artifacts:
+  - configs/generated/<artifact_name>.json
+rollback_criteria: >
+  When should we rollback? What indicates failure?
+```
+
+**Example** (from `invariants/INV-1001.yaml`):
+```yaml
+id: INV-1001
+name: Selection monotonicity
+owner: <project>-math (replace `<project>` with project name)
+status: proposed
+description: >
+  Ensure selection score increases with competence and responds correctly to λ, ρ, γ, η weights.
+equations:
+  - "∂J/∂comp >= 0"
+  - "∂J/∂λ <= 0"
+  - "∂J/∂γ >= 0"
+  - "∂J/∂η <= 0"
+thresholds:
+  max_monotonicity_violations: 0
+acceptance_checks:
+  - selection_monotonicity.json.monotone_competence_pass == true
+  - selection_monotonicity.json.lambda_cost_penalty_pass == true
+  - selection_monotonicity.json.alignment_kernel_pass == true
+  - selection_monotonicity.json.overflow_penalty_pass == true
+producer: notebooks/math/selection_monotonicity.ipynb
+artifacts:
+  - configs/generated/selection_monotonicity.json
+rollback_criteria: >
+  Investigate selection weight configuration or capability matrices when monotonicity or alignment tests fail.
+```
+
+**Key Points:**
+- One invariant file per guarantee (if you have Inv1, Inv2, Inv3, Inv4, create 4 separate files)
+- `status` starts as `proposed`, changes to `accepted` in Phase 5
+- `producer` points to the notebook that will verify it (Phase 4)
+- `artifacts` lists JSON files the notebook will generate
+
+#### 3b. Markdown Lemma Entry
+
+**Location**: `docs/math/<PROJECT>_LEMMAS_APPENDIX.md` (replace `<PROJECT>` with project name, e.g., `VFE_LEMMAS_APPENDIX.md`, `TAI_LEMMAS_APPENDIX.md`)  
+**Type**: Markdown (`.md`)  
+**Action**: ADD a new lemma section (do NOT create a new file)
+
+**Structure for Each Lemma**:
+```markdown
+## Lemma L<N> — <Lemma Name> {#lemma-l<n>}
+
+**Invariant:** [`invariants/INV-XXXX.yaml`](../../invariants/INV-XXXX.yaml)
+
+**Status**: Draft  # Will change to "Rev X.Y" in Phase 5
+
+**Backed by**: <Reference to spec or math doc>
+
+**Assumptions**
+- Assumption 1
+- Assumption 2
+
+**Constants & Provenance**
+- `constant_name = value` from `invariants/INV-XXXX.yaml`
+- Empirical measurements from `configs/generated/<artifact>.json`
+
+**Who Relies on It**
+- **Stakeholder 1**: Why they need it
+- **Stakeholder 2**: Why they need it
+
+**Supporting Notebook**
+
+`notebooks/math/<notebook_name>.ipynb` contains the verification code and empirical measurements.
+
+**Claim**
+
+Formal mathematical statement of what the lemma guarantees.
+
+**Derivation**
+
+Step-by-step proof or rationale.
+
+**Verification**
+
+Notebook cell `VERIFY:L<N>` in `notebooks/math/<notebook_name>.ipynb`:
+- What it checks
+- What assertions it makes
+- What JSON it exports
+
+**Failure Modes**
+
+What can go wrong and how it's handled.
+
+**Concrete Example (Seed <N>)**
+
+Example with specific values showing the lemma holds.
+
+**Why This Matters**
+
+Why this guarantee is important for the system.
+```
+
+**Where to Add:**
+1. Add to "Lemmas Quick Index" at the top of the file
+2. Add full lemma section at the end of the file (before any appendix)
+
+**Example** (from `docs/math/<PROJECT>_LEMMAS_APPENDIX.md`):
+```markdown
+## Lemmas Quick Index
+
+- [Lemma L15 — Web App API Integration Reliability](#lemma-l15)
+- [Lemma L16 — Web App Form Validation Compliance](#lemma-l16)
+...
+- [Lemma L36 — Metal GGUF Bounds Guarantee](#lemma-l36)  # ADD HERE
+
+---
+
+## Lemma L36 — Metal GGUF Bounds Guarantee {#lemma-l36}
+
+**Invariant:** [`invariants/INV-XXXX.yaml`](../../invariants/INV-XXXX.yaml)
+
+**Status**: Draft
+
+**Backed by**: Metal GGUF Loader Mathematics §Tensor Layout Bounds
+
+**Assumptions**
+- GGUF file is valid and not corrupted
+- File size is known and accurate
+- Tensor table is correctly parsed
+
+**Constants & Provenance**
+- `max_bounds_violations = 0` from `invariants/INV-XXXX.yaml`
+- Empirical bounds checks from `configs/generated/metal_gguf_validation.json`
+
+**Who Relies on It**
+- **Metal Backend**: Needs guarantee that all tensors are loadable
+- **Model Manager**: Requires bounds validation before loading
+- **Users**: Expect models to load without crashes
+
+**Supporting Notebook**
+
+`notebooks/math/metal_gguf_validation.ipynb` contains the bounds checking code and validation results.
+
+**Claim**
+
+If all tensors satisfy `offset(t) + size(t) ≤ file_size` and shapes match the architecture, then all weights are loadable without overflow or truncation.
+
+**Derivation**
+
+1. For each tensor `t`, check `offset(t) + size(t) ≤ file_size`
+2. If any tensor violates this, loading would cause buffer overflow or truncation
+3. Therefore, all tensors must pass bounds check for safe loading
+
+**Verification**
+
+Notebook cell `VERIFY:L36` in `notebooks/math/metal_gguf_validation.ipynb`:
+- Parses GGUF tensor table
+- Checks `offset(t) + size(t) ≤ file_size` for all tensors
+- Asserts `bounds_violations == 0`
+- Exports `configs/generated/metal_gguf_validation.json` with `bounds_pass: true`
+
+**Failure Modes**
+
+- Corrupted GGUF file → Bounds check fails, loading is rejected
+- Invalid tensor table → Parser fails, loading is rejected
+- File size mismatch → Bounds check fails, loading is rejected
+
+**Concrete Example (Seed 42)**
+
+- GGUF file: `tiny-metal.gguf` (125M parameters)
+- File size: 125,829,120 bytes
+- Tensor count: 143
+- All tensors pass: `offset + size ≤ file_size`
+- **Verification**: `bounds_pass: true`
+
+**Why This Matters**
+
+This lemma guarantees that the Metal backend will never attempt to load tensors that exceed file boundaries, preventing crashes, memory corruption, and data loss.
+
+---
+```
+
+#### 3c. Index Registration
+
+**Location**: `invariants/INDEX.yaml`  
+**Type**: YAML (`.yaml`)  
+**Action**: ADD entry for each new invariant
+
+**Format**:
+```yaml
+invariants:
+  - id: INV-XXXX
+    name: <Invariant name>
+    owner: <project>-math | <project>-platform | <project>-gpu (replace `<project>` with project name)
+    file: invariants/INV-XXXX.yaml
+```
+
+**Example**:
+```yaml
+invariants:
+  - id: INV-1001
+    name: Selection monotonicity
+    owner: <project>-math (replace `<project>` with project name)
+    file: invariants/INV-1001.yaml
+  - id: INV-XXXX  # ADD NEW ENTRY HERE
+    name: Metal GGUF Bounds
+    owner: <project>-gpu (replace `<project>` with project name)
+    file: invariants/INV-XXXX.yaml
+```
+
+**Key Points:**
+- Add entries in numerical order (or at end if unsure)
+- Use same `id`, `name`, `owner` as in the YAML file
+- `file` path is relative to repo root
+
+---
+
+## Phase 4: Verification
+
+### Purpose
+Create executable verification notebook that implements and validates the mathematics.
+
+### File Location & Type
+- **Location**: `notebooks/math/<feature_name>_validation.ipynb` OR `notebooks/math/<feature_name>_verification.ipynb`
+- **Type**: Jupyter Notebook (`.ipynb`) - **NOT markdown!**
+- **Naming**: Use `_validation.ipynb` or `_verification.ipynb` suffix
+
+### Required Content
+
+**Structure**:
+```python
+# Cell 1: Imports
+import json
+import pathlib
+import numpy as np
+# ... other imports
+
+# Cell 2: Setup
+# Define paths, constants, test data
+
+# Cell 3: Implementation Code
+# Write the actual implementation code here
+# DO NOT import from codebase (notebook-first development)
+# This code will later be extracted to the codebase
+
+# Cell 4: VERIFY:L<N> - Invariant 1
+# Assertions for first invariant
+assert <condition>, "Invariant 1 failed"
+results["inv1_pass"] = True
+
+# Cell 5: VERIFY:L<M> - Invariant 2
+# Assertions for second invariant
+assert <condition>, "Invariant 2 failed"
+results["inv2_pass"] = True
+
+# Cell 6: Export Artifact
+artifact_path = pathlib.Path("configs/generated/<artifact_name>.json")
+artifact_path.write_text(json.dumps(results, indent=2))
+print(f"Artifact exported: {artifact_path}")
+```
+
+**Key Requirements:**
+1. **VERIFY:L<N> cells**: Each invariant needs a verification cell named `VERIFY:L<N>` where N matches the lemma number
+2. **Assertions**: Use Python `assert` statements to verify invariants
+3. **Artifact Export**: Export JSON to `configs/generated/<artifact_name>.json`
+4. **No Codebase Imports**: Implementation code should be self-contained (notebook-first)
+5. **Seeded Randomness**: Use fixed seeds for reproducibility
+
+**Example Structure**:
+```python
+# Cell 1: Imports
+import json
+import pathlib
+import struct
+from typing import List, Tuple
+
+# Cell 2: Setup
+GGUF_PATH = "models/tiny-metal.gguf"
+SEED = 42
+np.random.seed(SEED)
+
+# Cell 3: GGUF Parser Implementation
+def parse_gguf_tensors(gguf_path: str) -> List[Tuple[str, int, int]]:
+    """Parse GGUF file and return list of (name, offset, size) tuples."""
+    # Implementation here (notebook-first, no imports from codebase)
+    pass
+
+# Cell 4: VERIFY:L36 - Bounds Check (Inv1)
+tensors = parse_gguf_tensors(GGUF_PATH)
+file_size = pathlib.Path(GGUF_PATH).stat().st_size
+bounds_violations = 0
+
+for name, offset, size in tensors:
+    if offset + size > file_size:
+        bounds_violations += 1
+        print(f"VIOLATION: {name} exceeds file bounds")
+
+assert bounds_violations == 0, f"Found {bounds_violations} bounds violations"
+print("VERIFY:L36: Bounds check PASSED")
+
+results = {
+    "bounds_pass": True,
+    "bounds_violations": bounds_violations,
+    "tensor_count": len(tensors),
+    "file_size": file_size
+}
+
+# Cell 5: VERIFY:L37 - Load Gating (Inv2)
+# ... implementation and assertions ...
+
+# Cell 6: Export Artifact
+artifact_path = pathlib.Path("configs/generated/metal_gguf_validation.json")
+artifact_path.write_text(json.dumps(results, indent=2))
+print(f"Artifact exported: {artifact_path}")
+```
+
+**Common Mistakes:**
+- ❌ Creating markdown file (`.md`) instead of notebook (`.ipynb`)
+- ❌ Importing from codebase (`from verbum_field_engine.`, `from services.`)
+- ❌ Missing `VERIFY:L<N>` cells
+- ❌ Not exporting artifact JSON
+- ❌ Using unseeded randomness
+
+---
+
+## Phase 5: CI Enforcement
+
+### Purpose
+Register artifacts, update documentation, and promote invariant/lemma status.
+
+### Files to Update
+
+#### 5a. Artifact Registration
+
+**Location**: `docs/math/README.md`  
+**Type**: Markdown (`.md`)  
+**Action**: ADD entry in "Artifacts" section
+
+**Format**:
+```markdown
+### <Feature Name>
+
+- **Notebook**: `notebooks/math/<notebook_name>.ipynb`
+- **Invariant**: `invariants/INV-XXXX.yaml`
+- **Lemma**: L<N> (see `<PROJECT>_LEMMAS_APPENDIX.md`)
+- **Artifact**: `configs/generated/<artifact_name>.json`
+- **Purpose**: <Brief description of what it verifies>
+```
+
+**Example**:
+```markdown
+### Metal GGUF Loader & Inference
+
+- **Notebook**: `notebooks/math/metal_gguf_validation.ipynb`
+- **Invariant**: `invariants/INV-XXXX.yaml`
+- **Lemma**: L36 (see `<PROJECT>_LEMMAS_APPENDIX.md`)
+- **Artifact**: `configs/generated/metal_gguf_validation.json`
+- **Purpose**: Verifies tensor bounds, load gating, output equivalence, and performance for Metal GGUF loader
+```
+
+#### 5b. Notebook Plan Registration
+
+**Location**: `configs/generated/notebook_plan.json`  
+**Type**: JSON (`.json`)  
+**Action**: ADD entry to `notebooks` array
+
+**Format**:
+```json
+{
+  "notebooks": [
+    {
+      "path": "notebooks/math/<notebook_name>.ipynb",
+      "seed": <number>,
+      "outputs": [
+        "configs/generated/<artifact_name>.json"
+      ]
+    }
+  ]
+}
+```
+
+**Example**:
+```json
+{
+  "notebooks": [
+    {
+      "path": "notebooks/math/metal_gguf_validation.ipynb",
+      "seed": 42,
+      "outputs": [
+        "configs/generated/metal_gguf_validation.json"
+      ]
+    }
+  ]
+}
+```
+
+**Note**: The notebook plan is auto-generated by `scripts/ci/generate_notebook_plan.py`, but you should verify your notebook is included after running `make notebooks-plan`.
+
+#### 5c. Status Updates
+
+**Invariant Status**:
+- **Location**: `invariants/INV-XXXX.yaml`
+- **Change**: `status: proposed` → `status: accepted`
+
+**Lemma Status**:
+- **Location**: `docs/math/<PROJECT>_LEMMAS_APPENDIX.md` (replace `<PROJECT>` with project name, e.g., `VFE_LEMMAS_APPENDIX.md`, `TAI_LEMMAS_APPENDIX.md`)
+- **Change**: `**Status**: Draft` → `**Status**: Rev 1.0` (or appropriate version)
+
+#### 5d. Local Validation
+
+**Commands**:
+```bash
+# Option 1: Full validation (recommended)
+make ma-validate-quiet
+
+# Option 2: Manual validation script
+./scripts/local/validate.sh <branch>
+
+# Option 3: Pre-push hook (automatic)
+git push  # Pre-push hook runs validation automatically
+```
+
+**What it checks:**
+- Notebooks execute successfully (via `make notebooks-plan`)
+- Artifacts are generated (no NaN/Inf)
+- Invariants are valid YAML
+- All references are correct
+- Scorecard aggregation passes
+- Branch-specific gates (staging/main require GREEN scorecard)
+
+**Local CI Enforcement is Wired:**
+- Pre-push hooks automatically call `scripts/local/validate.sh`
+- `make ma-validate-quiet` runs notebook plan and scorecard
+- `scripts/local/validate.sh` replicates CI workflow locally
+- Validation blocks push if it fails (unless `SKIP_LOCAL_VALIDATION=1`)
+
+---
+
+## After Phases 1-5: Code Implementation
+
+**ONLY AFTER** all 5 phases are complete, implement code that:
+1. Implements the math from Phase 2
+2. Validates against Phase 4 notebook
+3. Matches Phase 3 invariant telemetry
+4. Passes code review alignment with invariant/lemma
+
+---
+
+## Common Mistakes & How to Avoid Them
+
+### ❌ Mistake 1: Combining All Phases in One Document
+**Wrong**: Creating `METAL_GGUF_MA.md` with everything mixed together  
+**Right**: Separate files:
+- `docs/math/METAL_GGUF_MATHEMATICS.md` (Phase 2)
+- `invariants/INV-XXXX.yaml` (Phase 3a)
+- `docs/math/<PROJECT>_LEMMAS_APPENDIX.md` (Phase 3b - add entry)
+- `notebooks/math/metal_gguf_validation.ipynb` (Phase 4)
+
+### ❌ Mistake 2: Creating Markdown Instead of Notebook
+**Wrong**: `notebooks/metal_gguf_validation.md`  
+**Right**: `notebooks/math/metal_gguf_validation.ipynb`
+
+### ❌ Mistake 3: Not Creating Separate Invariant Files
+**Wrong**: Listing Inv1, Inv2, Inv3, Inv4 in one document  
+**Right**: Create `INV-XXXX.yaml`, `INV-YYYY.yaml`, `INV-ZZZZ.yaml`, `INV-WWWW.yaml` (4 separate files)
+
+### ❌ Mistake 4: Not Adding to Indexes
+**Wrong**: Creating invariant but not registering it  
+**Right**: Add to `invariants/INDEX.yaml` AND add lemma to `<PROJECT>_LEMMAS_APPENDIX.md` quick index
+
+### ❌ Mistake 5: Wrong File Naming
+**Wrong**: `METAL_GGUF_MA.md`, `metal_gguf_validation.md`  
+**Right**: `METAL_GGUF_MATHEMATICS.md`, `metal_gguf_validation.ipynb`
+
+---
+
+## Quick Reference Checklist
+
+Before starting, verify:
+- [ ] Is MA process required? (math/algorithm/performance guarantee?)
+- [ ] Have I checked existing invariants/lemmas to avoid duplicates?
+
+**Phase 1:**
+- [ ] Intent document created OR included in Phase 2 doc
+
+**Phase 2:**
+- [ ] `docs/math/<feature>_MATHEMATICS.md` created
+- [ ] Notation, definitions, equations documented
+- [ ] Assumptions clearly stated
+
+**Phase 3:**
+- [ ] YAML invariant file(s) created: `invariants/INV-XXXX.yaml`
+- [ ] Lemma entry added to `docs/math/<PROJECT>_LEMMAS_APPENDIX.md`
+- [ ] Invariant(s) added to `invariants/INDEX.yaml`
+
+**Phase 4:**
+- [ ] Notebook created: `notebooks/math/<feature>_validation.ipynb` (`.ipynb`, not `.md`)
+- [ ] `VERIFY:L<N>` cells with assertions
+- [ ] Artifact JSON exported to `configs/generated/<artifact>.json`
+- [ ] Notebook runs successfully locally
+
+**Phase 5:**
+- [ ] Artifact registered in `docs/math/README.md`
+- [ ] Notebook added to `configs/generated/notebook_plan.json` (via `make notebooks-plan`)
+- [ ] `make ma-validate-quiet` passes
+- [ ] Invariant status: `proposed` → `accepted`
+- [ ] Lemma status: `Draft` → `Rev X.Y`
+
+**After Phases 1-5:**
+- [ ] Code implementation matches Phase 2 math
+- [ ] Tests validate against Phase 4 notebook
+- [ ] Telemetry matches Phase 3 invariant
+
+---
+
+## Reference Files
+
+- **MA Process Rule**: `.cursor/rules/ma-process/ma-process-mandatory.mdc`
+- **Invariant Template**: `invariants/INV_TEMPLATE.yaml`
+- **Example Invariant**: `invariants/INV-1001.yaml`
+- **Example Lemma**: `docs/math/<PROJECT>_LEMMAS_APPENDIX.md` (Lemma L15)
+- **Example Notebook**: `notebooks/math/selection_monotonicity.ipynb`
+- **Notebook Plan**: `configs/generated/notebook_plan.json`
+- **Math README**: `docs/math/README.md`
+- **Local Validation**: `scripts/local/validate.sh`
+
+---
+
+**This guide is MANDATORY for all AI assistants working on SMARTHAUS projects.**
+
+---
+
+## Agent Integration
+
+**For AI agents working with developers in IDEs (Cursor, VS Code, etc.):**
+
+See `docs/codex/AGENT_MA_WORKFLOW.md` for the complete agent-driven workflow that:
+- Guides developers through MA process
+- Uses discovery tools to find similar work
+- Follows notebook-first development
+- Ensures all phases complete before code implementation
+
+**Key Agent Workflow:**
+1. Developer describes feature
+2. Agent searches for similar work (`make invariant-search`, `make pattern-list`)
+3. Agent guides through MA Phases 1-5
+4. Agent writes code in notebook first (notebook-first)
+5. Agent extracts code after validation
+6. Agent validates with `make ma-validate-quiet`
+
+**Discovery Tools Available:**
+- `make invariant-search QUERY="..."` - Find similar invariants/lemmas/notebooks
+- `make pattern-list` - List verification patterns
+- `make invariant-graph` - Generate relationship graph
+- `make learn-patterns` - Learn from successful invariants

@@ -1,0 +1,157 @@
+---
+description: Deferred Task Tracking Rule - Deferred tasks must be marked with [D] and cross-referenced
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Deferred Task Tracking Rule
+
+**Status:** MANDATORY
+**Owner:** All AI Assistants (Composer, Codex, GPT-5, External Agents)
+
+---
+
+## Rule: Deferred Tasks Must Be Marked with [D] and Cross-Referenced
+
+**MANDATORY:** When a task is deferred (not completed in the current phase but intentionally moved to a future phase), you MUST:
+
+1. Mark the task with `[D]` instead of `[x]` or `[ ]`
+2. Include the target phase ID where the work will be done
+3. Add a corresponding entry in the target phase that references the deferred item
+
+**This ensures:**
+- Deferred work is explicitly tracked (not lost)
+- Future phases know what work was deferred to them
+- Phase completion gates can distinguish between "not done" and "intentionally deferred"
+
+---
+
+## Format
+
+### In Source Phase (Where Task is Deferred)
+
+```markdown
+- [D] Task description (deferred to Phase X.Y.Z)
+```
+
+**Example:**
+```markdown
+- [D] Feature integration (deferred to Phase 2.3)
+- [D] Advanced optimization (deferred to Phase 3.1 - requires profiling)
+- [D] Performance tuning (deferred to Phase 4.2 - requires benchmarks)
+```
+
+### In Target Phase (Where Work Will Be Done)
+
+Add a section or checklist item that references the deferred work:
+
+```markdown
+#### Deferred Work from Previous Phases
+
+- [ ] Phase 2.1 deferred: Feature integration
+- [ ] Phase 2.1 deferred: Advanced optimization (requires profiling)
+- [ ] Phase 2.1 deferred: Performance tuning (requires benchmarks)
+```
+
+**Or inline in the phase tasks:**
+```markdown
+- [ ] Feature integration (Phase 2.1 deferred item)
+- [ ] Advanced optimization (Phase 2.1 deferred - requires profiling)
+```
+
+---
+
+## When to Use [D] vs [x] vs [ ]
+
+- **`[x]`** - Task is complete and verified
+- **`[D]`** - Task is intentionally deferred to a future phase (with phase reference)
+- **`[ ]`** - Task is not yet done but should be done in this phase (incomplete work)
+
+**CRITICAL:** Never use `[D]` without:
+- A target phase ID
+- A corresponding entry in the target phase
+
+---
+
+## Phase Completion Gate Behavior
+
+The phase completion gate should:
+- Count `[D]` items as "handled" (not incomplete)
+- Verify that `[D]` items have target phase references
+- Optionally verify that target phases have corresponding entries (future enhancement)
+
+**Current behavior:** Phase completion gate counts `[D]` as incomplete. This rule defines the standard; gate script should be updated to handle `[D]` markers.
+
+---
+
+## Examples
+
+### ✅ Good: Properly Deferred Task
+
+**Phase 2.1:**
+```markdown
+- [D] Feature integration (deferred to Phase 2.3)
+```
+
+**Phase 2.3:**
+```markdown
+#### Integration Features
+
+- [ ] Feature integration (Phase 2.1 deferred item)
+  - [ ] Add integration method
+  - [ ] Create adapter
+  - [ ] Update router
+```
+
+### ❌ Bad: Deferred Without Reference
+
+**Phase 2.1:**
+```markdown
+- [D] Feature integration
+```
+
+**Why bad:** No target phase specified, no way to track where this work will be done.
+
+### ❌ Bad: Deferred Without Target Phase Entry
+
+**Phase 2.1:**
+```markdown
+- [D] Feature integration (deferred to Phase 2.3)
+```
+
+**Phase 2.3:** (no mention of the deferred item)
+
+**Why bad:** Target phase doesn't know about the deferred work.
+
+---
+
+## Integration with Other Rules
+
+This rule works alongside:
+- **Sequential Phase Enforcement:** Deferred items must reference valid future phases
+- **Phase Completion Protocol:** `[D]` items are "handled" for completion purposes
+- **Action Log Requirement:** Deferrals should be logged with rationale
+
+---
+
+## Enforcement
+
+**MANDATORY:** This rule applies to ALL phases and tasks.
+
+**Verification Checklist:**
+- [ ] All `[D]` items have target phase references
+- [ ] All target phases have corresponding entries for deferred work
+- [ ] Deferral rationale is documented (why deferred, what's needed)
+
+---
+
+## Reference
+
+- **Phase Execution Protocol:** `framework/docs/operations/PHASE_EXECUTION_AND_ITERATION_PROTOCOL.md` (if exists)
+- **Execution Plan:** `docs/governance/EXECUTION_PLAN.md`
+- **Action Log:** `docs/governance/ACTION_LOG`
+
+---
+
+**Last Updated:** 2026-01-13
+**Version:** 1.0 (MathematicalAutopsy)

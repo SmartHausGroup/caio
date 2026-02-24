@@ -1,0 +1,90 @@
+---
+description: Markdown Quality Standards - Prevent format and lint errors in documentation
+globs: ["**/*.md", "**/*.mdc", "**/README.md", "**/docs/**", "**/documentation/**"]
+alwaysApply: true
+---
+
+# Markdown Quality Standards
+
+## MANDATORY MARKDOWN FORMATTING RULES
+
+### Headers
+- Headers must have blank lines before and after them
+- No trailing punctuation in headers (no colons, periods, etc.)
+- Use proper header hierarchy (# ## ### ####)
+
+### Lists
+- Lists must be surrounded by blank lines
+- Use consistent list formatting (all bullets or all numbers)
+- Proper indentation for nested lists
+
+### Code Blocks
+- Use proper language identifiers for syntax highlighting
+- Ensure code blocks are properly closed
+- No trailing whitespace in code blocks
+
+### Links and References
+- All links must be valid and accessible
+- Use descriptive link text
+- Check that internal references exist
+
+## LINTING REQUIREMENTS
+
+### Markdownlint Compliance
+- MD022: Headers surrounded by blank lines
+- MD026: No trailing punctuation in headers
+- MD032: Lists surrounded by blank lines
+- MD013: Line length limits (100 characters)
+- MD040: Fenced code blocks with language
+- MD041: First line must be header
+- MD033: No inline HTML (use markdown syntax)
+
+### Python Code Quality
+- No unused imports (W0611)
+- No unused arguments (W0613)
+- Proper exception handling with 'from' clause (W0707)
+- Snake_case naming conventions (C0103)
+- No multiple statements on single line (C0321)
+- Proper import order (C0411, C0412)
+- No trailing newlines (C0305)
+
+## ENFORCEMENT
+
+### Before Creating Documentation
+- Run markdownlint check
+- Validate all links and references
+- Ensure proper header structure
+- Check code examples for syntax errors
+
+### Quality Gates
+- No markdownlint errors allowed
+- No broken links
+- All code examples must be functional
+- Proper formatting throughout document
+
+### Auto-Fix Requirements
+- Remove trailing whitespace
+- Fix header formatting
+- Correct list spacing
+- Validate and fix links
+- Ensure consistent formatting
+
+## DOCUMENTATION STANDARDS
+
+### Structure
+- Clear hierarchy with proper headers
+- Consistent formatting throughout
+- Logical flow and organization
+- Complete and accurate information
+
+### Content Quality
+- All examples must work
+- Links must be current and valid
+- No placeholder text or TODOs
+- Professional tone and clarity
+
+### Maintenance
+- Regular link validation
+- Update examples when code changes
+- Keep formatting consistent
+- Remove outdated information

@@ -1,0 +1,7 @@
+Execute CAIO M365 Service Registration and Adapter
+
+Read and execute the detailed plan at docs/prompts/codex-caio-m365-adapter.md.
+
+Plan Reference: plan:tai-maia-caio-vfe-m365-integration:caio
+
+You are approved to implement. Execute immediately—do not propose, do not wait for approval. Follow all instructions in the detailed prompt document.

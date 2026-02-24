@@ -1,0 +1,172 @@
+---
+description: Project File Index Enforcement Rule - All files must be indexed and tied to North Star/Execution Plan
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Project File Index Enforcement Rule
+
+**Status:** MANDATORY  
+**Owner:** All AI Assistants (Composer, Codex, GPT-5, External Agents)
+
+---
+
+## Rule: ALL Files Must Be Indexed and Tied to North Star/Execution Plan
+
+**MANDATORY:** Every file in this project MUST:
+1. **Be listed in project documentation** - Files should be documented and tied to North Star/Execution Plan
+2. **Be tied to North Star** - Each file must align with `docs/governance/NORTH_STAR.md` goals
+3. **Be tied to Execution Plan** - Each file must support work defined in `docs/governance/EXECUTION_PLAN.md` (if applicable)
+
+**This rule applies to ALL files in the repository, including:**
+- Source code files (Python)
+- Configuration files (JSON, YAML, Makefiles)
+- Documentation files (Markdown, MDC)
+- Infrastructure files
+- Test files
+- Notebooks
+- Scripts
+
+**Exceptions (automatically generated or external):**
+- `node_modules/` - External dependencies (gitignored)
+- `.venv/`, `venv*/` - Python virtual environments (gitignored)
+- `.git/` - Git internal files
+- `__pycache__/`, `.pytest_cache/` - Python cache (gitignored)
+- `.DS_Store` - macOS system files (gitignored)
+- `configs/generated/` - Generated artifacts (gitignored, but artifacts must be documented)
+
+---
+
+## Pre-Work Checklist (MANDATORY - Before Creating/Adding ANY File)
+
+**MANDATORY:** Before creating or adding ANY file to the project, you MUST:
+
+### Step 1: Verify File Should Exist
+- [ ] Does this file support North Star goals?
+- [ ] Is this file part of planned work in `docs/governance/EXECUTION_PLAN.md`?
+- [ ] Is this file necessary for the project structure defined in `docs/governance/NORTH_STAR.md`?
+
+### Step 2: Verify Alignment
+- [ ] Verify file purpose aligns with North Star goals
+- [ ] Verify file supports execution plan work
+- [ ] Document alignment in action log
+
+### Step 3: Create File
+- [ ] Only after verification is complete, create the file
+- [ ] Follow project structure and conventions
+- [ ] Update `docs/governance/ACTION_LOG` with file creation
+
+---
+
+## Post-Work Checklist (MANDATORY - After Creating/Adding ANY File)
+
+**MANDATORY:** After creating or adding ANY file, you MUST:
+
+### Step 1: Update Action Log
+- [ ] Update `docs/governance/ACTION_LOG` with file creation
+- [ ] Include North Star alignment and execution plan reference
+- [ ] Reference North Star alignment and execution plan
+
+### Step 2: Update Execution Plan (If Applicable)
+- [ ] If file is part of a milestone, update `docs/governance/EXECUTION_PLAN.md`
+- [ ] Mark related tasks as in-progress or complete
+
+---
+
+## File Removal Process (MANDATORY)
+
+**MANDATORY:** Before removing ANY file from the project, you MUST:
+
+### Step 1: Verify Removal is Authorized
+- [ ] Check if file is referenced in execution plan
+- [ ] Verify removal aligns with North Star
+- [ ] Confirm file is no longer needed
+
+### Step 2: Remove File
+- [ ] Only after verification, delete the file
+- [ ] Update `docs/governance/ACTION_LOG` with file removal
+- [ ] Update `docs/governance/EXECUTION_PLAN.md` if milestone-related
+
+---
+
+## Enforcement
+
+**MANDATORY:** This rule applies to ALL AI assistants working on this project.
+
+**Verification Checklist:**
+
+Before creating any file:
+- [ ] File purpose verified against North Star
+- [ ] File purpose verified against execution plan
+- [ ] North Star alignment documented
+- [ ] Execution plan reference documented
+
+After creating any file:
+- [ ] Action log updated
+- [ ] Execution plan updated (if milestone-related)
+
+Before removing any file:
+- [ ] Removal authorized (checked execution plan)
+- [ ] Action log updated
+- [ ] Execution plan updated (if milestone-related)
+
+**CRITICAL:** Files must be tied back to North Star and execution plan.
+
+---
+
+## Integration with Other Rules
+
+This rule integrates with:
+- **Mandatory Agent Workflow:** `.cursor/rules/workflow/agent-workflow-mandatory.mdc` - File creation is work that must follow workflow
+- **North Star Alignment:** `.cursor/rules/workflow/north-star-alignment.mdc` - Files must align with North Star
+- **Plan-First Execution:** `.cursor/rules/workflow/plan-first-execution.mdc` - Files must support execution plan work
+- **Action Log Requirement:** `.cursor/rules/workflow/action-log-requirement.mdc` - File creation/removal must be logged
+
+---
+
+## Examples
+
+### ✅ Good: File Creation with Documentation
+
+**Process:**
+1. ✅ Verified file supports North Star (project goals)
+2. ✅ Verified file is in execution plan (project implementation)
+3. ✅ Created file
+4. ✅ Updated action log with North Star alignment and execution plan reference
+
+### ❌ Bad: File Creation Without Documentation
+
+**Process:**
+1. ❌ Created file directly without checking alignment
+2. ❌ No action log entry created
+3. ❌ File exists but not documented
+
+**Result:** File violates this rule and should be documented.
+
+### ✅ Good: File Removal with Documentation
+
+**Process:**
+1. ✅ Verified file is no longer needed (execution plan updated)
+2. ✅ Deleted file
+3. ✅ Updated action log
+
+### ❌ Bad: File Removal Without Documentation
+
+**Process:**
+1. ❌ Deleted file without checking execution plan
+2. ❌ No action log entry created
+
+**Result:** Removal is not traceable.
+
+---
+
+## Reference
+
+- **North Star:** `docs/governance/NORTH_STAR.md`
+- **Execution Plan:** `docs/governance/EXECUTION_PLAN.md`
+- **Action Log:** `docs/governance/ACTION_LOG`
+
+---
+
+**Last Updated:** 2025-01-06  
+**Version:** 1.0

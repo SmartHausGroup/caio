@@ -1,0 +1,235 @@
+---
+description: Codex Prompt Creation Rule - How to create effective prompts for Codex agents (Template)
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Codex Prompt Creation Process
+
+**Status:** MANDATORY
+**Owner:** All AI Assistants (Composer, Codex, GPT-5)
+
+**NOTE:** This is a **TEMPLATE** document. Replace placeholders with project-specific values when adapting this guide.
+
+---
+
+## Rule: Codex Prompt Creation Must Follow Two-File Structure
+
+**MANDATORY:** When creating prompts for Codex to execute plans, you MUST create two separate files with distinct purposes:
+
+1. **Detailed Prompt Document** (`docs/prompts/codex-{plan-name}.md`) - Contains all implementation instructions
+2. **Execution Brief** (`docs/prompts/codex-{plan-name}-prompt.txt`) - Structured kickoff that provides context, read order, and key constraints
+
+**The execution brief is NOT a thin pointer.** It is a structured execution brief that front-loads critical context so the agent understands the task before reading detailed files. It MUST NOT duplicate implementation steps or code examples from the detailed prompt, but it MUST include prior-phase context, explicit read order, and hard-won constraints.
+
+---
+
+## Process
+
+### Step 1: Create Detailed Prompt Document
+
+**File:** `framework/docs/prompts/codex-{plan-name}.md`
+
+**Purpose:** Complete implementation guide with all instructions, code examples, validation procedures, troubleshooting, etc.
+
+**Must Include:**
+- Executive summary
+- Context & background
+- Current state analysis
+- Target state
+- Step-by-step implementation instructions (with code examples)
+- Validation procedures
+- Troubleshooting guide
+- Success criteria
+- Notes and references
+- **Plan Reference:** `plan:{plan-id}:{requirement-id}` format
+- **North Star Alignment:** How this aligns with `docs/governance/NORTH_STAR.md`
+- **Execution Plan Reference:** Which item in `docs/governance/EXECUTION_PLAN.md` this addresses
+
+**Format:** Full markdown document with sections, code blocks, examples, etc.
+
+**Example:** `framework/docs/prompts/codex-{plan-name}.md`
+
+---
+
+### Step 2: Create Execution Brief
+
+**File:** `docs/prompts/codex-{plan-name}-prompt.txt`
+
+**Purpose:** Structured execution brief that the user copy-pastes to Codex. Front-loads critical context so the agent understands the task before reading files. Prevents rediscovery of hard-won constraints.
+
+**MUST Include (three mandatory sections):**
+
+1. **Context block** (3-5 lines) — Plan reference, prior-phase outcome (GO/NO-GO/score), root cause or gap being addressed, what has been built so far.
+2. **Explicit read order** (numbered list) — Every file the agent must read, in exact sequence. Include `AGENTS.md`/`CLAUDE.md`, governance docs, plan, prior phase prompts, dependency gate artifact, and the detailed MATHS prompt. Mark the detailed prompt with `← FULL MATHS PROMPT`.
+3. **Key constraints** (bulleted list) — Hard-won lessons from prior phases, critical gotchas (Python path, compile command, field naming, string escapes), iteration limits, BLOCKED conditions, file allowlist/denylist summary, and any dirty-tree handling instructions.
+
+**MUST Also Include:**
+- Execution sequence hint (e.g., "Execute phases M → A → T → H → S")
+- Self-reinforcing loop instruction (create next phase prompt)
+- Approval status and execute-now statement
+
+**Must NOT Include:**
+- Full implementation steps (those live in the detailed prompt)
+- Code examples or function signatures
+- Validation procedure details
+- Troubleshooting guides
+
+**Format:** Plain text, 20-40 lines. Use `agent_governance/EXECUTION_BRIEF_TEMPLATE.txt` as the structural template.
+
+**Example:**
+```
+Execute plan:{plan-id}:{task-id} — {Task Name}
+
+This is a follow-up to plan:{plan-id}:{prev-task} which completed with GO.
+{Prior phases delivered}: {brief summary of what exists so far}.
+{Root cause or gap}: {what this phase addresses}.
+
+STEP 1 — Read these files (in order):
+  AGENTS.md
+  CLAUDE.md
+  docs/governance/NORTH_STAR.md
+  docs/governance/EXECUTION_PLAN.md
+  plans/{plan-name}/{plan-name}.md
+  {prior phase prompts...}
+  {dependency gate artifact}  ← must show "pass": true
+  docs/prompts/codex-{plan-name}-{phase}.md  ← FULL MATHS PROMPT
+
+STEP 2 — Execute phases M → A → T → H → S per the MATHS prompt.
+
+STEP 3 — Emit the completion block and create the {next-phase} MATHS prompt
+  per the Self-Reinforcing Loop section.
+
+Key constraints:
+  - Use .venv/bin/python for ALL Python commands
+  - {compile/validation command}
+  - {critical gotchas from prior phases}
+  - {file allowlist summary}
+  - {file denylist summary}
+  - {dirty-tree handling if applicable}
+
+Plan approved by owner. Status: APPROVED. Execute now.
+```
+
+---
+
+## Why Two Files?
+
+1. **Detailed Prompt (`*.md`)**: Codex reads this for full MATHS-phase implementation details
+2. **Execution Brief (`*-prompt.txt`)**: User copy-pastes this to Codex to start execution
+
+**Separation of Concerns:**
+- Detailed prompt = implementation guide (all phases, code contracts, exit checklists)
+- Execution brief = structured kickoff with context, read order, and hard constraints
+
+**Benefits:**
+- Agent understands task scope and prior-phase context before reading detailed files
+- Hard-won constraints (gotchas, field names, escapes) are front-loaded — not rediscovered
+- Read order ensures agent absorbs governance, plan, and prior phases in correct sequence
+- User can review the brief quickly to verify it captures the right context
+- Clear separation between "understand and start" (brief) and "implement step by step" (detailed)
+
+---
+
+## Execution Brief Template
+
+Use `agent_governance/EXECUTION_BRIEF_TEMPLATE.txt` as the structural template for all execution briefs.
+
+**Mandatory sections:**
+1. **Header line** — `Execute plan:{plan-id}:{task-id} — {Task Name}`
+2. **Context block** — Prior-phase outcome, what exists, what this phase addresses
+3. **STEP 1: Read order** — Numbered file list with governance, plan, prior prompts, gate artifact, MATHS prompt
+4. **STEP 2: Execute** — Phase sequence instruction
+5. **STEP 3: Self-reinforcing loop** — Create next-phase prompt
+6. **Key constraints** — Hard-won lessons, gotchas, allowlist/denylist
+7. **Approval footer** — `Plan approved by owner. Status: APPROVED. Execute now.`
+
+**Never include in the execution brief:**
+- Implementation steps or phase-by-phase instructions (those live in the detailed prompt)
+- Code examples or function signatures
+- Full validation procedures
+- Troubleshooting guides
+
+---
+
+## Enforcement
+
+**MANDATORY:** This two-file structure applies to ALL Codex prompts.
+
+**Verification Checklist:**
+- [ ] Detailed prompt document exists (`docs/prompts/codex-{plan-name}.md`)
+- [ ] Execution brief exists (`docs/prompts/codex-{plan-name}-prompt.txt`)
+- [ ] Execution brief has all three mandatory sections (context, read order, key constraints)
+- [ ] Execution brief is 20-40 lines (not a thin pointer, not a full duplicate)
+- [ ] Execution brief read order includes governance docs, plan, prior prompts, gate artifact, MATHS prompt
+- [ ] Execution brief key constraints include hard-won lessons from prior phases
+- [ ] Execution brief does NOT duplicate implementation steps or code examples
+- [ ] Detailed prompt contains all MATHS-phase implementation details
+- [ ] Plan reference included in both files
+- [ ] North Star alignment included in detailed prompt
+
+---
+
+## Examples
+
+### ✅ Good: Execution Brief with Context, Read Order, and Constraints
+
+**Detailed Prompt:** `docs/prompts/codex-{plan-name}.md`
+- Contains: Full MATHS-phase implementation guide, code contracts, exit checklists, validation
+
+**Execution Brief:** `docs/prompts/codex-{plan-name}-prompt.txt`
+- Contains: Context block (prior-phase outcome, what exists), explicit read order, key constraints (gotchas, allowlist/denylist), approval footer
+
+### ❌ Bad: Thin Pointer (No Context)
+
+**Execution Brief (WRONG):**
+```
+Execute {Task Name}
+
+Read and execute the detailed plan at docs/prompts/codex-{plan-name}.md.
+
+Plan Reference: plan:{plan-id}:{requirement-id}
+
+You are approved to implement.
+```
+
+**Why Wrong:** No prior-phase context. No read order. No constraints. Agent must rediscover everything from scratch, leading to scope violations and repeated mistakes.
+
+### ❌ Bad: Duplicated Implementation Steps
+
+**Execution Brief (WRONG):**
+```
+Execute {Task Name}
+
+Phase 1: Create blackboardView.ts with WebviewViewProvider...
+Phase 2: Wire into extension.ts...
+[50+ lines of implementation details]
+```
+
+**Why Wrong:** Duplicates the detailed prompt. The brief should provide context and constraints, not implementation steps.
+
+---
+
+## Integration with Other Rules
+
+This rule works alongside:
+- **Mandatory Agent Workflow:** Prompts must reference execution plan (Step 2)
+- **North Star Alignment:** Prompts must include alignment statement (Step 1)
+- **Change-Approval Protocol:** Prompts must indicate approval (Step 3)
+- **Triadic Collaboration Protocol:** Prompts are created by Assistant for Codex execution
+- **Action Log Requirement:** Prompt creation must be logged
+
+---
+
+## Reference
+
+- **Triadic Collaboration Protocol:** `.cursor/rules/collaboration/triadic-collaboration-protocol.mdc`
+- **Mandatory Agent Workflow:** `.cursor/rules/workflow/agent-workflow-mandatory.mdc`
+- **North Star Document:** `docs/governance/NORTH_STAR.md`
+- **Execution Plan:** `docs/governance/EXECUTION_PLAN.md`
+- **Plan Documents:** `framework/plans/{plan-name}/`
+
+---
+
+**Last Updated:** 2026-02-22
+**Version:** 2.0 (Execution Brief pattern — replaces thin-pointer kickoff)

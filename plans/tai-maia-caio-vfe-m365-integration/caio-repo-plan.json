@@ -1,0 +1,47 @@
+{
+  "plan_id": "caio-repo-plan",
+  "parent_plan_id": "tai-maia-caio-vfe-m365-integration",
+  "status": "Draft",
+  "date": "2026-02-06",
+  "owner": "SmartHaus",
+  "master_plan_ref": "M365 repo plans/tai-maia-caio-vfe-m365-integration/master-plan.md",
+  "execution_plan_reference": "plan:tai-maia-caio-vfe-m365-integration:caio",
+  "ma_process_required": false,
+  "objective": "Register M365 as a CAIO service and implement M365 adapter: receive intent, call M365 API, return result. Route M365 intents to adapter.",
+  "scope": {
+    "in_scope": [
+      "M365 service registration; M365 adapter (client to M365 API); routing by intent; auth; tests and docs"
+    ],
+    "out_of_scope": [
+      "M365 API implementation; TAI voice; MAIA intent; VFE changes"
+    ]
+  },
+  "requirements": {
+    "functional": [
+      "M365 registered and routable; adapter maps intent to M365 API call; routing for domain M365; auth; error mapping"
+    ],
+    "non_functional": [
+      "Testable adapter; config for URL/auth; docs"
+    ]
+  },
+  "tasks": [
+    { "id": 1, "name": "Service registration (M365 in CAIO registry)" },
+    { "id": 2, "name": "M365 adapter module (intent -> M365 API -> result)" },
+    { "id": 3, "name": "Routing (intent.domain M365 -> adapter)" },
+    { "id": 4, "name": "Auth for M365 API calls" },
+    { "id": 5, "name": "Error handling (M365 errors -> CAIO response)" },
+    { "id": 6, "name": "Tests (unit + optional integration)" },
+    { "id": 7, "name": "Docs (adapter contract, routing, master plan ref)" }
+  ],
+  "validation": [
+    "CAIO test suite pass; adapter tests pass",
+    "Orchestrate request with M365 intent -> adapter -> M365 API -> result"
+  ],
+  "success_criteria": [
+    "M365 registered; M365 intents reach adapter; adapter calls M365 API and returns result",
+    "Plan checklist and tests pass"
+  ],
+  "dependencies": [
+    "M365 instruction API contract; MAIA intent schema agreed; master plan approved"
+  ]
+}

@@ -1,0 +1,52 @@
+---
+description: SOA Project Documentation Requirements - Mandatory initial documents and continuous update requirements
+globs: ["**/*.md", "**/README.md", "**/docs/**", "**/documentation/**"]
+alwaysApply: true
+---
+
+# SOA Project Documentation Rules
+
+## MANDATORY INITIAL DOCUMENTS (in order)
+1. **Strategic Vision Document** (North Star) - Defines ultimate business and technical goals
+2. **Implementation Roadmap** (Technical Architecture Plan) - Translates vision into actionable steps
+3. **Service Architecture Document** - Service boundaries, contracts, and interfaces
+4. **Integration Architecture Document** - Service communication patterns and data flow
+5. **Technology Standards Document** - Technology stack, coding standards, frameworks
+6. **Service Design Specifications** - Individual service requirements and API contracts
+7. **Infrastructure Architecture Document** - Deployment patterns, scalability, monitoring
+
+## CONTINUOUS UPDATE REQUIREMENTS
+- All documents must be updated throughout the project lifecycle
+- Changes to requirements, architecture, or implementation must be reflected in documents
+- Documents serve as living specifications, not static references
+- No major development phase should proceed without updating relevant documents
+
+## ENFORCEMENT
+- No coding begins until foundational documents are established
+- Document updates are required before implementing new features or services
+- Architecture decisions must be documented before implementation
+- Service contracts must be documented before API development
+
+## README DOCUMENTATION RULE:
+
+### MANDATORY README STRUCTURE (for every service/directory):
+1. **Purpose & Overview** - What this service/component does
+2. **Quick Start** - How to run/use it immediately
+3. **API Reference** - Endpoints, parameters, responses
+4. **Configuration** - Environment variables, settings
+5. **Dependencies** - Required services, databases, external APIs
+6. **Development** - How to build, test, contribute
+7. **Deployment** - How to deploy to different environments
+
+### README UPDATE REQUIREMENTS:
+- README must be updated with every code change that affects usage
+- API changes require immediate README updates
+- New dependencies must be documented
+- Configuration changes must be reflected
+- Breaking changes require prominent warnings
+
+### README ENFORCEMENT:
+- No PR/commit accepted without README updates if functionality changes
+- README must be tested (all commands must work)
+- Examples in README must be current and functional
+- Links must be valid and accessible

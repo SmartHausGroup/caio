@@ -1,0 +1,300 @@
+---
+description: Notebook-First Development - MANDATORY Rule - Code lives in notebooks, extracted to Python files. NEVER import from codebase.
+globs: ["**/*.py", "**/*.ipynb", "**/services/**", "**/core/**", "**/src/**"]
+alwaysApply: true
+---
+
+# Notebook-First Development - MANDATORY RULE
+
+**Status:** 🔴 **MANDATORY - HARD ENFORCEMENT - NO EXCEPTIONS**  
+**Owner:** All AI Assistants (Composer, Codex, GPT-5, External Agents)  
+**Violation:** This rule has NO exceptions. Violations block all code changes.
+
+---
+
+## THE GOLDEN RULE
+
+**CODE LIVES IN NOTEBOOKS FIRST. PYTHON FILES ARE EXTRACTED FROM NOTEBOOKS. NOT THE OTHER WAY AROUND.**
+
+**CRITICAL:** 
+- ✅ **NOTEBOOKS EXPORT CODE** → Code flows FROM notebooks TO Python files
+- ❌ **NOTEBOOKS NEVER IMPORT CODE** → Code NEVER flows FROM Python files TO notebooks
+
+**If you need to change code, you change it in the Jupyter notebook. Then you extract it to the Python file. You NEVER write code directly in Python files. You NEVER import code into notebooks.**
+
+---
+
+## MANDATORY WORKFLOW FOR CODE CHANGES
+
+### ❌ FORBIDDEN: Writing Code in Python Files
+
+**NEVER DO THIS:**
+- ❌ Edit production code files directly (e.g., `services/`, `core/`, `src/`, or project-specific directories)
+- ❌ Make code changes without first updating the notebook
+
+**IF YOU DO THIS, YOU ARE VIOLATING THE MA PROCESS.**
+
+### ❌ FORBIDDEN: Importing Code into Notebooks
+
+**NEVER DO THIS:**
+- ❌ `from services.<module> import <class>`
+- ❌ `from core.<module> import <function>`
+- ❌ `from src.<module> import <class>`
+- ❌ ANY import from production code directories
+
+**IF YOU DO THIS, YOU ARE VIOLATING THE MA PROCESS. NOTEBOOKS EXPORT CODE, THEY NEVER IMPORT IT.**
+
+### ✅ REQUIRED: Write Code in Notebooks First
+
+**ALWAYS DO THIS:**
+1. **Find or create the notebook** that contains the implementation code
+   - Math/algorithm code: `notebooks/math/<feature>_validation.ipynb`
+   - Operations code: `notebooks/ops/<feature>_validation.ipynb`
+   - If notebook doesn't exist, CREATE IT FIRST
+
+2. **Write/update code DIRECTLY in the notebook**
+   - Implement the function/class directly in notebook cells
+   - **DO NOT import from codebase** - Copy the implementation code into the notebook
+   - Test and validate in the notebook
+   - Ensure notebook passes all invariant checks
+   - Generate artifacts
+
+3. **Extract code from notebook to Python file**
+   ```bash
+   python scripts/notebooks/extract_code.py \
+       --notebook notebooks/math/<notebook>.ipynb \
+       --output <target_module>.py \
+       --functions <function_name>
+   ```
+
+4. **Verify extraction worked**
+   - Check that Python file matches notebook code
+   - Run tests to ensure extracted code works
+   - Run notebook again to ensure it still passes
+
+---
+
+## HARD RULES (NO EXCEPTIONS)
+
+### Rule 1: Code Changes Go in Notebooks
+
+**MANDATORY:** When asked to change code:
+- ✅ **DO:** Find the notebook, update code in notebook
+- ❌ **DON'T:** Edit Python file directly
+
+### Rule 2: Notebooks Contain Implementation Code (NOT Imports)
+
+**MANDATORY:** Notebooks must contain the actual implementation:
+- ✅ **DO:** Write `def my_function(): ...` directly in notebook
+- ❌ **DON'T:** Import from production code directories
+- ❌ **DON'T:** ANY import from production code directories
+
+**If a notebook imports from codebase, it's WRONG. Fix it by copying the implementation into the notebook.**
+
+### Rule 3: Notebooks Export Code (Never Import)
+
+**MANDATORY:** Code flow direction:
+- ✅ **CORRECT:** Notebook → Python file (export/extract)
+- ❌ **WRONG:** Python file → Notebook (import)
+
+**NOTEBOOKS ARE THE SOURCE. PYTHON FILES ARE THE DESTINATION.**
+
+### Rule 4: Extraction is Required
+
+**MANDATORY:** After updating notebook code:
+- ✅ **DO:** Extract code using `scripts/notebooks/extract_code.py`
+- ❌ **DON'T:** Manually copy-paste code (use the script)
+
+### Rule 5: No Direct Python Edits
+
+**MANDATORY:** Python files in production directories are read-only for direct edits:
+- ✅ **DO:** Update notebook, then extract
+- ❌ **DON'T:** Edit production code files directly
+
+**Exception:** Only trivial formatting/linting fixes that don't change logic.
+
+---
+
+## DETECTION AND ENFORCEMENT
+
+### Pre-Commit Hook
+
+The pre-commit hook checks for:
+- Notebooks importing from codebase (violation - blocks commit)
+- Python files modified without corresponding notebook updates (warning)
+- Missing notebook-code mappings (warning)
+
+### CI Gate
+
+The CI gate (`scripts/ci/notebook_code_sync_gate.py`) validates:
+- Notebooks contain implementation code (not imports)
+- Codebase code matches notebook code
+- All mappings are configured
+
+**If gate fails, merge is blocked.**
+
+### Automated Detection
+
+Run this to find violations:
+```bash
+# Find notebooks importing from codebase (VIOLATIONS)
+# Adjust paths based on project structure
+grep -r "from services\|from core\|from src" notebooks/
+```
+
+---
+
+## MIGRATION: Fixing Existing Violations
+
+### Step 1: Identify Violations
+
+```bash
+# Find notebooks importing from codebase
+# Adjust paths based on project structure
+grep -r "from services\|from core\|from src" notebooks/
+```
+
+### Step 2: Copy Implementation to Notebook
+
+For each violation:
+1. Find the actual implementation in the Python file
+2. **Copy the function/class code into the notebook** (don't import it)
+3. **Remove the import statement**
+4. Test the notebook
+
+### Step 3: Extract from Notebook
+
+```bash
+# Extract code from notebook back to Python file
+python scripts/notebooks/extract_code.py \
+    --notebook notebooks/math/<notebook>.ipynb \
+    --output <original_python_file>.py \
+    --functions <function_name>
+```
+
+### Step 4: Configure Mapping
+
+Add to `scripts/ci/notebook_code_sync_gate.py`:
+```python
+NOTEBOOK_CODEBASE_MAPPINGS = [
+    ("math/<notebook>.ipynb", "<module>.py", ["<function_name>"]),
+]
+```
+
+**Use the migration script:** `scripts/notebooks/migrate_notebooks_to_ma_compliance.py`
+
+---
+
+## EXAMPLES
+
+### ✅ CORRECT: Code Change Workflow
+
+**User Request:** "Update the feature to add a new capability"
+
+**Agent Response:**
+1. "I'll update the code in `notebooks/math/<feature>_validation.ipynb` first"
+2. Open notebook, **write the function directly in notebook** (not import)
+3. Test in notebook, verify invariants pass
+4. Extract: `python scripts/notebooks/extract_code.py --notebook notebooks/math/<feature>_validation.ipynb --output <module>.py --functions new_capability`
+5. Verify extraction worked
+
+### ❌ WRONG: Direct Python Edit
+
+**User Request:** "Update the feature to add a new capability"
+
+**Agent Response:**
+1. ❌ Opens production Python file directly
+2. ❌ Edits the Python file
+3. ❌ **VIOLATION - This is backwards!**
+
+**Correct Response:**
+1. ✅ Opens `notebooks/math/<feature>_validation.ipynb`
+2. ✅ Writes code directly in notebook (no imports)
+3. ✅ Extracts to Python file
+
+### ❌ WRONG: Importing into Notebook
+
+**User Request:** "Update the feature to add a new capability"
+
+**Agent Response:**
+1. ❌ Opens notebook
+2. ❌ Adds `from <module> import <class>`
+3. ❌ **VIOLATION - Notebooks never import from codebase!**
+
+**Correct Response:**
+1. ✅ Opens notebook
+2. ✅ Copies implementation code into notebook
+3. ✅ Writes code directly in notebook
+4. ✅ Extracts to Python file
+
+---
+
+## INTEGRATION WITH MA PROCESS
+
+This rule is **Phase 4** of the MA process:
+
+1. **Phase 1:** Intent & Description
+2. **Phase 2:** Mathematical Foundation
+3. **Phase 3:** Lemma Development (Invariants)
+4. **Phase 4:** Verification Notebook ← **CODE LIVES HERE (NOT IMPORTS)**
+5. **Phase 5:** CI Enforcement
+6. **After Phase 5:** Extract code from notebook to Python files
+
+**The notebook is where code is written, tested, and validated. Python files are extracted artifacts. Notebooks NEVER import from codebase.**
+
+---
+
+## ENFORCEMENT CHECKLIST
+
+Before making ANY code change, verify:
+
+- [ ] Is there a notebook for this code? (If no, create one first)
+- [ ] Does the notebook contain implementation code? (Not imports from codebase)
+- [ ] Have I written code directly in the notebook? (Not imported it)
+- [ ] Have I removed any imports from codebase? (If they exist, remove them)
+- [ ] Have I updated the notebook with my changes?
+- [ ] Does the notebook pass all invariant checks?
+- [ ] Have I extracted code from notebook to Python file?
+- [ ] Have I verified the extraction worked?
+
+**If any checkbox is unchecked, STOP and fix it before proceeding.**
+
+---
+
+## VIOLATION CONSEQUENCES
+
+**If you violate this rule:**
+- ❌ Pre-commit hook will fail
+- ❌ CI gate will block merge
+- ❌ Code review will reject changes
+- ❌ MA process validation will fail
+
+**This rule has NO exceptions. If you need to change code, change it in the notebook first. NEVER import code into notebooks.**
+
+---
+
+## QUICK REFERENCE
+
+**To change code:**
+1. Find notebook: `notebooks/math/<feature>_validation.ipynb`
+2. **Write code directly in notebook** (don't import)
+3. Test in notebook
+4. Extract: `python scripts/notebooks/extract_code.py --notebook <notebook> --output <python_file> --functions <function>`
+5. Verify extraction
+
+**To add new code:**
+1. Create notebook: `notebooks/math/<feature>_validation.ipynb`
+2. **Write code directly in notebook** (don't import)
+3. Test and validate
+4. Extract to Python file
+5. Configure mapping in sync gate
+
+**To fix existing violations:**
+1. Run migration script: `python scripts/notebooks/migrate_notebooks_to_ma_compliance.py`
+2. Review changes
+3. Test notebooks
+4. Extract code
+
+---
+
+**This rule is MANDATORY. Code lives in notebooks. Notebooks export code to Python files. Notebooks NEVER import code from Python files. NO EXCEPTIONS.**

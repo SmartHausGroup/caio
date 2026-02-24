@@ -1,0 +1,123 @@
+---
+description: Mathematical Autopsy (MA) Process - MANDATORY checklist for all mathematical/algorithmic code
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# MA Process Mandatory Rule
+
+**MANDATORY:** Before implementing ANY code that involves mathematical operations, algorithms, or performance guarantees, you MUST complete the full Mathematical Autopsy (MA) process.
+
+**NOTE:** This is a **TEMPLATE** document. Replace placeholders with project-specific values when adapting this guide.
+
+---
+
+## MA Process Steps (MUST Complete in Order)
+
+### Phase 0: Intent Definition ✅
+- [ ] Define what is being built and why
+- [ ] Define boundaries and explicit non-goals
+- [ ] Define required guarantees and success criteria
+- [ ] Define determinism for this context (what varies, what must not)
+- [ ] Ensure the work is authorized in `docs/governance/EXECUTION_PLAN.md`
+
+### Phase 1: Overarching Mathematical Formula ✅
+- [ ] Write the governing formula (inputs → outputs)
+- [ ] Specify domain, range, operators, and constraints
+- [ ] Specify deterministic assumptions and constraints
+- [ ] Store math docs under `framework/docs/math/`
+
+### Phase 2: Formal Mathematical Calculus ✅
+- [ ] Define variables and operator properties
+- [ ] Define boundary conditions and stability criteria
+- [ ] Define failure modes and acceptance boundaries
+
+### Phase 3: Lemmas ✅
+- [ ] Decompose calculus into lemmas (assumptions + proof sketch)
+- [ ] Record lemmas in `framework/docs/math/ma-lemmas-appendix.md` (or domain appendix)
+- [ ] Ensure each lemma has a clear verification target
+
+### Phase 4: Invariants ✅
+- [ ] Create/update invariant YAML (`framework/invariants/INV-XXXX.yaml`)
+- [ ] Add/update entry in `framework/invariants/INDEX.yaml`
+- [ ] Ensure invariant acceptance paths point to real artifact fields
+- [ ] Ensure invariant producers/artifacts are traceable to notebooks/scripts
+
+### Phase 5: Notebook Development ✅
+- [ ] Implement/modify behavior in `framework/notebooks/` first
+- [ ] Add deterministic assertions directly after code cells
+- [ ] Export artifact JSON to `framework/configs/generated/*.json`
+- [ ] Ensure notebook headers include Purpose / Inputs / Outputs / Assertions / Determinism
+
+### Phase 6: Scorecard Validation ✅
+- [ ] Run `make ma-validate-quiet` from repo root
+- [ ] Confirm `framework/scorecard.json` exists and is green
+- [ ] Confirm must-pass gates succeed (fail-closed)
+
+### Phase 7: Extraction to Runtime ✅
+- [ ] Only after Phase 6 is green: extract notebook-proven logic to runtime code
+- [ ] No manual edits that break notebook ↔ runtime traceability
+- [ ] Keep invariant/lemma → notebook → artifact → runtime mapping intact
+
+---
+
+## MA Process Workflow (MANDATORY ORDER)
+
+1. **Intent** → 2. **Formula** → 3. **Calculus** → 4. **Lemmas** → 5. **Invariants** → 6. **Notebooks** → 7. **Scorecard** → 8. **Extraction**
+
+**NEVER skip phases.** If you find yourself writing code before completing the required phases, STOP and complete the MA process first.
+
+---
+
+## Enforcement
+
+**MANDATORY for Runtime Code:** Phases 0-6 MUST be complete before any runtime artifact extraction (Phase 7).
+
+**Minimum for Notebook Experiments:** Phases 0-5 must be complete (intent → formula → calculus → lemmas → invariants → notebooks). Phase 6 required before promotion/extraction.
+
+**Exceptions:**
+- Trivial bug fixes or refactoring that doesn't change mathematical behavior
+- Documentation-only changes
+- Configuration changes that don't affect math
+
+---
+
+## Checklist Before Writing Code
+
+Before writing code, verify:
+- [ ] Phases 0-4 complete (intent → formula → calculus → lemmas → invariants)
+- [ ] Phase 5 complete (notebook evidence + artifacts exported)
+- [ ] Phase 6 complete (scorecard green + gates pass)
+- [ ] Then (and only then) proceed to Phase 7 extraction
+
+---
+
+## Reference
+
+- **Canonical MA Constitution:** `framework/docs/ma-system-master.md`
+- **Canonical Workflow Runbook:** `framework/docs/operations/invariants-and-lemmas-workflow.md`
+- **MA Process Guide (Cursor):** `.cursor/rules/ma-process/ma-process-guide.mdc`
+- **North Star:** `docs/governance/NORTH_STAR.md`
+- **Execution Plan:** `docs/governance/EXECUTION_PLAN.md`
+- **Invariant Template:** `framework/invariants/INV_TEMPLATE.yaml`
+
+---
+
+## Examples
+
+✅ **Correct:** Completed MA before code
+- ✅ Intent → Formula → Calculus → Lemmas → Invariants → Notebooks → Scorecard → Extraction
+
+❌ **Incorrect:** Jumped to code without MA
+- ❌ Missing: Intent definition / determinism definition
+- ❌ Missing: Mathematical formula + calculus
+- ❌ Missing: Lemmas + invariants
+- ❌ Missing: Notebook evidence + artifact export
+- ❌ Missing: Green scorecard gate
+
+**This rule is MANDATORY and applies to ALL AI assistants working on MA projects.**
+
+---
+
+**Last Updated:** 2025-12-31
+**Version:** 1.0 (Template for MA projects)

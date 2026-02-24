@@ -1,0 +1,115 @@
+---
+description: Fix Problems, Don't Use Workarounds Rule (Template)
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Fix Problems, Don't Use Workarounds
+
+**Status:** MANDATORY
+**Owner:** All AI Assistants (Composer, Codex, GPT-5)
+
+**NOTE:** This is a **TEMPLATE** document. Replace placeholders with project-specific values when adapting this guide.
+
+---
+
+## Core Principle: Build What We're Building, Fix What's Broken
+
+**MANDATORY:** When building services or encountering problems, **FIX THE ROOT CAUSE**. Never use fallbacks, workarounds, or alternative methods just to make tests pass or get something "working" temporarily.
+
+---
+
+## The Problem We're Solving
+
+We are building <PROJECT> - <project description>. We will encounter problems. The solution is **NOT** to:
+- Fall back to insecure methods
+- Use workarounds that bypass our security model
+- Insert cheap fallbacks just to pass tests
+- Avoid fixing the actual problem
+
+The solution **IS** to:
+- **Fix the root cause** with deep analysis
+- **Understand why** something isn't working
+- **Build the correct solution** that aligns with our goals
+- **Solve the actual problem**, not mask it
+
+---
+
+## Rule 1: No Fallbacks When Building Systems
+
+**FORBIDDEN:**
+
+- Suggesting to "skip validation" when checks have issues
+- Inserting fallback code paths that bypass MA process
+- Using alternative approaches "just to get it working"
+- Recommending workarounds instead of fixes
+
+**REQUIRED:**
+
+- **Deep analysis** of why something isn't working
+- **Root cause identification** with evidence
+- **Fix the actual problem** in the system
+- **Build the correct solution** that aligns with our goals
+
+---
+
+## Rule 2: Deep Analysis Before "Fixes"
+
+**REQUIRED:**
+
+When something breaks or doesn't work:
+
+1. **Understand the problem deeply:**
+   - What is actually happening?
+   - Why is it happening?
+   - What is the root cause?
+   - What evidence do we have?
+
+2. **Analyze the system:**
+   - How does the broken component work?
+   - What are its dependencies?
+   - What are the design goals?
+
+3. **Propose the correct fix:**
+   - Fix the root cause, not symptoms
+   - Align with our goals
+   - Build the proper solution
+
+---
+
+## Rule 3: No "Quick Wins" That Bypass Requirements
+
+**FORBIDDEN:**
+
+- "Let's just skip the MA process" when validation fails
+- "We can skip the invariant check" when checks fail
+- "This will make tests pass" when it doesn't solve the problem
+- "We can fix it later" when we should fix it now
+
+**REQUIRED:**
+
+- Fix the problem in the system we're building
+- Understand why it's broken
+- Build the correct solution
+- Align with our requirements
+
+---
+
+## Enforcement
+
+**MANDATORY:** This rule applies to ALL development work on <PROJECT>.
+
+**When encountering a problem:**
+
+1. **STOP** suggesting workarounds
+2. **ANALYZE** the root cause deeply
+3. **UNDERSTAND** why it's happening
+4. **FIX** the actual problem
+5. **BUILD** the correct solution
+
+**Code Review Checklist:**
+
+- [ ] Did we fix the root cause, or just work around it?
+- [ ] Does the solution align with our goals?
+- [ ] Did we do deep analysis, or just quick fixes?
+- [ ] Are we building what we're building, or falling back?

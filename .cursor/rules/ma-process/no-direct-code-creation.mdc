@@ -1,0 +1,278 @@
+---
+description: NEVER Create Code Directly - MA Process Must Be Followed First
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# NEVER Create Code Directly - MA Process First
+
+**Status:** 🔴 **MANDATORY - HARD ENFORCEMENT - NO EXCEPTIONS**
+**Owner:** All AI Assistants (Composer, Codex, GPT-5, External Agents)
+**Violation:** This rule has NO exceptions. Violations block all code changes.
+
+---
+
+## THE GOLDEN RULE
+
+**NEVER CREATE CODE DIRECTLY. ALWAYS FOLLOW THE MA PROCESS FIRST.**
+
+**CRITICAL:**
+- ✅ **MA Process FIRST** → Complete Phases 1-5 (Math → Invariants → Notebooks → Artifacts → Validation)
+- ✅ **Code in Notebooks** → Write code in notebooks (Phase 3), then extract to Python files (Phase 6)
+- ❌ **NEVER write code directly** → Code NEVER goes directly into Python files
+- ❌ **NEVER skip MA process** → MA process is MANDATORY before any code
+
+**If you find yourself writing code in Python files without completing the MA process, STOP immediately and complete the MA process first.**
+
+---
+
+## MANDATORY WORKFLOW FOR ALL CODE
+
+### ❌ FORBIDDEN: Creating Code Directly
+
+**NEVER DO THIS:**
+- ❌ Create Python files directly without MA process
+- ❌ Write code in Python files without MA process
+- ❌ Skip MA process phases
+- ❌ Write code before math is formalized
+- ❌ Write code before invariants are defined
+- ❌ Write code before notebooks are created
+- ❌ Write code before artifacts are validated
+
+**IF YOU DO THIS, YOU ARE VIOLATING THE MA PROCESS.**
+
+### ✅ REQUIRED: Follow MA Process First
+
+**ALWAYS DO THIS:**
+1. **Phase 1: Math Formalization** - Define mathematics first
+   - Create `docs/math/<feature>_MATHEMATICS.md`
+   - Define equations, notation, bounds
+   - Document assumptions
+
+2. **Phase 2: Invariants Definition** - Derive invariants from math
+   - Create `invariants/INV-XXXX.yaml` files
+   - Create lemmas in `docs/math/<PROJECT>_LEMMAS_APPENDIX.md`
+   - Add to `invariants/INDEX.yaml`
+
+3. **Phase 3: Verification Notebooks** - Write code IN notebooks
+   - Create `notebooks/math/<feature>_validation.ipynb`
+   - **Write implementation code DIRECTLY in notebook cells** (NOT imports)
+   - Include VERIFY:L<N> cells with assertions
+   - Export artifacts
+
+4. **Phase 4: Artifact Generation** - Generate artifacts from notebooks
+   - Export `configs/generated/<feature>_metrics.json`
+   - Validate artifacts (no NaN/Inf)
+   - Run `make ma-validate-quiet`
+
+5. **Phase 5: MA Process Completion** - Complete MA process
+   - Register artifacts
+   - Update invariant status: `draft` → `accepted`
+   - Update lemma status: `Draft` → `Rev X.Y`
+   - Ensure scorecard is green
+   - **GATE: MA process complete. Ready for code extraction.**
+
+6. **Phase 6: Code Extraction** - Extract code FROM notebooks TO Python files
+   - Use extraction script: `python scripts/notebooks/extract_code.py`
+   - Extract to Python files
+   - Verify extracted code matches notebook exactly
+
+---
+
+## HARD RULES (NO EXCEPTIONS)
+
+### Rule 1: MA Process is Mandatory
+
+**MANDATORY:** Before creating ANY code:
+- ✅ **DO:** Complete MA process Phases 1-5 first
+- ❌ **DON'T:** Write code in Python files without MA process
+
+### Rule 2: Code Lives in Notebooks First
+
+**MANDATORY:** Implementation code:
+- ✅ **DO:** Write code in notebooks (Phase 3)
+- ❌ **DON'T:** Write code directly in Python files
+- ❌ **DON'T:** Import code from codebase into notebooks
+
+### Rule 3: Extract After Validation
+
+**MANDATORY:** Code extraction:
+- ✅ **DO:** Extract code AFTER notebooks pass all invariant checks
+- ✅ **DO:** Extract code AFTER artifacts are validated
+- ✅ **DO:** Extract code AFTER scorecard is green
+- ❌ **DON'T:** Extract code before MA process is complete
+
+### Rule 4: Never Skip MA Phases
+
+**MANDATORY:** MA process phases:
+- ✅ **DO:** Complete phases in order (1 → 2 → 3 → 4 → 5 → 6)
+- ❌ **DON'T:** Skip any phase
+- ❌ **DON'T:** Jump to code before phases complete
+
+---
+
+## DETECTION AND ENFORCEMENT
+
+### Pre-Commit Hook
+
+The pre-commit hook checks for:
+- Python files created without corresponding notebooks (violation - blocks commit)
+- Code written without MA process completion (warning)
+- Missing MA process artifacts (violation - blocks commit)
+
+### CI Gate
+
+The CI gate validates:
+- MA process phases are complete
+- Notebooks exist and pass
+- Artifacts are generated and valid
+- Scorecard is green
+
+**If gate fails, merge is blocked.**
+
+### Automated Detection
+
+Run this to find violations:
+```bash
+# Find Python files without corresponding notebooks (VIOLATIONS)
+# Check if MA process was followed
+```
+
+---
+
+## WHEN MA PROCESS IS REQUIRED
+
+**MANDATORY for:**
+- New mathematical operations or algorithms
+- New performance guarantees
+- Changes to existing math that affect correctness
+- Work in `feature/*` branches or `development` branch with new math
+- Any code involving calculations, algorithms, or guarantees
+
+**NOT required for:**
+- Trivial bug fixes that don't change math behavior
+- Documentation-only changes
+- Configuration changes that don't affect math
+- Performance optimizations that don't change algorithms
+
+---
+
+## EXAMPLES
+
+### ✅ CORRECT: MA Process First
+
+**User Request:** "Add new feature with mathematical guarantees"
+
+**Agent Response:**
+1. ✅ "I'll complete the MA process first"
+2. ✅ Phase 1: Create `docs/math/<feature>_MATHEMATICS.md`
+3. ✅ Phase 2: Create invariants `INV-XXXX.yaml`
+4. ✅ Phase 3: Create notebook `notebooks/math/<feature>_validation.ipynb` with code
+5. ✅ Phase 4: Generate artifacts
+6. ✅ Phase 5: Complete MA process (scorecard green)
+7. ✅ Phase 6: Extract code from notebook to Python files
+
+### ❌ WRONG: Code Created Directly
+
+**User Request:** "Add new feature with mathematical guarantees"
+
+**Agent Response:**
+1. ❌ Creates Python file directly
+2. ❌ Writes code in Python file
+3. ❌ **VIOLATION - No MA process!**
+
+**Correct Response:**
+1. ✅ Complete MA process Phases 1-5 first
+2. ✅ Write code in notebook (Phase 3)
+3. ✅ Extract code from notebook (Phase 6)
+
+### ❌ WRONG: Skipping MA Phases
+
+**User Request:** "Add new feature with mathematical guarantees"
+
+**Agent Response:**
+1. ❌ Skips math formalization
+2. ❌ Skips invariants
+3. ❌ Jumps to notebooks
+4. ❌ **VIOLATION - MA phases skipped!**
+
+**Correct Response:**
+1. ✅ Complete Phase 1 (Math) first
+2. ✅ Complete Phase 2 (Invariants) second
+3. ✅ Complete Phase 3 (Notebooks) third
+4. ✅ Continue in order
+
+---
+
+## INTEGRATION WITH OTHER RULES
+
+This rule works alongside:
+- **MA Process Mandatory:** `.cursor/rules/ma-process/ma-process-mandatory.mdc` - Defines MA process phases
+- **Notebook-First Mandatory:** `.cursor/rules/ma-process/notebook-first-mandatory.mdc` - Code lives in notebooks
+- **Agent Workflow Mandatory:** `.cursor/rules/workflow/agent-workflow-mandatory.mdc` - Unified workflow
+
+**This rule is the enforcement mechanism for MA process compliance.**
+
+---
+
+## ENFORCEMENT CHECKLIST
+
+Before creating ANY code, verify:
+
+- [ ] Is MA process required? (math/algorithm/performance guarantee?)
+- [ ] Have I completed Phase 1 (Math Formalization)?
+- [ ] Have I completed Phase 2 (Invariants Definition)?
+- [ ] Have I completed Phase 3 (Verification Notebooks)?
+- [ ] Have I completed Phase 4 (Artifact Generation)?
+- [ ] Have I completed Phase 5 (MA Process Completion)?
+- [ ] Is scorecard green?
+- [ ] Have I written code in notebook (not Python file)?
+- [ ] Have I extracted code from notebook (Phase 6)?
+
+**If any checkbox is unchecked, STOP and complete the MA process first.**
+
+---
+
+## VIOLATION CONSEQUENCES
+
+**If you violate this rule:**
+- ❌ Pre-commit hook will fail
+- ❌ CI gate will block merge
+- ❌ Code review will reject changes
+- ❌ MA process validation will fail
+
+**This rule has NO exceptions. NEVER create code directly. ALWAYS follow the MA process first.**
+
+---
+
+## QUICK REFERENCE
+
+**To add new code:**
+1. Check if MA process is required
+2. Complete Phase 1: Math Formalization
+3. Complete Phase 2: Invariants Definition
+4. Complete Phase 3: Verification Notebooks (write code here)
+5. Complete Phase 4: Artifact Generation
+6. Complete Phase 5: MA Process Completion
+7. Extract code from notebook to Python file (Phase 6)
+
+**To modify existing code:**
+1. Find the notebook that contains the code
+2. Update code in notebook (not Python file)
+3. Re-run notebook and verify invariants pass
+4. Extract code from notebook to Python file
+
+**To fix violations:**
+1. Stop writing code directly
+2. Complete MA process for the code
+3. Write code in notebook first
+4. Extract code after validation
+
+---
+
+**This rule is MANDATORY. NEVER create code directly. ALWAYS follow the MA process first. NO EXCEPTIONS.**
+
+---
+
+**Last Updated:** 2026-01-13
+**Version:** 1.0 (MathematicalAutopsy)

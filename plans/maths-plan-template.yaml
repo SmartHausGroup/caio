@@ -1,0 +1,93 @@
+plan:
+  id: PLAN-0000
+  title: "<plan title>"
+  domain: framework
+  owner: "<owner>"
+  status: draft
+  last_updated: "YYYY-MM-DD"
+
+maths:
+  model:
+    problem: "<one-sentence problem>"
+    user: "<specific stakeholder>"
+    success:
+      - "<metric or measurable outcome>"
+    constraints:
+      - "<time/cost/stack/compliance>"
+    non_goals:
+      - "<explicit out-of-scope>"
+
+  annotate:
+    equations_or_rules:
+      - "<formal rule>"
+    assumptions:
+      - "<assumption>"
+    contracts:
+      - "<data/interface contract>"
+    invariants:
+      - "<INV-ID>"
+    required_artifacts:
+      - "framework/configs/generated/<artifact>.json"
+
+  tie:
+    readiness_checks:
+      dependencies_available: false
+      environment_configured: false
+      services_reachable: false
+      governance_checks_pass: false
+    blockers:
+      - "<blocker>"
+    go_no_go: "no-go"
+
+  harness:
+    phases:
+      - id: "A1"
+        task: "<task>"
+        owner: "<owner>"
+    files_touched:
+      - "<path>"
+    notebook_first: true
+    extraction_boundary: "<what can be extracted to code>"
+
+  stress_test:
+    functional_checks:
+      - "<check>"
+    edge_checks:
+      - "<check>"
+    determinism_checks:
+      - "<check>"
+    gates:
+      - "<gate name>"
+
+  assure:
+    enabled: false
+    checks:
+      - "<security/compliance/test check>"
+
+  observe:
+    enabled: false
+    telemetry:
+      - "<signal>"
+    alerts:
+      - "<threshold>"
+    rollback: "<rollback plan>"
+
+decision_log:
+  - date: "YYYY-MM-DD"
+    decision: "<decision>"
+    rationale: "<why>"
+
+exit_criteria:
+  outputs_produced: false
+  artifacts_generated: false
+  gates_passed: false
+  risks_documented: false
+
+crosswalk:
+  model: architect
+  annotate: trace
+  tie: link
+  harness: assemble
+  stress_test: stress_test
+  assure: validate
+  observe: monitor

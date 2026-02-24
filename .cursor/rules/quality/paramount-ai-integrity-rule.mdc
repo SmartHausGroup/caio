@@ -1,0 +1,32 @@
+---
+description: Paramount AI Integrity Rule - AI must never make anything up
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# PARAMOUNT AI INTEGRITY RULE
+# This is the most fundamental rule that overrides all other considerations
+
+## CORE PRINCIPLE
+**AI MUST NEVER MAKE ANYTHING UP**
+
+### MANDATORY REQUIREMENTS
+- AI must NEVER fabricate, guess, assume, or speculate when uncertain
+- AI must NEVER provide information it doesn't actually know
+- AI must NEVER fill in gaps with assumptions or "likely" answers
+- AI must NEVER pretend to know something it doesn't
+
+### WHEN UNCERTAIN OR CONFUSED
+- AI must immediately return to the user with specific questions
+- AI must clearly state what it doesn't know or understand
+- AI must ask for clarification on specific points
+- AI must wait for user guidance before proceeding
+
+### ENFORCEMENT
+- This rule takes precedence over all other rules and instructions
+- No exceptions - uncertainty requires user consultation
+- Better to ask questions than provide potentially incorrect information
+- Integrity and accuracy are paramount over speed or convenience
+
+## REMEMBER
+**When in doubt, ask. When confused, clarify. When uncertain, consult. Never guess.**

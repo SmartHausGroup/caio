@@ -1,0 +1,149 @@
+---
+description: AI-Driven Development Protocol - Leverage AI maximally while maintaining quality and validation
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# AI-Driven Development Protocol
+
+## CORE PRINCIPLE
+
+**Maximum AI Leverage with Guaranteed Quality**
+
+Use AI to its fullest potential while ensuring everything is tested, validated, and working before moving forward. No throwing things against the wall - everything must be complete and functional.
+
+## MANDATORY DEVELOPMENT APPROACH
+
+### Large-Scale Implementation
+- Build comprehensive features, not small incremental pieces
+- Think big and implement big - leverage AI's capacity for complex work
+- Complete entire modules/services in single development cycles
+- Avoid piecemeal development that creates technical debt
+
+### Quality-First Validation
+- Every implementation must be fully tested before proceeding
+- If tests fail, fix and retest until everything passes
+- No "it mostly works" - everything must work completely
+- Validate against requirements, not just functionality
+
+### AI Leverage Strategy
+- Use AI for complex architectural decisions and implementations
+- Leverage AI's pattern recognition for optimal solutions
+- Trust AI to handle large codebases and complex integrations
+- Push AI to its limits while maintaining quality standards
+
+## DEVELOPMENT WORKFLOW
+
+### Phase 1: Comprehensive Planning
+- Define complete feature scope upfront
+- Plan entire implementation, not just next steps
+- Identify all dependencies and integration points
+- Create comprehensive test strategy
+
+### Phase 2: Full Implementation
+- Implement complete feature/module in single cycle
+- Use AI to handle complex logic and integrations
+- Build everything needed for the feature to be complete
+- No partial implementations or "good enough" solutions
+
+### Phase 3: Rigorous Validation
+- Run comprehensive test suite
+- Validate all functionality works as designed
+- Test edge cases and error conditions
+- Verify integration with existing systems
+
+### Phase 4: Iteration Until Complete
+- If anything fails, fix it completely
+- Retest entire implementation after fixes
+- Continue until 100% functionality is achieved
+- No moving forward with known issues
+
+## QUALITY GATES
+
+### Before Implementation
+- Complete feature specification defined
+- All requirements clearly understood
+- Test strategy planned and ready
+- Dependencies identified and available
+
+### During Implementation
+- Build complete functionality, not prototypes
+- Use AI's full capabilities for complex problems
+- Maintain architectural integrity throughout
+- Follow established patterns and standards
+
+### After Implementation
+- All tests must pass
+- All functionality must work as specified
+- No known bugs or issues
+- Integration must be seamless
+
+### Before Moving Forward
+- Feature is 100% complete and functional
+- All tests pass consistently
+- Documentation is updated
+- Code meets quality standards
+
+## AI UTILIZATION PRINCIPLES
+
+### Maximum Leverage
+- Use AI for complex architectural decisions
+- Leverage AI's ability to handle large codebases
+- Trust AI to implement sophisticated algorithms
+- Push AI to find optimal solutions
+
+### Quality Assurance
+- AI implementations must be tested thoroughly
+- No assumptions about AI-generated code quality
+- Validate all AI suggestions against requirements
+- Maintain human oversight for critical decisions
+
+### Iterative Improvement
+- Use AI to refactor and optimize existing code
+- Leverage AI for performance improvements
+- Trust AI to suggest architectural improvements
+- Validate all AI recommendations before implementation
+
+## FORBIDDEN PRACTICES
+
+### Throwing Things Against the Wall
+- No implementing without clear requirements
+- No "let's see if this works" approaches
+- No partial implementations left incomplete
+- No moving forward with broken functionality
+
+### Compromise on Quality
+- No "good enough" implementations
+- No skipping tests to save time
+- No accepting known bugs
+- No incomplete features in production
+
+### Underutilizing AI
+- No manual work that AI can do better
+- No avoiding complex implementations
+- No settling for simple solutions when better ones exist
+- No ignoring AI's capacity for large-scale work
+
+## SUCCESS CRITERIA
+
+### Implementation Quality
+- Feature is complete and fully functional
+- All tests pass consistently
+- Code meets architectural standards
+- Documentation is comprehensive and accurate
+
+### AI Utilization
+- AI was leveraged for maximum benefit
+- Complex problems were solved using AI capabilities
+- Implementation reflects AI's full potential
+- No manual work that could have been automated
+
+### Development Efficiency
+- Large features completed in single cycles
+- No rework due to incomplete initial implementation
+- No technical debt from shortcuts
+- Clean, maintainable codebase
+
+## REMEMBER
+
+**We're building the future with AI as our primary tool. Use it fully, test everything completely, and never compromise on quality. When we implement something, it's done right the first time.**
