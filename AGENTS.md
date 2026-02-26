@@ -178,8 +178,9 @@ For math/algorithm scope, MA is embedded in the MATHS framework. Do not run MA a
 1. **Read** the file you are about to modify (mandatory — no exceptions).
 2. **Verify** you have the correct file and location.
 3. **Check** that your change aligns with plan and North Star.
-4. **Get approval** before writing (change approval protocol).
-5. **Validate** after writing (lints, tests).
+4. **Call `validate_action`** via the SmartHaus MCP server (when available). If `allowed: false`, STOP and report violations.
+5. **Get approval** before writing (change approval protocol).
+6. **Validate** after writing (lints, tests).
 
 ### Python Environment
 
@@ -218,6 +219,7 @@ These constraints are absolute. No exceptions. No overrides unless the user expl
 | C15 | NEVER execute commands or tests without explicit permission | Propose the command and wait for approval |
 | C16 | NEVER add, reorganize, or rename sections in governed documents | Follow the structure as defined |
 | C17 | NEVER batch multiple MATHS phases in one response unless user requests it | Complete one phase, emit exit checklist, wait |
+| C18 | NEVER proceed with a write action when `validate_action` returns `allowed: false` | Stop immediately and report the constraint violations to the user |
 
 ### ALWAYS Do These
 
@@ -235,6 +237,7 @@ These constraints are absolute. No exceptions. No overrides unless the user expl
 | A10 | Run validation (lints, tests) after changes | After every modification |
 | A11 | Use local machine timezone for log timestamps | Every action log entry |
 | A12 | Present formal change-approval packet for writes | Every write operation |
+| A13 | Call `validate_action` MCP tool before any write action | Every write operation (when MCP server is available) |
 
 ---
 
@@ -308,6 +311,7 @@ Common rule categories (create as needed for your project):
 - **Collaboration rules** — prompt creation, triadic collaboration
 - **Development rules** — AI-driven development, pre-commit validation, project venv usage
 - **Documentation rules** — project documentation standards
+- **Governance rules** — AI governance, MCP constraint enforcement (`validate_action` before writes)
 
 ---
 
@@ -434,6 +438,24 @@ YYYY-MM-DD HH:MM:SS TZ — Brief description: detailed explanation with plan ref
 - Never duplicate detailed instructions in kick-off text.
 - Kick-off text includes plan reference and approval statement.
 - Detailed prompt MUST reference `AGENTS.md` (or `CLAUDE.md`) as the first governance read.
+
+---
+
+### 9. MCP Constraint Enforcement (MANDATORY when MCP server available)
+
+**Requirements:**
+
+- Before ANY write or mutating action, call the `validate_action` MCP tool provided by the SmartHaus MCP server.
+- Pass: `repo`, `action_type`, `target`, `scope`, `plan_ref`, `approval`, `branch`, `metadata`.
+- If `allowed` is `false`: **STOP immediately**. Report the constraint violations to the user. Do NOT proceed.
+- If `allowed` is `true`: proceed with the write operation.
+- Use `constraint_status` to inspect loaded constraints before planning changes.
+
+**Action types:** `file_edit`, `commit`, `push`, `deploy`, `test_run`, `command_exec`, `config_change`, `governance_edit`.
+
+**Scopes:** `code`, `config`, `docs`, `governance`, `infrastructure`, `math`, `test`.
+
+**Rule file:** `.cursor/rules/governance/mcp-constraint-enforcement.mdc`
 
 ---
 
