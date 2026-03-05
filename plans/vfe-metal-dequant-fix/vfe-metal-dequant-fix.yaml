@@ -1,0 +1,118 @@
+plan:
+  id: PLAN-VFE-METAL-DEQUANT-001
+  title: "Fix FP16-to-FP32 Dequantization Bug in GGUFParser Metal Backend"
+  domain: framework
+  owner: "@smarthaus"
+  status: active
+  last_updated: "2026-03-05"
+
+maths:
+  model:
+    problem: "All dequantize functions use reinterpret_cast<const float*>(&scale_u16) to convert FP16 scales — reads 4 bytes from 2-byte variable (UB), producing garbage weights"
+    user: "SmartHaus platform — native GGUF inference on Apple Silicon"
+    success:
+      - "Basic quant formats produce correct FP32 from known FP16 scale inputs"
+      - "K-quant formats use correct block structures per GGUF spec"
+      - "Unit test validates Q4_0 dequantization against reference values"
+      - "Clean compilation on macOS ARM64"
+    constraints:
+      - "Fix in vfe-core/native/verbum/metal/GGUFParser.mm only"
+      - "Preserve NEON SIMD paths"
+      - "No public API changes"
+    non_goals:
+      - "Metal shader kernel changes"
+      - "Performance optimization"
+      - "New quant format support"
+
+  annotate:
+    equations_or_rules:
+      - "IEEE 754 FP16: sign(1) | exponent(5) | mantissa(10)"
+      - "FP16->FP32: exponent += 112, mantissa <<= 13"
+      - "Subnormal: (-1)^sign * (mantissa/1024) * 2^(-14)"
+    assumptions:
+      - "GGUF block sizes match llama.cpp reference"
+      - "Little-endian byte order (Apple Silicon)"
+    contracts:
+      - "fp16_to_fp32(uint16_t) -> float must be IEEE 754 compliant"
+    invariants:
+      - "INV-VFE-DEQUANT-001: fp16_to_fp32 produces IEEE 754 FP32 equivalent"
+      - "INV-VFE-DEQUANT-002: dequantize output matches llama.cpp reference"
+    required_artifacts:
+      - "vfe-core/native/verbum/metal/GGUFParser.mm"
+      - "vfe-core/native/verbum/metal/tests/GGUFParserDequantTest.cpp"
+
+  tie:
+    readiness_checks:
+      dependencies_available: true
+      environment_configured: true
+      services_reachable: true
+      governance_checks_pass: true
+    blockers: []
+    go_no_go: "go"
+
+  harness:
+    phases:
+      - id: "H1"
+        task: "Add fp16_to_fp32 inline helper function"
+        owner: "claude"
+      - id: "H2"
+        task: "Fix basic quant functions (Q4_0, Q4_1, Q5_0, Q5_1, Q8_0, Q8_1)"
+        owner: "claude"
+      - id: "H3"
+        task: "Fix K-quant functions (Q2_K, Q3_K, Q4_K, Q5_K, Q6_K, Q8_K)"
+        owner: "claude"
+      - id: "H4"
+        task: "Add dequantization unit test"
+        owner: "claude"
+    files_touched:
+      - "vfe-core/native/verbum/metal/GGUFParser.mm"
+      - "vfe-core/native/verbum/metal/tests/GGUFParserDequantTest.cpp"
+    notebook_first: false
+    extraction_boundary: "N/A — C++ bugfix, not math/algorithm development"
+
+  stress_test:
+    functional_checks:
+      - "Compile with no warnings on macOS ARM64"
+      - "Q4_0 block with FP16 scale 0x3C00 (1.0) produces correct output"
+      - "Q8_0 block with FP16 scale 0x3800 (0.5) produces correct output"
+      - "GGUFParserSmoke test passes with real GGUF model"
+    edge_checks:
+      - "FP16 subnormal (exp=0, mantissa!=0) does not produce 0"
+      - "FP16 zero (0x0000) produces 0.0f"
+      - "FP16 negative scale produces negative float"
+      - "FP16 infinity (0x7C00) produces INFINITY"
+      - "FP16 NaN (0x7E00) produces NAN"
+    determinism_checks:
+      - "IEEE 754 conversion is deterministic by definition"
+    gates:
+      - "all_dequant_unit_tests_pass"
+      - "clean_compilation"
+      - "no_reinterpret_cast_float_from_u16_patterns"
+
+  assure:
+    enabled: false
+    checks: []
+
+  observe:
+    enabled: false
+    telemetry: []
+    alerts: []
+    rollback: "Revert GGUFParser.mm to previous commit"
+
+decision_log:
+  - date: "2026-03-05"
+    decision: "Proceed with fix"
+    rationale: "Root cause confirmed — UB in FP16->FP32 cast. Correct conversion exists in same file."
+
+exit_criteria:
+  outputs_produced: true
+  artifacts_generated: true
+  gates_passed: true
+  risks_documented: true
+
+crosswalk:
+  model: architect
+  annotate: trace
+  tie: link
+  harness: assemble
+  stress_test: stress_test

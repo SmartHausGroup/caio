@@ -1,0 +1,50 @@
+{
+  "plan": {
+    "id": "PLAN-VFE-METAL-DEQUANT-001",
+    "title": "Fix FP16-to-FP32 Dequantization Bug in GGUFParser Metal Backend",
+    "domain": "framework",
+    "owner": "@smarthaus",
+    "status": "active",
+    "last_updated": "2026-03-05"
+  },
+  "maths": {
+    "model": {
+      "problem": "All dequantize functions use reinterpret_cast<const float*>(&scale_u16) — reads 4 bytes from 2-byte variable (UB), producing garbage weights",
+      "user": "SmartHaus platform — native GGUF inference on Apple Silicon",
+      "success": [
+        "Basic quant formats produce correct FP32 from known FP16 scale inputs",
+        "K-quant formats use correct block structures per GGUF spec",
+        "Unit test validates Q4_0 dequantization against reference values",
+        "Clean compilation on macOS ARM64"
+      ],
+      "constraints": [
+        "Fix in vfe-core/native/verbum/metal/GGUFParser.mm only",
+        "Preserve NEON SIMD paths",
+        "No public API changes"
+      ],
+      "non_goals": [
+        "Metal shader kernel changes",
+        "Performance optimization",
+        "New quant format support"
+      ]
+    },
+    "harness": {
+      "phases": [
+        {"id": "H1", "task": "Add fp16_to_fp32 inline helper function"},
+        {"id": "H2", "task": "Fix basic quant functions (Q4_0, Q4_1, Q5_0, Q5_1, Q8_0, Q8_1)"},
+        {"id": "H3", "task": "Fix K-quant functions (Q2_K, Q3_K, Q4_K, Q5_K, Q6_K, Q8_K)"},
+        {"id": "H4", "task": "Add dequantization unit test"}
+      ],
+      "files_touched": [
+        "vfe-core/native/verbum/metal/GGUFParser.mm",
+        "vfe-core/native/verbum/metal/tests/GGUFParserDequantTest.cpp"
+      ]
+    }
+  },
+  "exit_criteria": {
+    "outputs_produced": true,
+    "artifacts_generated": false,
+    "gates_passed": false,
+    "risks_documented": true
+  }
+}
