@@ -3,7 +3,7 @@
 ## Overview
 
 CAIO serves as the orchestration layer for TAI, providing mathematical guarantees for routing
-decisions between TAI services (RFS, VFE, VEE, NME) and external services.
+decisions between TAI services (RFS, SAID, VEE, NME) and external services.
 
 **CAIO's Role in TAI:**
 - **Service Orchestration:** Routes requests to appropriate TAI services or external services.
@@ -13,7 +13,7 @@ decisions between TAI services (RFS, VFE, VEE, NME) and external services.
 
 **Integration Points:**
 - **MAIA:** Uses CAIO for routing decisions based on intent field measurements.
-- **TAI Services:** RFS, VFE, VEE, NME register with CAIO as internal services.
+- **TAI Services:** RFS, SAID, VEE, NME register with CAIO as internal services.
 - **TAI Frontend:** Uses CAIO API for service orchestration.
 - **External Services:** Marketplace services register via same contract system.
 
@@ -235,7 +235,7 @@ See `docs/configuration/CONFIGURATION.md` for complete configuration options.
 
 ## Examples
 
-- Register each TAI service (RFS, VFE, VEE, NME) with its contract file.
+- Register each TAI service (RFS, SAID, VEE, NME) with its contract file.
 - Use CAIO orchestrator for routing requests with intent, requirements, and constraints.
 - Integrate CAIO control signals back into MAIA intent field updates.
 

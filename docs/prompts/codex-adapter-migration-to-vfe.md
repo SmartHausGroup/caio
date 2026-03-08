@@ -1,4 +1,4 @@
-# CAIO Adapter Migration to VFE - Tier 1 Inference Adapters
+# CAIO Adapter Migration to SAID - Tier 1 Inference Adapters
 
 **Status:** Ready for Execution  
 **Date:** 2026-01-13  
@@ -9,13 +9,13 @@
 
 ## Executive Summary
 
-Migrate Tier 1 inference adapters (OpenAI, Anthropic, Groq, Mistral AI, Cohere) from CAIO's gateway adapters to VFE's unified inference engine. This migration removes inference execution from CAIO and establishes VFE as the sole inference execution layer, with CAIO focusing on orchestration and routing decisions.
+Migrate Tier 1 inference adapters (OpenAI, Anthropic, Groq, Mistral AI, Cohere) from CAIO's gateway adapters to SAID's unified inference engine. This migration removes inference execution from CAIO and establishes SAID as the sole inference execution layer, with CAIO focusing on orchestration and routing decisions.
 
 **Key Deliverables:**
 1. Remove Tier 1 adapter files from `caio/gateway/adapters/`
-2. Update `caio/gateway/executor.py` to route inference requests to VFE
-3. Update `caio/orchestrator/core.py` to use VFE for inference execution
-4. Create VFE client integration in CAIO
+2. Update `caio/gateway/executor.py` to route inference requests to SAID
+3. Update `caio/orchestrator/core.py` to use SAID for inference execution
+4. Create SAID client integration in CAIO
 5. Update tests and documentation
 
 **Estimated Time:** 1-2 weeks  
@@ -30,12 +30,12 @@ Migrate Tier 1 inference adapters (OpenAI, Anthropic, Groq, Mistral AI, Cohere) 
 - ✅ **Tier 1 Adapters Exist:** OpenAI, Anthropic, Groq, Mistral AI, Cohere adapters in `caio/gateway/adapters/`
 - ✅ **Gateway Executor:** `caio/gateway/executor.py` executes adapters directly
 - ✅ **Orchestrator:** `caio/orchestrator/core.py` routes to gateway executor
-- ❌ **VFE Integration:** No VFE client integration exists
+- ❌ **SAID Integration:** No SAID client integration exists
 - ❌ **Routing Logic:** No distinction between inference and marketplace requests
 
 ### Problem Statement
 
-CAIO currently executes inference requests directly via gateway adapters. With the unified inference architecture, all inference execution should be handled by VFE, with CAIO focusing on orchestration and routing. Tier 1 adapters need to be removed from CAIO and inference requests need to be routed to VFE.
+CAIO currently executes inference requests directly via gateway adapters. With the unified inference architecture, all inference execution should be handled by SAID, with CAIO focusing on orchestration and routing. Tier 1 adapters need to be removed from CAIO and inference requests need to be routed to SAID.
 
 ### North Star Alignment
 
@@ -44,7 +44,7 @@ This task directly supports the CAIO North Star by:
 - **Universal AI Controller:** CAIO focuses on orchestration, not inference execution
 - **Mathematical Guarantees:** Guarantee enforcement continues via CAIO's GuaranteeEnforcer
 - **Contract-Based Discovery:** Marketplace agent contracts remain in CAIO (non-inference)
-- **Service Separation:** Clear separation between orchestration (CAIO) and inference (VFE)
+- **Service Separation:** Clear separation between orchestration (CAIO) and inference (SAID)
 
 **Reference:** `docs/NORTH_STAR.md` - Universal AI Controller, Service Orchestration Architecture
 
@@ -53,7 +53,7 @@ This task directly supports the CAIO North Star by:
 This task implements the adapter migration from unified inference architecture ADR (`docs/adr/ADR-0001-unified-inference-architecture.md`).
 
 **Dependencies:**
-- VFE plan: `external-api-backends-integration` must be complete
+- SAID plan: `external-api-backends-integration` must be complete
 - Unified inference architecture ADRs approved
 - API key management system functional
 
@@ -61,16 +61,16 @@ This task implements the adapter migration from unified inference architecture A
 
 ## Step-by-Step Implementation Instructions
 
-### Step 1: Verify VFE Backends Are Ready
+### Step 1: Verify SAID Backends Are Ready
 
 **Before starting, verify:**
-- [ ] VFE external API backends are implemented (check VFE plan status)
-- [ ] VFE API is accessible from CAIO
-- [ ] VFE API endpoints are documented
+- [ ] SAID external API backends are implemented (check SAID plan status)
+- [ ] SAID API is accessible from CAIO
+- [ ] SAID API endpoints are documented
 
-**If VFE backends are not ready:**
-- Coordinate with VFE plan execution
-- Use VFE stub/mock for CAIO testing
+**If SAID backends are not ready:**
+- Coordinate with SAID plan execution
+- Use SAID stub/mock for CAIO testing
 - Proceed with adapter removal first, routing second
 
 ### Step 2: Remove Tier 1 Adapters from CAIO
@@ -130,7 +130,7 @@ from caio.gateway.adapters.mistral import MistralAdapter
 from caio.gateway.adapters.openai import OpenAIAdapter
 
 # AFTER:
-# Tier 1 adapters removed - inference routed to VFE
+# Tier 1 adapters removed - inference routed to SAID
 ```
 
 Remove Tier 1 adapter registry entries:
@@ -147,19 +147,19 @@ self.adapter_registry = {
 
 # AFTER:
 self.adapter_registry = {
-    # Tier 1 adapters removed - inference routed to VFE
+    # Tier 1 adapters removed - inference routed to SAID
     # Marketplace agent adapters remain here
 }
 ```
 
-### Step 3: Create VFE Client Integration
+### Step 3: Create SAID Client Integration
 
-**3.1: Create VFE Client**
+**3.1: Create SAID Client**
 
-**File:** `caio/integrations/vfe_client.py` (create new file)
+**File:** `caio/integrations/said_client.py` (create new file)
 
 ```python
-"""VFE client for inference execution."""
+"""SAID client for inference execution."""
 
 import httpx
 import logging
@@ -169,13 +169,13 @@ from typing import Any, Dict, Optional
 logger = logging.getLogger(__name__)
 
 
-class VFEClient:
-    """Client for VFE unified inference engine."""
+class SAIDClient:
+    """Client for SAID unified inference engine."""
 
     def __init__(self, base_url: Optional[str] = None, api_key: Optional[str] = None):
-        """Initialize VFE client."""
-        self.base_url = base_url or os.getenv("VFE_API_URL", "http://localhost:8000")
-        self.api_key = api_key or os.getenv("VFE_API_KEY", "")
+        """Initialize SAID client."""
+        self.base_url = base_url or os.getenv("SAID_API_URL", "http://localhost:8000")
+        self.api_key = api_key or os.getenv("SAID_API_KEY", "")
         self.timeout = 30.0
         self.http_client = httpx.Client(timeout=self.timeout)
 
@@ -189,7 +189,7 @@ class VFEClient:
     def generate(
         self, messages: list[Dict[str, str]], model: str, **kwargs
     ) -> Dict[str, Any]:
-        """Generate completion via VFE."""
+        """Generate completion via SAID."""
         url = f"{self.base_url.rstrip('/')}/v1/inference/generate"
         payload = {
             "messages": messages,
@@ -203,13 +203,13 @@ class VFEClient:
             response.raise_for_status()
             return response.json()
         except httpx.HTTPError as e:
-            logger.error(f"VFE API error: {e}")
-            raise ServiceExecutionError(f"VFE API error: {e}") from e
+            logger.error(f"SAID API error: {e}")
+            raise ServiceExecutionError(f"SAID API error: {e}") from e
 
     def generate_stream(
         self, messages: list[Dict[str, str]], model: str, **kwargs
     ) -> Any:
-        """Generate streaming completion via VFE."""
+        """Generate streaming completion via SAID."""
         url = f"{self.base_url.rstrip('/')}/v1/inference/generate/stream"
         payload = {
             "messages": messages,
@@ -227,11 +227,11 @@ class VFEClient:
                     if line:
                         yield json.loads(line)
         except httpx.HTTPError as e:
-            logger.error(f"VFE API error: {e}")
-            raise ServiceExecutionError(f"VFE API error: {e}") from e
+            logger.error(f"SAID API error: {e}")
+            raise ServiceExecutionError(f"SAID API error: {e}") from e
 
     def list_models(self) -> Dict[str, Any]:
-        """List available models from VFE."""
+        """List available models from SAID."""
         url = f"{self.base_url.rstrip('/')}/v1/models"
         headers = self._get_headers()
 
@@ -240,26 +240,26 @@ class VFEClient:
             response.raise_for_status()
             return response.json()
         except httpx.HTTPError as e:
-            logger.error(f"VFE API error: {e}")
-            raise ServiceExecutionError(f"VFE API error: {e}") from e
+            logger.error(f"SAID API error: {e}")
+            raise ServiceExecutionError(f"SAID API error: {e}") from e
 ```
 
-**3.2: Update Executor to Route to VFE**
+**3.2: Update Executor to Route to SAID**
 
 **File:** `caio/gateway/executor.py`
 
-Add VFE client import and routing logic:
+Add SAID client import and routing logic:
 
 ```python
-from caio.integrations.vfe_client import VFEClient
+from caio.integrations.said_client import SAIDClient
 
 class Executor:
     def __init__(self):
         # ... existing code ...
-        self.vfe_client = VFEClient()
+        self.said_client = SAIDClient()
 
     def _is_inference_request(self, service_id: str, request: Request) -> bool:
-        """Determine if request is inference (should route to VFE)."""
+        """Determine if request is inference (should route to SAID)."""
         # Tier 1 services are inference
         inference_services = {"openai", "anthropic", "groq", "mistral", "cohere"}
         return service_id.lower() in inference_services
@@ -267,30 +267,30 @@ class Executor:
     def execute(
         self, service_id: str, contract: ParsedServiceContract, request: Request
     ) -> Dict[str, Any]:
-        """Execute request - route to VFE for inference, gateway for marketplace."""
+        """Execute request - route to SAID for inference, gateway for marketplace."""
         # Check if this is an inference request
         if self._is_inference_request(service_id, request):
-            # Route to VFE
-            return self._execute_vfe(request, service_id)
+            # Route to SAID
+            return self._execute_said(request, service_id)
         else:
             # Route to gateway (marketplace agents)
             return self._execute_gateway(service_id, contract, request)
 
-    def _execute_vfe(self, request: Request, service_id: str) -> Dict[str, Any]:
-        """Execute inference request via VFE."""
-        # Transform CAIO request to VFE format
+    def _execute_said(self, request: Request, service_id: str) -> Dict[str, Any]:
+        """Execute inference request via SAID."""
+        # Transform CAIO request to SAID format
         messages = RequestTransformer.extract_messages(request)
         model = RequestTransformer.extract_model(request, service_id)
         parameters = RequestTransformer.extract_parameters(request)
 
-        # Execute via VFE
-        response = self.vfe_client.generate(
+        # Execute via SAID
+        response = self.said_client.generate(
             messages=messages,
             model=model,
             **parameters,
         )
 
-        # Transform VFE response to CAIO format
+        # Transform SAID response to CAIO format
         return ResponseTransformer.normalize_response(response)
 
     def _execute_gateway(
@@ -306,12 +306,12 @@ class Executor:
 
 **File:** `caio/orchestrator/core.py`
 
-Update orchestrator to use VFE routing:
+Update orchestrator to use SAID routing:
 
 ```python
 # Update routing decision logic to distinguish inference vs. marketplace
-# Update traceability to include VFE routing
-# Maintain guarantee enforcement with VFE responses
+# Update traceability to include SAID routing
+# Maintain guarantee enforcement with SAID responses
 ```
 
 ### Step 5: Update Tests
@@ -325,19 +325,19 @@ Delete or update:
 - `tests/unit/test_mistral_adapter.py`
 - `tests/unit/test_cohere_adapter.py`
 
-**5.2: Add VFE Integration Tests**
+**5.2: Add SAID Integration Tests**
 
-Create `tests/integration/test_vfe_integration.py`:
+Create `tests/integration/test_said_integration.py`:
 
 ```python
-"""Tests for CAIO-VFE integration."""
+"""Tests for CAIO-SAID integration."""
 
 import pytest
-from caio.integrations.vfe_client import VFEClient
+from caio.integrations.said_client import SAIDClient
 from caio.gateway.executor import Executor
 
-def test_vfe_routing():
-    """Test that inference requests route to VFE."""
+def test_said_routing():
+    """Test that inference requests route to SAID."""
     # Test implementation
     pass
 
@@ -355,7 +355,7 @@ def test_marketplace_routing():
 
 Update to clarify:
 - Gateway adapters are for marketplace agents (non-inference)
-- Inference requests route to VFE
+- Inference requests route to SAID
 - Adapter scope and responsibilities
 
 **6.2: Update Execution Plan**
@@ -388,10 +388,10 @@ grep -r "from caio.gateway.adapters.anthropic import" caio/  # Should return not
 
 ```bash
 # Run integration tests
-pytest tests/integration/test_vfe_integration.py -v
+pytest tests/integration/test_said_integration.py -v
 
-# Verify VFE routing works
-# Test inference request routes to VFE
+# Verify SAID routing works
+# Test inference request routes to SAID
 # Test marketplace request routes to gateway
 ```
 
@@ -399,32 +399,32 @@ pytest tests/integration/test_vfe_integration.py -v
 
 ```bash
 # Run E2E tests
-pytest tests/e2e/test_caio_vfe_integration.py -v
+pytest tests/e2e/test_caio_said_integration.py -v
 
 # Verify full flow works
-# CAIO → VFE → External API → Response → GuaranteeEnforcer
+# CAIO → SAID → External API → Response → GuaranteeEnforcer
 ```
 
 ---
 
 ## Troubleshooting Guide
 
-### Issue: VFE API Not Accessible
+### Issue: SAID API Not Accessible
 
-**Symptoms:** VFE client fails to connect
+**Symptoms:** SAID client fails to connect
 
 **Solutions:**
-- Verify VFE API URL is correct
-- Check VFE service is running
+- Verify SAID API URL is correct
+- Check SAID service is running
 - Verify network connectivity
 - Check API key configuration
 
 ### Issue: Guarantee Enforcement Fails
 
-**Symptoms:** GuaranteeEnforcer rejects VFE responses
+**Symptoms:** GuaranteeEnforcer rejects SAID responses
 
 **Solutions:**
-- Verify VFE response format matches CAIO format
+- Verify SAID response format matches CAIO format
 - Check response transformation logic
 - Update GuaranteeEnforcer if needed
 - Verify guarantee definitions are correct
@@ -445,9 +445,9 @@ pytest tests/e2e/test_caio_vfe_integration.py -v
 
 - [ ] All Tier 1 adapter files deleted
 - [ ] `__init__.py` updated (no Tier 1 exports)
-- [ ] Executor updated (VFE routing implemented)
-- [ ] Orchestrator updated (VFE integration)
-- [ ] VFE client created and functional
+- [ ] Executor updated (SAID routing implemented)
+- [ ] Orchestrator updated (SAID integration)
+- [ ] SAID client created and functional
 - [ ] Tests updated and passing
 - [ ] Documentation updated
 - [ ] Execution plan updated
@@ -457,7 +457,7 @@ pytest tests/e2e/test_caio_vfe_integration.py -v
 ## Notes and References
 
 - **CAIO Plan:** `plans/adapter-migration-to-vfe/`
-- **VFE Plan:** `../VerbumFieldEngine/plans/external-api-backends-integration/`
+- **SAID Plan:** `../said-core/plans/external-api-backends-integration/`
 - **ADR:** `docs/adr/ADR-0001-unified-inference-architecture.md`
 - **North Star:** `docs/NORTH_STAR.md`
 - **BaseAdapter:** `caio/gateway/base.py`

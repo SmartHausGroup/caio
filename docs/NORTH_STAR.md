@@ -102,13 +102,13 @@ CAIO orchestrates all AI services in the TAI ecosystem, routing requests to the 
 
 **Service Routing Model:**
 
-1. **VFE (Verbum Field Engine) - Inference**
+1. **SAID (Sermo Arbiter Inferentiae Determinata) - Inference**
    - **Role**: Unified inference engine
    - **Scope**: All inference (local models + external APIs)
-   - **Routing**: CAIO routes inference requests to VFE
+   - **Routing**: CAIO routes inference requests to SAID
    - **Local Backends**: llama.cpp, transformers, MLX, Metal, Apple FM
    - **External APIs**: OpenAI, Anthropic, Groq, Mistral AI, Cohere, Hugging Face, etc.
-   - **Note**: VFE handles all inference execution; CAIO orchestrates, VFE executes
+   - **Note**: SAID handles all inference execution; CAIO orchestrates, SAID executes
 
 2. **Internal Services - Specialized Capabilities**
    - **NME (Nota Memoria Engine)**: Trait extraction and memory structuring
@@ -121,7 +121,7 @@ CAIO orchestrates all AI services in the TAI ecosystem, routing requests to the 
    - **Role**: External enterprise AI tools
    - **Examples**: Salesforce Einstein, Zoom AI, Microsoft Copilot, ServiceNow AI
    - **Registration**: Register in CAIO marketplace with mathematical contracts
-   - **Routing**: CAIO routes directly to marketplace agents (bypasses VFE for non-inference actions)
+   - **Routing**: CAIO routes directly to marketplace agents (bypasses SAID for non-inference actions)
    - **Contracts**: Must adhere to mathematical contract structure for guarantee enforcement
 
 **Complete Orchestration Flow:**
@@ -133,7 +133,7 @@ Mathematical Contract Matching
     ↓
 ┌───┴───┬──────────┬──────────┬──────────┬──────────┬──────────────────┐
 │       │          │          │          │          │                  │
-VFE    NME        MAIA       RFS        VEE    Marketplace Agents
+SAID   NME        MAIA       RFS        VEE    Marketplace Agents
 │       │          │          │          │          │
 │    Inference  Traits    Intent    Memory    Math    Salesforce/Zoom/etc.
 │    (Local +   Extract   Classify  Store     Compute Enterprise AI Tools
@@ -147,10 +147,10 @@ VFE    NME        MAIA       RFS        VEE    Marketplace Agents
 **Key Principles:**
 
 - **CAIO Orchestrates, Services Execute**: CAIO makes routing decisions; services perform actual work
-- **VFE for All Inference**: All inference (local or external API) goes through VFE
+- **SAID for All Inference**: All inference (local or external API) goes through SAID
 - **Marketplace for Enterprise**: External enterprise agents register in CAIO marketplace
 - **Mathematical Contracts**: All service interactions use mathematical contracts for guarantees
-- **Direct Routing**: CAIO routes to marketplace agents directly (not through VFE for non-inference)
+- **Direct Routing**: CAIO routes to marketplace agents directly (not through SAID for non-inference)
 
 ---
 
@@ -158,7 +158,7 @@ VFE    NME        MAIA       RFS        VEE    Marketplace Agents
 
 ### 2.0 Field-Based Control Architecture Overview
 
-CAIO operates as the **control plane** that converts MAIA's intent field measurements into concrete routing decisions, model selection, and control signals. CAIO sits in the middle of the cognitive system, reading field states from MAIA/NME/RFS and driving downstream services (VFE, tools, APIs).
+CAIO operates as the **control plane** that converts MAIA's intent field measurements into concrete routing decisions, model selection, and control signals. CAIO sits in the middle of the cognitive system, reading field states from MAIA/NME/RFS and driving downstream services (SAID, tools, APIs).
 
 **Core Control Equation:**
 
@@ -177,7 +177,7 @@ G_safety(a) ≤ 0,  G_policy(a, m) ≤ 0,  G_traits(Ψ_t, a) ≤ 0
 Where:
 - `a^*`: Selected route (internal/external/hybrid)
 - `u^*`: Control signal to MAIA (mode excitation/damping)
-- `m^*`: Selected model/service (via VFE calculus)
+- `m^*`: Selected model/service (via SAID calculus)
 - `Ψ_i`: Intent field from MAIA (high-frequency modes)
 - `Ψ_t`: Trait field from NME (low-frequency modes)
 - `Ψ_RFS`: Memory field from RFS
@@ -637,7 +637,7 @@ Deployments must measure these coefficients for each `{backend, |R|, |P|, |candi
 | Role | Target | Capabilities |
 | --- | --- | --- |
 | **Embedded Governance** | Local TAI Controller | Licensing, Local Discovery, Heartbeat |
-| **Enterprise Cluster** | Large-scale Orchestration | Full Marketplace, Multi-region Routing, VFE Load Balancing |
+| **Enterprise Cluster** | Large-scale Orchestration | Full Marketplace, Multi-region Routing, SAID Load Balancing |
 
 #### 3.2.1 Embedded Governance (Foundational for TAI)
 The CAIO runtime can be started as a managed subprocess within the TAI application. In this role, it provides the core governance kernel:
@@ -787,7 +787,7 @@ Rules are evaluated mathematically, actions are provable.
 │      External Services          Internal Services                      │
 │      ───────────────────────────┬────────────────────────────┬────────│
 │                                 │                            │        │
-│     Marketplace (Agents)       │   TAI Services (RFS, VFE, │        │
+│     Marketplace (Agents)       │   TAI Services (RFS, SAID,│        │
 │     External APIs              │   VEE, NME)                │        │
 │                                 │                            │        │
 └────────────────────────────────────────────────────────────────────────┘
@@ -904,7 +904,7 @@ CAIO is a standalone service with:
   - Traceability and audit trails
 
 **Integration Points:**
-- TAI services (RFS, VFE, VEE, NME) register as internal services
+- TAI services (RFS, SAID, VEE, NME) register as internal services
 - External marketplace services register via same contract system
 - MAIA uses CAIO for routing decisions
 - TAI frontend uses CAIO for service orchestration
@@ -1068,7 +1068,7 @@ curl -s -X POST http://localhost:8000/routing/route \
 
 ### 7.1 Internal Services (TAI-Controlled)
 
-Internal services (RFS, VFE, VEE, NME) have a separate controlled process:
+Internal services (RFS, SAID, VEE, NME) have a separate controlled process:
 
 - **Registration**: Controlled by TAI team
 - **Contract Location**: `TAI/configs/internal_services/`

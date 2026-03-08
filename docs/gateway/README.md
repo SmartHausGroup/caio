@@ -3,7 +3,7 @@
 ## Overview
 
 The CAIO Service Gateway executes requests against non-inference services that are registered in
-the CAIO registry. Inference requests are routed to VFE, which is the unified inference execution
+the CAIO registry. Inference requests are routed to SAID, which is the unified inference execution
 layer for all model calls.
 
 ## Responsibilities
@@ -20,12 +20,12 @@ layer for all model calls.
 
 ## Inference Routing
 
-Inference services are routed to VFE by the gateway executor. CAIO orchestrates and validates the
-result, while VFE performs the actual inference execution.
+Inference services are routed to SAID by the gateway executor. CAIO orchestrates and validates the
+result, while SAID performs the actual inference execution.
 
 ## Supported Services
 
-### Tier 1: Core LLM Providers (VFE Routed)
+### Tier 1: Core LLM Providers (SAID Routed)
 
 - OpenAI, Anthropic, Groq, Mistral AI, Cohere
 
@@ -63,6 +63,6 @@ contract structures.
 
 ## Related Components
 
-- `caio/gateway/executor.py` - Gateway execution engine and VFE routing
+- `caio/gateway/executor.py` - Gateway execution engine and SAID routing
 - `caio/gateway/transformer.py` - Request/response transformation helpers
-- `caio/integrations/vfe_client.py` - VFE client integration
+- `caio/integrations/said_client.py` - SAID client integration

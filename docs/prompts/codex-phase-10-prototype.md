@@ -9,11 +9,11 @@
 
 ## ⚠️ CRITICAL: Cleanup Required First
 
-**IMPORTANT:** You previously executed Phase 10 prototype work in the **WRONG repository** (VerbumFieldEngine/VFE). Before proceeding with CAIO Phase 10, you MUST clean up the VFE work.
+**IMPORTANT:** You previously executed Phase 10 prototype work in the **WRONG repository** (said-core, formerly VerbumFieldEngine/VFE). Before proceeding with CAIO Phase 10, you MUST clean up that work.
 
-### Cleanup Task: Remove VFE Phase 10 Work
+### Cleanup Task: Remove Misplaced Phase 10 Work
 
-**Repository:** `/Users/smarthaus/Projects/GitHub/VerbumFieldEngine`
+**Repository:** `/Users/smarthaus/Projects/GitHub/said-core`
 
 **Files to Remove:**
 1. `vfe_phase10_prototype_demo.py` (repository root)
@@ -28,13 +28,13 @@
 4. `plans/vfe-phase-10-prototype/vfe-phase-10-prototype.json` - Revert status from "complete" to "proposed"
 5. `docs/operations/EXECUTION_PLAN.md` - Remove any Phase 10 completion entries
 6. `docs/operations/STATUS_PLAN.md` - Remove Phase 10 completion status
-7. `CODEX_ACTION_LOG` - Remove the entry about completing Phase 10 in VFE
+7. `CODEX_ACTION_LOG` - Remove the entry about completing Phase 10 in the wrong repo
 
 **Cleanup Steps:**
 
-1. **Navigate to VFE repository:**
+1. **Navigate to said-core repository:**
    ```bash
-   cd /Users/smarthaus/Projects/GitHub/VerbumFieldEngine
+   cd /Users/smarthaus/Projects/GitHub/said-core
    ```
 
 2. **Remove prototype files:**
@@ -89,7 +89,7 @@ These prototypes serve as proof of concept, integration examples, developer onbo
 **Estimated Time:** 1-2 days  
 **Priority:** High (enables CAIO demonstration and integration)
 
-**CRITICAL:** You are working in the **CAIO repository** (`/Users/smarthaus/Projects/GitHub/CAIO`), NOT VerbumFieldEngine. All files created must be in the CAIO repository.
+**CRITICAL:** You are working in the **CAIO repository** (`/Users/smarthaus/Projects/GitHub/CAIO`), NOT said-core. All files created must be in the CAIO repository.
 
 ---
 

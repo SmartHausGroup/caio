@@ -13,7 +13,7 @@
       "M365 service registration; M365 adapter (client to M365 API); routing by intent; auth; tests and docs"
     ],
     "out_of_scope": [
-      "M365 API implementation; TAI voice; MAIA intent; VFE changes"
+      "M365 API implementation; TAI voice; MAIA intent; SAID changes"
     ]
   },
   "requirements": {

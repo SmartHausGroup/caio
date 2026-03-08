@@ -10,11 +10,11 @@
 
 ## Executive Summary
 
-Implement math thesis guarantee enforcement in CAIO's `GuaranteeEnforcer` and create service contracts for all components (RFS, NME, VFE, MAIA, VEE) that encode their mathematical guarantees from `docs/MATH_THESIS_v5.md`.
+Implement math thesis guarantee enforcement in CAIO's `GuaranteeEnforcer` and create service contracts for all components (RFS, NME, SAID, MAIA, VEE) that encode their mathematical guarantees from `docs/MATH_THESIS_v5.md`.
 
 **Key Deliverables:**
 1. Enhance `GuaranteeEnforcer` to validate all 7 math thesis guarantee types
-2. Create service contracts for RFS, NME, VFE, MAIA, VEE
+2. Create service contracts for RFS, NME, SAID, MAIA, VEE
 3. Register contracts in ServiceRegistry
 4. Verify end-to-end guarantee enforcement
 
@@ -30,7 +30,7 @@ Implement math thesis guarantee enforcement in CAIO's `GuaranteeEnforcer` and cr
 - ✅ **Contract Schema:** Supports math thesis guarantees (R7 complete)
 - ✅ **Math Thesis:** `docs/MATH_THESIS_v5.md` copied to CAIO
 - ❌ **GuaranteeEnforcer:** Only validates basic guarantees (accuracy, latency, determinism, security)
-- ❌ **Service Contracts:** No contracts for RFS, NME, VFE, MAIA, VEE
+- ❌ **Service Contracts:** No contracts for RFS, NME, SAID, MAIA, VEE
 - ❌ **Enforcement:** Math thesis guarantees not enforced
 
 ### Problem Statement
@@ -109,9 +109,9 @@ Create contract with applicable guarantees:
 - `pde_stability`: INV-NME-SPEC-0002 (exists)
 - Add missing: energy, resonance, interference, conductivity, capacity
 
-### Step 4: Create VFE Service Contract
+### Step 4: Create SAID Service Contract
 
-**File:** `configs/services/vfe.yaml`
+**File:** `configs/services/said.yaml`
 
 Determine which guarantees apply to inference engine. May not need all 7.
 
@@ -143,7 +143,7 @@ Create integration tests verifying guarantee enforcement works.
 
 - [ ] Phase 1-2: Math reviewed, verified correct
 - [ ] Phase 3: GuaranteeEnforcer validates all 7 types (derived FROM math)
-- [ ] Phase 3: Component math reviewed (RFS, NME, VFE, MAIA, VEE)
+- [ ] Phase 3: Component math reviewed (RFS, NME, SAID, MAIA, VEE)
 - [ ] Phase 3: All 5 service contracts created (encode math thesis guarantees)
 - [ ] Phase 4: Contracts load in ServiceRegistry
 - [ ] Phase 5: End-to-end tests pass

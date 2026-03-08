@@ -145,7 +145,7 @@ This document provides at-a-glance project status, tracking:
 
 **Work Completed:**
 - Clarified CAIO's role per ADR-0001 (orchestrator, not inference executor)
-- Updated execution plan to reflect Tier 1 adapters migrated to VFE
+- Updated execution plan to reflect Tier 1 adapters migrated to SAID
 - Identified non-inference adapters for verification (12 total: embeddings, code, search, voice, image)
 - Created Phase 19.10 plan and prompt for live verification of non-inference adapters only
 - Updated execution plan Phase 19.2-19.4 to reflect architecture reality
@@ -293,7 +293,7 @@ This document provides at-a-glance project status, tracking:
 
 **Work Completed:**
 - Documented gateway adapter patterns, troubleshooting, and API versioning guidance
-- Added tiered integration examples for Tier 1 (VFE-routed), Tier 2, and Tier 3 services
+- Added tiered integration examples for Tier 1 (SAID-routed), Tier 2, and Tier 3 services
 - Confirmed contract templates remain available under `configs/services/external/`
 
 **Plan Reference:** `plan:EXECUTION_PLAN:19.5`
@@ -509,21 +509,21 @@ contract usage and onboarding for adapter-based services.
 
 **Impact:** Establishes foundation for encoding math thesis guarantees in service contracts. Identifies specific gaps and proposes concrete schema enhancements.
 
-**2026-01-13: Adapter Migration to VFE (Unified Inference Architecture)**
+**2026-01-13: Adapter Migration to SAID (Unified Inference Architecture)**
 
 **Status:** ✅ **COMPLETE**
 
 **Work Completed:**
 - Removed Tier 1 inference adapters from CAIO gateway (openai, anthropic, groq, mistral, cohere)
-- Created VFE client integration (`caio/integrations/vfe_client.py`) for inference execution
-- Updated GatewayExecutor to route inference requests to VFE API
+- Created SAID client integration (`caio/integrations/said_client.py`) for inference execution
+- Updated GatewayExecutor to route inference requests to SAID API
 - Maintained marketplace agent routing via gateway adapters (unchanged)
-- Updated tests: removed Tier 1 adapter tests, added VFE integration tests
-- Guarantee enforcement continues to work with VFE responses
+- Updated tests: removed Tier 1 adapter tests, added SAID integration tests
+- Guarantee enforcement continues to work with SAID responses
 
 **Plan Reference:** `plan:adapter-migration-to-vfe:unified-inference-architecture`
 
-**Impact:** CAIO now focuses on orchestration and routing; VFE handles all inference execution. Establishes unified inference architecture with clear service separation.
+**Impact:** CAIO now focuses on orchestration and routing; SAID handles all inference execution. Establishes unified inference architecture with clear service separation.
 **2026-01-13: Phase 19.2 Tier 1 Adapters (MVP) Complete**
 
 **Status:** ⚠️ **IN PROGRESS**

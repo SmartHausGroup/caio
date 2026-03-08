@@ -31,7 +31,7 @@ This document formalizes the control calculus for CAIO - the mathematical contro
 CAIO sits **in the middle** of the cognitive system:
 
 - **Upstream**: Reads MAIA intent field `Ψ_i`, NME trait field `Ψ_t`, RFS memory field `Ψ_RFS`
-- **Downstream**: Drives VFE model selection, tool invocations, RFS operations
+- **Downstream**: Drives SAID model selection, tool invocations, RFS operations
 - **Control loop**: Generates control signal `u(t)` that feeds back to MAIA
 
 **Core function:**
@@ -43,7 +43,7 @@ Convert field state → executable plan (routing, model, params, budgets)
 **Primary objectives:**
 
 1. **Optimal routing**: Select best route (internal/external/hybrid)
-2. **Model selection**: Choose optimal model/service via VFE calculus
+2. **Model selection**: Choose optimal model/service via SAID calculus
 3. **Resource management**: Enforce cost/latency/budget constraints
 4. **Safety enforcement**: Ensure safety/policy/trait constraints satisfied
 5. **Control feedback**: Generate `u(t)` to shape MAIA intent field
@@ -217,14 +217,14 @@ Where `B_i` is MAIA control input matrix.
 
 ## 5. Model Selection Integration
 
-### 5.1 VFE Model Selection
+### 5.1 SAID Model Selection
 
 **Equation (Eq. 5.1):**
 
-CAIO uses VFE model selection calculus:
+CAIO uses SAID model selection calculus:
 
 ```math
-m^* = VFE_Select(s_t, M) = argmax_m [w_comp·C(m) - w_cost·$/tok(m) + w_align·A(m) - w_overflow·Ω(m)]
+m^* = SAID_Select(s_t, M) = argmax_m [w_comp·C(m) - w_cost·$/tok(m) + w_align·A(m) - w_overflow·Ω(m)]
 ```
 
 Subject to CAIO constraints:
@@ -242,7 +242,7 @@ Model selection must be traceable:
 
 - Which models were considered
 - Why `m^*` was selected
-- How VFE calculus was applied
+- How SAID calculus was applied
 - How constraints were satisfied
 
 ---
@@ -450,7 +450,7 @@ Same state → same decision (deterministic).
 - **North Star**: `docs/NORTH_STAR.md` §2 Mathematical Foundation
 - **MAIA Master Calculus**: `MAIA/docs/math/MAIA_MASTER_CALCULUS.md`
 - **NME Master Calculus**: `NotaMemoriaEngine/docs/math/NME_MASTER_CALCULUS.md`
-- **VFE Master Calculus**: `VerbumFieldEngine/docs/math/VFE_MASTER_CALCULUS.md`
+- **SAID Master Calculus**: `said-core/docs/math/VFE_MASTER_CALCULUS.md`
 
 ---
 

@@ -182,7 +182,7 @@ mkdir -p docs/integration
 
 ## Overview
 
-CAIO serves as the orchestration layer for TAI, providing mathematical guarantees for routing decisions between TAI services (RFS, VFE, VEE, NME) and external services.
+CAIO serves as the orchestration layer for TAI, providing mathematical guarantees for routing decisions between TAI services (RFS, SAID, VEE, NME) and external services.
 
 **CAIO's Role in TAI:**
 - **Service Orchestration:** Routes requests to appropriate TAI services or external services
@@ -192,7 +192,7 @@ CAIO serves as the orchestration layer for TAI, providing mathematical guarantee
 
 **Integration Points:**
 - **MAIA:** Uses CAIO for routing decisions based on intent field measurements
-- **TAI Services:** RFS, VFE, VEE, NME register with CAIO as internal services
+- **TAI Services:** RFS, SAID, VEE, NME register with CAIO as internal services
 - **TAI Frontend:** Uses CAIO API for service orchestration
 - **External Services:** Marketplace services register via same contract system
 ```

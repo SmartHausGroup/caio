@@ -1,7 +1,7 @@
-# Tier 1 Integration Example (VFE-Routed Inference)
+# Tier 1 Integration Example (SAID-Routed Inference)
 
-Tier 1 inference providers are routed through VFE. The gateway still uses the contract metadata
-for discovery, but execution happens via the VFE client.
+Tier 1 inference providers are routed through SAID. The gateway still uses the contract metadata
+for discovery, but execution happens via the SAID client.
 
 ## Example Contract (OpenAI)
 

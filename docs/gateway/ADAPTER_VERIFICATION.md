@@ -36,9 +36,9 @@
 - ⚠️ Stability AI — Pending live verification (requires `STABILITY_API_KEY`)
 - ⚠️ Midjourney — Pending live verification (requires `MIDJOURNEY_API_KEY`)
 
-### Inference Adapters (VFE Scope)
+### Inference Adapters (SAID Scope)
 
-Per ADR-0001, inference adapters are in VFE, not CAIO:
+Per ADR-0001, inference adapters are in SAID, not CAIO:
 
 - Gemini, Grok, Ollama, LM Studio, Perplexity, Hugging Face, Together, Replicate, Azure OpenAI,
   AWS Bedrock, Meta AI, Google PaLM, Aleph Alpha

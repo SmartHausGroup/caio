@@ -98,9 +98,9 @@ make ma-validate-quiet || true
 | 18    | ✅ Done       | License management system — complete 2026-01-14            |
 | 19    | ⚠️ In Progress | Universal Service Gateway & Adapters — 19.1-19.9 complete; 19.10 pending |
 | 19.1  | ✅ Done       | Build Service Gateway Core (executor, base, transformer) |
-| 19.2  | ✅ Done       | Tier 1 Adapters — MIGRATED TO VFE per ADR-0001 |
-| 19.3  | ⚠️ Partial    | Tier 2 Adapters — Created but SHOULD BE IN VFE (inference adapters) |
-| 19.4  | ⚠️ Partial    | Tier 3 Adapters — Non-inference complete; inference adapters SHOULD BE IN VFE |
+| 19.2  | ✅ Done       | Tier 1 Adapters — Migrated to SAID per ADR-0001 |
+| 19.3  | ⚠️ Partial    | Tier 2 Adapters — Created but should be in SAID (inference adapters) |
+| 19.4  | ⚠️ Partial    | Tier 3 Adapters — Non-inference complete; inference adapters should be in SAID |
 | 19.5  | ✅ Done       | Contract Templates & Documentation |
 | 19.6  | ✅ Done       | Update Mechanism Implementation (API endpoints, service module) |
 | 19.7  | ✅ Done       | PyPI Preparation (Package Name Update to `smarthaus-caio`) |
@@ -127,7 +127,7 @@ make ma-validate-quiet || true
 | Security Calculus                            | 2, 3, 4, 5, 8       | Security section of `CAIO_MASTER_CALCULUS`, SEC invariants |
 | Contract-Based Discovery                     | 6, 7                | Contract parser, registry, SDK, APIs              |
 | Traceability & Proofs                        | 3, 4, 6, 8          | Trace/Proof system, artifacts, audit APIs         |
-| Integration Points (MAIA, NME, RFS, VFE, VEE)| 6, 7, 8, 11         | Integration tests, telemetry, SDK usage, TAI integration guide |
+| Integration Points (MAIA, NME, RFS, SAID, VEE)| 6, 7, 8, 11         | Integration tests, telemetry, SDK usage, TAI integration guide |
 | Prototype Demonstrations                     | 10                  | Standalone Python script, HTTP API docs            |
 | Productionization                             | 11                  | Packaging fix, integration guides, hardening       |
 | Operational Excellence                        | 12                  | Documentation sync, pre-commit hooks, test environment, ADR gate tuning |
@@ -148,7 +148,7 @@ Only future work is listed; math/MA phases are already complete.
 | license-revocation        | completed | Implemented revocation logic in Phase 18               |
 | universal-gateway-fix     | completed | Fix import errors in Gateway core (Phase 19.1)          |
 | production-hardening      | completed | Complete rate limiting and fix E2E tests (Phase 11/13)  |
-| adapter-migration-to-vfe  | completed | Tier 1 adapters removed from gateway; inference routed to VFE |
+| adapter-migration-to-vfe  | completed | Tier 1 adapters removed from gateway; inference routed to SAID |
 | production-readiness      | completed | Executed codex-production-readiness plan (10 deployment hardening gaps); complete 2026-01-07 |
 | notebook-cell-id-normalization-logs | completed | Normalized cell IDs in logs/quality/notebooks and updated nbformat_minor; complete 2026-01-02 |
 | notebook-cell-id-normalization | completed | Normalized notebook cell IDs to eliminate nbformat warnings; complete 2026-01-02 |
@@ -192,7 +192,7 @@ Only future work is listed; math/MA phases are already complete.
 - **2026-01-14:** License revocation logic implemented — `plan:license-revocation`
 - **2026-01-14:** Contract math thesis alignment guide completed — `plan:contract-math-thesis-alignment:contract-verification`
 - **2026-01-14:** Universal gateway fix completed — `plan:universal-gateway-fix`
-- **2026-01-13:** Adapter migration to VFE complete — `plan:adapter-migration-to-vfe:unified-inference-architecture`
+- **2026-01-13:** Adapter migration to SAID complete — `plan:adapter-migration-to-vfe:unified-inference-architecture`
 - **2026-01-13:** Phase 18 license management system complete — `plan:EXECUTION_PLAN:18`
 - **2026-01-12:** Phase 17 on-premises licensing model complete — `plan:EXECUTION_PLAN:17`
 - **2026-01-12:** Phase 16 open integration layer complete — `plan:EXECUTION_PLAN:16`
@@ -254,7 +254,7 @@ Only future work is listed; math/MA phases are already complete.
 - [x] Problem statement written (universal AI orchestration with mathematical guarantees)
 - [x] Conceptual significance documented (contract-based discovery, provable routing)
 - [x] Success criteria defined (hot-swappable services, traceability, security)
-- [x] Service boundaries defined (standalone SOA, integration points with MAIA/NME/RFS/VFE/VEE)
+- [x] Service boundaries defined (standalone SOA, integration points with MAIA/NME/RFS/SAID/VEE)
 - [x] **Document**: `docs/NORTH_STAR.md`
 
 ---
@@ -1088,33 +1088,33 @@ Endpoints (names illustrative; must match final OpenAPI):
 
 **19.2: Tier 1 Adapters (5 services) — MVP**
 
-**NOTE:** Per ADR-0001, Tier 1 inference adapters (OpenAI, Anthropic, Groq, Mistral, Cohere) were **migrated to VFE** as external API backends. CAIO now routes inference requests to VFE, not directly to external APIs.
+**NOTE:** Per ADR-0001, Tier 1 inference adapters (OpenAI, Anthropic, Groq, Mistral, Cohere) were **migrated to SAID** as external API backends. CAIO now routes inference requests to SAID, not directly to external APIs.
 
-- [x] OpenAI adapter (GPT-4, GPT-4o, GPT-3.5-turbo) — **MIGRATED TO VFE**
-- [x] Anthropic adapter (Claude 3.5 Sonnet, Claude 3 Opus) — **MIGRATED TO VFE**
-- [x] Groq adapter (fast inference) — **MIGRATED TO VFE**
-- [x] Mistral AI adapter (Mistral Medium, Mistral Large) — **MIGRATED TO VFE**
-- [x] Cohere adapter (Command R+, Command R) — **MIGRATED TO VFE**
+- [x] OpenAI adapter (GPT-4, GPT-4o, GPT-3.5-turbo) — **MIGRATED TO SAID**
+- [x] Anthropic adapter (Claude 3.5 Sonnet, Claude 3 Opus) — **MIGRATED TO SAID**
+- [x] Groq adapter (fast inference) — **MIGRATED TO SAID**
+- [x] Mistral AI adapter (Mistral Medium, Mistral Large) — **MIGRATED TO SAID**
+- [x] Cohere adapter (Command R+, Command R) — **MIGRATED TO SAID**
 - [x] Create contract templates for all Tier 1 services
-- [x] Test each adapter with real API calls — **N/A (migrated to VFE)**
+- [x] Test each adapter with real API calls — **N/A (migrated to SAID)**
 
 **19.3: Tier 2 Adapters (10 services) — Phase 1**
 
-**NOTE:** Per ADR-0001, inference adapters should be in VFE, not CAIO. The following inference adapters should be **moved to VFE or removed from CAIO**:
+**NOTE:** Per ADR-0001, inference adapters should be in SAID, not CAIO. The following inference adapters should be **moved to SAID or removed from CAIO**:
 - Ollama, LM Studio, Gemini, Grok, Perplexity, Hugging Face, Together, Replicate, Azure OpenAI, AWS Bedrock
 
-**Current Status:** These adapters exist in CAIO but violate the architecture. They should be migrated to VFE or removed.
+**Current Status:** These adapters exist in CAIO but violate the architecture. They should be migrated to SAID or removed.
 
-- [x] Ollama adapter (local models) — **SHOULD BE IN VFE**
-- [x] LM Studio adapter (local models) — **SHOULD BE IN VFE**
-- [x] Google Gemini adapter (Gemini Pro, Gemini Ultra) — **SHOULD BE IN VFE**
-- [x] xAI Grok adapter (Grok-4) — **SHOULD BE IN VFE**
-- [x] Perplexity adapter (search-augmented) — **SHOULD BE IN VFE**
-- [x] Hugging Face Inference API adapter — **SHOULD BE IN VFE**
-- [x] Together AI adapter (open models) — **SHOULD BE IN VFE**
-- [x] Replicate adapter (model hosting) — **SHOULD BE IN VFE**
-- [x] Azure OpenAI adapter (enterprise) — **SHOULD BE IN VFE**
-- [x] AWS Bedrock adapter (enterprise) — **SHOULD BE IN VFE**
+- [x] Ollama adapter (local models) — **SHOULD BE IN SAID**
+- [x] LM Studio adapter (local models) — **SHOULD BE IN SAID**
+- [x] Google Gemini adapter (Gemini Pro, Gemini Ultra) — **SHOULD BE IN SAID**
+- [x] xAI Grok adapter (Grok-4) — **SHOULD BE IN SAID**
+- [x] Perplexity adapter (search-augmented) — **SHOULD BE IN SAID**
+- [x] Hugging Face Inference API adapter — **SHOULD BE IN SAID**
+- [x] Together AI adapter (open models) — **SHOULD BE IN SAID**
+- [x] Replicate adapter (model hosting) — **SHOULD BE IN SAID**
+- [x] Azure OpenAI adapter (enterprise) — **SHOULD BE IN SAID**
+- [x] AWS Bedrock adapter (enterprise) — **SHOULD BE IN SAID**
 - [x] Create contract templates for all Tier 2 services
 - [x] Test each adapter with real API calls (where API keys available) - Integration tests created with skipif markers
 
@@ -1127,15 +1127,15 @@ Endpoints (names illustrative; must match final OpenAPI):
 - **Voice:** ElevenLabs, Deepgram ✅
 - **Image:** Midjourney API, Stability AI, DALL-E ✅
 
-**The following inference adapters should be moved to VFE or removed:**
-- Meta AI, Google PaLM, Aleph Alpha — **SHOULD BE IN VFE**
+**The following inference adapters should be moved to SAID or removed:**
+- Meta AI, Google PaLM, Aleph Alpha — **SHOULD BE IN SAID**
 
 - [x] Embedding services: OpenAI Embeddings, Cohere Embed, Voyage AI ✅
 - [x] Code services: GitHub Copilot API, Cursor API ✅
 - [x] Search services: Tavily, Serper ✅
 - [x] Voice services: ElevenLabs, Deepgram ✅
 - [x] Image services: Midjourney API, Stability AI, DALL-E ✅
-- [x] Additional: Meta AI, Google PaLM, Aleph Alpha — **SHOULD BE IN VFE**
+- [x] Additional: Meta AI, Google PaLM, Aleph Alpha — **SHOULD BE IN SAID**
 - [x] Create contract templates for all Tier 3 services
 - [x] Test each adapter with real API calls (where API keys available) - Integration tests created with skipif markers
 
@@ -1180,14 +1180,14 @@ Endpoints (names illustrative; must match final OpenAPI):
 
 **19.10: Live Gateway Verification (Non-Inference Adapters Only)**
 
-**Scope:** Verify CAIO's non-inference marketplace adapters with live API calls. Per ADR-0001, inference adapters are in VFE, so this phase only verifies:
+**Scope:** Verify CAIO's non-inference marketplace adapters with live API calls. Per ADR-0001, inference adapters are in SAID, so this phase only verifies:
 - Embeddings: OpenAI Embeddings, Cohere Embed, Voyage AI
 - Code: GitHub Copilot API, Cursor API
 - Search: Tavily, Serper
 - Voice: ElevenLabs, Deepgram
 - Image: Midjourney API, Stability AI, DALL-E
 
-**NOTE:** Inference adapters (gemini, grok, ollama, etc.) should NOT be verified here — they belong in VFE.
+**NOTE:** Inference adapters (gemini, grok, ollama, etc.) should NOT be verified here — they belong in SAID.
 
 - [x] Create live verification test suite (`tests/integration/test_live_gateway_verification.py`)
 - [x] Add safety gates (`LIVE_TESTS_ENABLED=1`) and per-adapter API key skips

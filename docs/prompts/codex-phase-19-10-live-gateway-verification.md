@@ -2,14 +2,14 @@
 
 **Plan Reference:** `plan:EXECUTION_PLAN:19.10`  
 **Detailed Plan:** `plans/phase-19-10-live-gateway-verification/phase-19-10-live-gateway-verification.md`  
-**North Star Alignment:** Aligned with CAIO orchestration role (ADR-0001) — CAIO orchestrates, VFE executes inference  
+**North Star Alignment:** Aligned with CAIO orchestration role (ADR-0001) — CAIO orchestrates, SAID executes inference  
 **Status:** Approved for execution
 
 ---
 
 ## Executive Summary
 
-Create a live verification test suite for CAIO's **non-inference marketplace adapters only**. Per ADR-0001, inference adapters are in VFE, so this phase only verifies embeddings, code, search, voice, and image adapters.
+Create a live verification test suite for CAIO's **non-inference marketplace adapters only**. Per ADR-0001, inference adapters are in SAID, so this phase only verifies embeddings, code, search, voice, and image adapters.
 
 **Scope:** 12 non-inference adapters (embeddings: 3, code: 2, search: 2, voice: 2, image: 3)
 
@@ -22,11 +22,11 @@ Create a live verification test suite for CAIO's **non-inference marketplace ada
 ### Architecture (ADR-0001)
 
 **CAIO's Role:** Universal AI Controller (orchestrates services)  
-**VFE's Role:** Unified Inference Engine (executes ALL inference)
+**SAID's Role:** Unified Inference Engine (executes ALL inference)
 
 **Current State:**
-- Tier 1 adapters (OpenAI, Anthropic, Groq, Mistral, Cohere) — **MIGRATED TO VFE** ✅
-- Tier 2/3 inference adapters (Gemini, Grok, Ollama, etc.) — **SHOULD BE IN VFE** (out of scope)
+- Tier 1 adapters (OpenAI, Anthropic, Groq, Mistral, Cohere) — **MIGRATED TO SAID** ✅
+- Tier 2/3 inference adapters (Gemini, Grok, Ollama, etc.) — **SHOULD BE IN SAID** (out of scope)
 - Tier 3 non-inference adapters — **Correctly in CAIO** (this phase's scope)
 
 ### Problem
@@ -55,7 +55,7 @@ Enterprise customers need confidence that CAIO's marketplace adapters work with 
 ```python
 """Live verification tests for CAIO non-inference marketplace adapters.
 
-Per ADR-0001, inference adapters are in VFE. This test suite only verifies
+Per ADR-0001, inference adapters are in SAID. This test suite only verifies
 non-inference adapters (embeddings, code, search, voice, image).
 
 Usage:
@@ -196,9 +196,9 @@ class TestLiveImageAdapters:
 - ⚠️ Stability AI — Requires `STABILITY_API_KEY` (not verified)
 - ⚠️ Midjourney — Requires `MIDJOURNEY_API_KEY` (not verified)
 
-### Inference Adapters (VFE Scope)
+### Inference Adapters (SAID Scope)
 
-Per ADR-0001, inference adapters are in VFE, not CAIO:
+Per ADR-0001, inference adapters are in SAID, not CAIO:
 - Gemini, Grok, Ollama, LM Studio, Perplexity, Hugging Face, Together, Replicate, Azure OpenAI, AWS Bedrock, Meta AI, Google PaLM, Aleph Alpha
 
 ## Running Live Tests
@@ -312,10 +312,10 @@ LIVE_TESTS_ENABLED=1 pytest tests/integration/test_live_gateway_verification.py 
 
 ### What's OUT of Scope
 
-**Inference adapters (should be in VFE):**
+**Inference adapters (should be in SAID):**
 - Gemini, Grok, Ollama, LM Studio, Perplexity, Hugging Face, Together, Replicate, Azure OpenAI, AWS Bedrock, Meta AI, Google PaLM, Aleph Alpha
 
-**Do NOT verify inference adapters in this phase.** They belong in VFE per ADR-0001.
+**Do NOT verify inference adapters in this phase.** They belong in SAID per ADR-0001.
 
 ### Safety First
 

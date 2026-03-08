@@ -14,14 +14,14 @@
 
 ## Objective
 
-Register **M365** as a service in CAIO and implement an **M365 adapter** that (1) receives orchestration requests containing MAIA intent (domain=M365, action, params), (2) translates them into calls to the M365 Provisioning/instruction API, (3) returns the result to the caller (TAI). CAIO routes “M365” intents to this adapter; no change to VFE or other services.
+Register **M365** as a service in CAIO and implement an **M365 adapter** that (1) receives orchestration requests containing MAIA intent (domain=M365, action, params), (2) translates them into calls to the M365 Provisioning/instruction API, (3) returns the result to the caller (TAI). CAIO routes “M365” intents to this adapter; no change to SAID or other services.
 
 ---
 
 ## Scope (CAIO repo only)
 
 - **In scope:** M365 service registration in CAIO; M365 adapter module (client to M365 API); routing by intent (domain/action) to M365; request/response mapping; auth (e.g. token pass-through or CAIO-managed credential); tests and docs.
-- **Out of scope:** M365 API implementation; TAI voice; MAIA intent logic; VFE changes; implementation of MAIA or TAI.
+- **Out of scope:** M365 API implementation; TAI voice; MAIA intent logic; SAID changes; implementation of MAIA or TAI.
 
 ---
 
@@ -39,7 +39,7 @@ Register **M365** as a service in CAIO and implement an **M365 adapter** that (1
 
 - [ ] M365 registered as a CAIO service (discoverable, routable).
 - [ ] M365 adapter: accept orchestration request with intent (domain=M365, action, params); map to M365 API call; return structured result (or error).
-- [ ] Routing: when intent indicates domain M365, route to M365 adapter (not VFE or other backends).
+- [ ] Routing: when intent indicates domain M365, route to M365 adapter (not SAID or other backends).
 - [ ] Auth: support calling M365 API with appropriate credentials (pass-through from caller or CAIO-managed; per M365 contract).
 - [ ] Errors: map M365 API errors to CAIO response; propagate to TAI.
 

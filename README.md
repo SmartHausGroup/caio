@@ -1,6 +1,8 @@
-# CAIO - Coordinatio Auctus Imperium Ordo
+# CAIO — Coordinatio Auctus Imperium Ordo
 
-**Universal AI Orchestration Platform**
+**Universal AI Orchestration Platform (Service Routing & Access Control)**
+
+**CAIO replaced AIUCP** for integration. TAI and AIVA (and other external systems) integrate **via CAIO** — protocol-based, no direct code dependencies. See **caio-core** for the main implementation.
 
 ---
 

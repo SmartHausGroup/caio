@@ -152,8 +152,8 @@ Discover services by capability using contract-based matching (mathematical set 
 {
   "services": [
     {
-      "service_id": "vfe-001",
-      "name": "Verbum Field Engine",
+      "service_id": "said-001",
+      "name": "SAID",
       "version": "1.0.0",
       "base_url": "http://localhost:8081",
       "capabilities": ["model_inference"],
@@ -165,7 +165,7 @@ Discover services by capability using contract-based matching (mathematical set 
     }
   ],
   "proof": {
-    "matching_contracts": ["vfe-001"],
+    "matching_contracts": ["said-001"],
     "rule_satisfaction": true,
     "security_verified": true
   }
@@ -188,8 +188,8 @@ Register a new service with CAIO using a service contract.
 **Request Body:**
 ```json
 {
-  "service_id": "vfe-001",
-  "name": "Verbum Field Engine",
+  "service_id": "said-001",
+  "name": "SAID",
   "version": "1.0.0",
   "base_url": "http://localhost:8081",
   "protocol": "http",
@@ -211,7 +211,7 @@ Register a new service with CAIO using a service contract.
 **Response:**
 ```json
 {
-  "service_id": "vfe-001",
+  "service_id": "said-001",
   "status": "registered",
   "contract_validated": true,
   "timestamp": "2025-01-XXT00:00:00Z"
@@ -235,8 +235,8 @@ Get service details from the registry.
 **Response:**
 ```json
 {
-  "service_id": "vfe-001",
-  "name": "Verbum Field Engine",
+  "service_id": "said-001",
+  "name": "SAID",
   "version": "1.0.0",
   "base_url": "http://localhost:8081",
   "protocol": "http",
@@ -272,8 +272,8 @@ List all registered services.
 {
   "services": [
     {
-      "service_id": "vfe-001",
-      "name": "Verbum Field Engine",
+      "service_id": "said-001",
+      "name": "SAID",
       "capabilities": ["model_inference"],
       "status": "active"
     }
@@ -365,7 +365,7 @@ Route a request to the optimal service using the master equation.
 ```json
 {
   "decision": {
-    "service_id": "vfe-001",
+    "service_id": "said-001",
     "service_url": "http://localhost:8081/v1/chat/completions",
     "method": "POST",
     "headers": {
@@ -422,7 +422,7 @@ Retrieve a trace record for a routing decision.
     }
   },
   "decision": {
-    "service_id": "vfe-001",
+    "service_id": "said-001",
     "service_url": "http://localhost:8081/v1/chat/completions"
   },
   "proof": {

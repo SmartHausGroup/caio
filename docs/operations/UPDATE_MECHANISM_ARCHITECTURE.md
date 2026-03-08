@@ -3,7 +3,7 @@
 **Status:** Standard Architecture Document  
 **Version:** 1.0  
 **Last Updated:** 2026-01-15  
-**Applies To:** TAI, CAIO, MAIA, NME, RFS, VFE, VEE
+**Applies To:** TAI, CAIO, MAIA, NME, RFS, SAID, VEE
 
 ---
 
@@ -18,7 +18,7 @@ This document defines the standardized update mechanism architecture for all ser
 ## Core Principles
 
 ### 1. **Service Independence**
-- Each service (CAIO, VFE, RFS, MAIA, NME, VEE) maintains its own update mechanism
+- Each service (CAIO, SAID, RFS, MAIA, NME, VEE) maintains its own update mechanism
 - Services can be updated independently when running standalone
 - Services expose standardized update APIs for integration
 
@@ -41,7 +41,7 @@ This document defines the standardized update mechanism architecture for all ser
 ### Standalone Mode
 
 ```
-Service (CAIO/VFE/RFS/etc.)
+Service (CAIO/SAID/RFS/etc.)
 ├── Exposes manifest.json (version, update_url)
 ├── Has own update mechanism
 ├── Shows update notifications in own UI
@@ -221,7 +221,7 @@ TAI updates services **one at a time** to avoid:
 **Update Order:**
 1. TAI Core (if TAI itself needs updating)
 2. CAIO (governance kernel - always embedded)
-3. Licensed services (VFE, RFS, MAIA, NME, VEE) in order of activation
+3. Licensed services (SAID, RFS, MAIA, NME, VEE) in order of activation
 
 ---
 

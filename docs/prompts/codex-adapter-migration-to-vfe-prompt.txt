@@ -1,4 +1,4 @@
-Execute Adapter Migration to VFE - Tier 1 Inference Adapters
+Execute Adapter Migration to SAID - Tier 1 Inference Adapters
 
 Read and execute the detailed plan at docs/prompts/codex-adapter-migration-to-vfe.md.
 

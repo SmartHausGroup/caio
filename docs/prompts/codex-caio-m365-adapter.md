@@ -8,7 +8,7 @@
 
 ## Executive summary
 
-Register **M365** as a service in CAIO and implement the **M365 adapter**: receive orchestration requests with MAIA intent (domain=M365, action, params), translate to M365 Provisioning/instruction API calls, return result to caller (TAI). Route M365 intents to this adapter; no change to VFE or other services. MA process not required for this adapter/routing work.
+Register **M365** as a service in CAIO and implement the **M365 adapter**: receive orchestration requests with MAIA intent (domain=M365, action, params), translate to M365 Provisioning/instruction API calls, return result to caller (TAI). Route M365 intents to this adapter; no change to SAID or other services. MA process not required for this adapter/routing work.
 
 ---
 

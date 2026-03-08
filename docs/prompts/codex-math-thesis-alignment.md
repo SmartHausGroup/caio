@@ -27,7 +27,7 @@ Implement formal mathematical definitions for all CAIO sub-equations (`I(Ψ_i)`,
 **Why This Matters:**
 - Ensures all CAIO mathematics aligns with the unified Math Thesis framework
 - Provides formal mathematical guarantees for all routing decisions
-- Enables grand unification calculus across CAIO, MAIA, NME, RFS, VFE, VEE
+- Enables grand unification calculus across CAIO, MAIA, NME, RFS, SAID, VEE
 - Ensures energy conservation and Parseval compliance
 - Maps RFS metrics to Math Thesis invariants
 

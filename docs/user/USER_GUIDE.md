@@ -42,8 +42,8 @@ Services register with CAIO using YAML contracts. A contract defines:
 **Example Contract:**
 
 ```yaml
-service_id: vfe-001
-name: Verbum Field Engine
+service_id: said-001
+name: SAID
 version: 1.0.0
 base_url: http://localhost:8081
 protocol: http
@@ -72,8 +72,8 @@ cost_per_token: 0.0001
 curl -X POST http://localhost:8003/api/services/register \
   -H "Content-Type: application/json" \
   -d '{
-    "service_id": "vfe-001",
-    "name": "Verbum Field Engine",
+    "service_id": "said-001",
+    "name": "SAID",
     "version": "1.0.0",
     "base_url": "http://localhost:8081",
     "protocol": "http",
@@ -91,7 +91,7 @@ curl -X POST http://localhost:8003/api/services/register \
 **Response:**
 ```json
 {
-  "service_id": "vfe-001",
+  "service_id": "said-001",
   "status": "registered",
   "contract_validated": true,
   "timestamp": "2025-01-XXT00:00:00Z"
@@ -126,8 +126,8 @@ curl -X POST http://localhost:8003/api/discover \
 {
   "services": [
     {
-      "service_id": "vfe-001",
-      "name": "Verbum Field Engine",
+      "service_id": "said-001",
+      "name": "SAID",
       "base_url": "http://localhost:8081",
       "capabilities": ["model_inference"],
       "guarantees": {
@@ -137,7 +137,7 @@ curl -X POST http://localhost:8003/api/discover \
     }
   ],
   "proof": {
-    "matching_contracts": ["vfe-001"],
+    "matching_contracts": ["said-001"],
     "rule_satisfaction": true,
     "security_verified": true
   }
@@ -187,7 +187,7 @@ curl -X POST http://localhost:8003/api/route \
 ```json
 {
   "decision": {
-    "service_id": "vfe-001",
+    "service_id": "said-001",
     "service_url": "http://localhost:8081/v1/chat/completions",
     "method": "POST",
     "headers": {
@@ -235,7 +235,7 @@ curl http://localhost:8003/api/traces/trace-001
     }
   },
   "decision": {
-    "service_id": "vfe-001",
+    "service_id": "said-001",
     "service_url": "http://localhost:8081/v1/chat/completions"
   },
   "proof": {

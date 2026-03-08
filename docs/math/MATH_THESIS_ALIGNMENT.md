@@ -19,7 +19,7 @@ This document formalizes the mathematical alignment between CAIO and the Math Th
 - Mapping of all field operations to Math Thesis framework (Hilbert space, encoding operators, matched filters, projectors)
 - Energy conservation alignment via Parseval's theorem
 - RFS metrics mapping to Math Thesis invariants
-- Grand unification calculus across CAIO, MAIA, NME, RFS, VFE, VEE
+- Grand unification calculus across CAIO, MAIA, NME, RFS, SAID, VEE
 
 **Alignment Status:** ✅ Framework aligned, formal definitions required
 
